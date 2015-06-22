@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 
-public class NodeRoot{
+public class NodeRoot implements Node{
 	//String rootString;
 	private List<NodeImpl> children;
 	
@@ -27,7 +27,10 @@ public class NodeRoot{
 		} else {	
 			for(NodeImpl child: children) {
 				if (subString.startsWith(child.getSubString())){
-					child.updateSubString(subString);
+					child.addSubString
+					
+					
+					//child.updateSubString(subString);
 					return; // i.e subString added
 				} else if (child.getSubString().startsWith(subString)){
 					//i.e the subString we are checking is a prefix of the child's subString

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Each internal has at least two children.
  */
-public class NodeImpl {
+public class NodeImpl implements Node{
 	//TO DO could be a map?
 	private String subString;
 	private int subStringIndex;
