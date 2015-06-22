@@ -1,5 +1,7 @@
 package substringAlgorithms;
 
-public class Tree {
-
+public interface Node {
+	
+	
+	
 }
