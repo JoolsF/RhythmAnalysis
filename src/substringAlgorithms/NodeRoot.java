@@ -11,38 +11,48 @@ import java.util.List;
 
 
 public class NodeRoot implements Node{
-	//String rootString;
-	private List<NodeImpl> children;
+	private List<Node> children;
+	private String subString;
+	private int subStringIndex;
 	
 	public void NodeRoot(){
 		//TO DO, implement singleton pattern.  Only one root allowed
-		children = new ArrayList<NodeImpl>();
+		children = new ArrayList<Node>();
 	}
 	
 
 	public void addSubString(String subString, int subStringIndex){
 	
 		if(children.isEmpty()){
-			children.add(new NodeImpl(subString,subStringIndex));
+			children.add(new NodeNonLeaf(subString + "$",subStringIndex)); //TO DO CHECK USE OF TERMINATING SYMBOL '$'
 		} else {	
-			for(NodeImpl child: children) {
-				if (subString.startsWith(child.getSubString())){
-					child.addSubString
-					
-					
-					//child.updateSubString(subString);
-					return; // i.e subString added
-				} else if (child.getSubString().startsWith(subString)){
-					//i.e the subString we are checking is a prefix of the child's subString
-					// we will need to split the node here
-					// TO IMPLEMENT
-				}
-					
-			
-				}
+			for(Node child: children) {
+				addSubString(subString, subStringIndex);
 			}
-			//i.e no subString is not a prefix of any child or no child is prefix of any subString
-			children.add(new NodeImpl(subString,subStringIndex));
+			
+		}
+	}
+					
+
+
+	@Override
+	public void updateSubString(String subString) {
+		this.subString += subString;
+		
+	}
+
+
+	@Override
+	public String getSubString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<Node> getChildren() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
