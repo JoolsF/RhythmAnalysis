@@ -9,10 +9,10 @@ package substringAlgorithms;
  */
 public class SuffixTree {
 	//make this part of Node interface somehow?
-	NodeRoot root;
+	Node root;
 	
 	public SuffixTree(){
-		root = new NodeRoot();
+		root = new NodeTest("a",1);
 	}
 	
 	public void addString(String str){		
