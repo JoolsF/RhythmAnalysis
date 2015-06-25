@@ -13,7 +13,7 @@ public interface Node {
 	
 	public void addSubString(String subString, int subStringIndex);
 	public String getSubString();
-	public void updateSubString(String subString);
+	public void updateSubString(String subString, int subStringIndex);
 	public List<Node> getChildren();
 	public boolean isAPrefixOf(String string);
 	public boolean hasAPrefixOf(String string);
