@@ -25,16 +25,32 @@ public class NodeTest implements Node{
 	
 
 	public void addSubString(String subStringToAdd, int subStringIndex){
-	
+		
+		//BASE CASE 1 THERE ARE NO CHILDREN
 		if(children.isEmpty()){
 			children.add(new NodeTest(subStringToAdd, subStringIndex));
+			return;
 		} else {	
 			for(Node child: children) {
 				
 				if(child.isAPrefixOf(subStringToAdd)){
 					//checking if the child's substring is a prefix of the substring field. i.e child's substring is a and substring is ab
-					child.addSubString(subStringToAdd, subStringIndex);
-					return;
+					//String suffix = subStringToAdd.substring(beginIndex, endIndex)
+					if(child.getChildren().isEmpty()) {
+						//Prefix matched and there are no further children i.e leaf node.  This must by definition by the correct node.
+						children.add(new NodeTest(subStringToAdd, subStringIndex));
+						return;
+					} else {
+						//recursive case. Travel further down the tree removing the part of the substring already matched
+						child.addSubString(removeThisFromStringPrefix(subStringToAdd), subStringIndex);
+					}
+					
+					
+					
+					
+					
+					//NOT BASE CASE
+					//return;
 				} else if(child.hasAPrefixOf(subStringToAdd)) {
 				//checking if the substring is a prefix of the child's substring e.g child's substring = 11 and substring = 1.
 				//If yes then SPLIT	  
@@ -81,6 +97,7 @@ public class NodeTest implements Node{
 				//5
 				subStringField = prefix;
 				//6 string is null to represent the equivalent of $ terminating symbol
+				//TO DO - check first if these is already a null here
 				children.add(new NodeTest(null, subStringIndex)); 
 				//	
 					
@@ -98,9 +115,17 @@ public class NodeTest implements Node{
 		
 	}
 
+	
+	//TO DO - Fine better method name
+	public String removeThisFromStringPrefix(String subStringArg){
+		return subStringArg.substring(this.subStringField.length(), subStringArg.length() );
+	}
+	
 
 	@Override
-	//checks if this object's subString field is a prefix of param string
+	/*checks if this object's subString field is a prefix of param string.
+	 * checks length as well to make sure they're not exact match
+	*/
 	public boolean isAPrefixOf(String string) {
 		if(string.startsWith(this.subStringField) && string.length() > this.subStringField.length()){
 			return true;
