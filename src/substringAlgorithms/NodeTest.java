@@ -65,14 +65,24 @@ public class NodeTest implements Node{
 		//BASE CASE 1 THERE ARE NO CHILDREN
 //		NEED TO CREATE ROOT NODE WITH NO STRING FIELD AND CHILD WITH $(0)
 		if(this.children.isEmpty()){
+//			System.out.println("--->>String Updated");
+//			System.out.println("sunStringToAdd " + subStringToAdd);
+//			System.out.println("sunStringIndex " + subStringIndex);
 			this.updateSubString(subStringToAdd, subStringIndex);
-			System.out.println("children.isEmpty");
+			//System.out.println("children.isEmpty");
 		} else {
 			for(Node child: children) {
+//				System.out.println("Child = " + child.getSubString());
+//				System.out.println("Substring = " + subStringToAdd);
+//				System.out.println("");
+				
+				
 				
 				if (child.getSubString().equals("$")){ //<-- should be child?
-					System.out.println("in case 2");
-					//BASE CASE 2 
+//					System.out.println("child substring is equal to $");
+//					System.out.println(subStringToAdd);
+//					System.out.println();
+				//	BASE CASE 2 
 					//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
 					//children will be sorted so that "$" for any given list of children will always be at the end.
 					//TO DO - UPDATE INDEX TOO FOR SAFETY?
@@ -80,11 +90,18 @@ public class NodeTest implements Node{
 					return;	
 					
 				} else if(child.isAPrefixOf(subStringToAdd)){
-					System.out.println("in case 3");
+					System.out.println("child is a prefix of substring");
+					System.out.println("Child = " + child.getSubString());
+					System.out.println("Substring = " +subStringToAdd);
+					System.out.println();
 					//recursive case. Travel further down the tree removing the part of the substring already matched
-					child.addSubString(removeThisFromStringPrefix(subStringToAdd), subStringIndex);
+//BUG HERE TRY ADDING "ab" IS THIS RECURSIVE CASE CORRECT
+					child.addSubString(removePrefix(subStringToAdd), subStringIndex);
 				} else if(child.hasAPrefixOf(subStringToAdd)) {
-					System.out.println("in case 4");
+//					System.out.println("child has a prefix of substring to add");
+//					System.out.println("Child = " + child.getSubString());
+//					System.out.println("Substring = " +subStringToAdd);
+//					System.out.println();
 					//TWO CASES HERE
 					// 1 LEAF NODE
 					// 2 NON LEAF NODE
@@ -108,7 +125,8 @@ public class NodeTest implements Node{
 						
 					return;		
 			} else if (subStringIndex == children.size()){
-				System.out.println("in case 4");
+//				System.out.println("at last child");
+//				System.out.println("subStringToAdd");
 				// We are checking the last element in the current substring and no other cases have been matched.
 				// 
 				children.add(new NodeTest(subStringToAdd, subStringIndex));
@@ -120,8 +138,13 @@ public class NodeTest implements Node{
 	
 	
 	//TO DO - Find better method name
-	public String removeThisFromStringPrefix(String subStringArg){
-		return subStringArg.substring(this.subStringField.length(), subStringArg.length() );
+	@Override
+	public String removePrefix(String subStringArg){
+		System.out.println("x");
+//TO DO FIX BUG HERE		
+		System.out.println("LENGTH " + this.subStringField.length());
+		//return subStringArg.substring(this.subStringField.length(), subStringArg.length() );
+		return "";
 	}
 	
 
@@ -182,6 +205,16 @@ public class NodeTest implements Node{
 		if(children.size() > 1) Collections.sort(this.children);
 	}
 
-
+	public void printTree (){
+		
+		if(! children.isEmpty())
+			for(Node child: children){
+				child.printTree();
+		}
+		System.out.println("Node field = " + this.subStringField);
+		System.out.println("Node index = " + this.subStringIndex);
+		System.out.println();
+		
+	}
 	
 }

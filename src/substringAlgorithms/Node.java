@@ -17,10 +17,11 @@ public interface Node extends Comparable<Node> {
 	public boolean isAPrefixOf(String string);
 	public boolean hasAPrefixOf(String string);
 	public void addChild(Node node);
-	
+	public void printTree();
 	
 	public default int compareTo(Node o) {
 		return o.getSubString().compareTo(this.getSubString());
 	}
+	String removePrefix(String subStringArg);
 	
 }
