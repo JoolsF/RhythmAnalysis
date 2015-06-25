@@ -18,14 +18,21 @@ public class SuffixTree {
 	}
 	
 	public void addString(String str){		
-		for(int i = 0; i < str.length(); i++){
-			
-			for(int j = 0; j <= i; j++){
-				root.addSubString(str.substring(i, j), j);
+		for(int i = 0; i < str.length(); i++){			
+			for(int index = 0; index <= i; index++){
+				root.addSubString(str.substring(index, i+1), index);
 			}
+			//$ added at the end of each substring iteration
+			root.addSubString("$", i+1);
+			
 			
 		}
 		
+		
+	}
+	
+	public static void main(String [] args){
+		new SuffixTree().addString("ab11");
 		
 	}
 

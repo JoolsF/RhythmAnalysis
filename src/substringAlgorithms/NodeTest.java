@@ -1,6 +1,7 @@
 package substringAlgorithms;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,23 +64,27 @@ public class NodeTest implements Node{
 		
 		//BASE CASE 1 THERE ARE NO CHILDREN
 //		NEED TO CREATE ROOT NODE WITH NO STRING FIELD AND CHILD WITH $(0)
-		if(children.isEmpty()){
+		if(this.children.isEmpty()){
 			this.updateSubString(subStringToAdd, subStringIndex);
+			System.out.println("children.isEmpty");
 		} else {
 			for(Node child: children) {
 				
-				if (this.subStringField.equals("$")){
+				if (child.getSubString().equals("$")){ //<-- should be child?
+					System.out.println("in case 2");
 					//BASE CASE 2 
 					//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
 					//children will be sorted so that "$" for any given list of children will always be at the end.
 					//TO DO - UPDATE INDEX TOO FOR SAFETY?
-					this.updateSubString(subStringToAdd, subStringIndex);
+					child.updateSubString(subStringToAdd, subStringIndex);
 					return;	
 					
 				} else if(child.isAPrefixOf(subStringToAdd)){
+					System.out.println("in case 3");
 					//recursive case. Travel further down the tree removing the part of the substring already matched
 					child.addSubString(removeThisFromStringPrefix(subStringToAdd), subStringIndex);
 				} else if(child.hasAPrefixOf(subStringToAdd)) {
+					System.out.println("in case 4");
 					//TWO CASES HERE
 					// 1 LEAF NODE
 					// 2 NON LEAF NODE
@@ -92,30 +97,29 @@ public class NodeTest implements Node{
 					//3 LEAF NODE
 					child.addChild(new NodeTest(suffix, this.subStringIndex));
 					//4
+					//TO DO - DEAL WITH NON LEAF NODES DIFFERENTLY NOT WITH NULL
 					this.subStringIndex = null;
 					//5
 					subStringField = prefix;
 					//6 string is null to represent the equivalent of $ terminating symbol
-					//TO DO - check first if these is already a null here
+					//TO DO - check first if these is already a terminating symbol $ here
 					children.add(new NodeTest("$", subStringIndex)); 
 					//	
 						
-					return;	
-				
-				
-				
+					return;		
+			} else if (subStringIndex == children.size()){
+				System.out.println("in case 4");
+				// We are checking the last element in the current substring and no other cases have been matched.
+				// 
+				children.add(new NodeTest(subStringToAdd, subStringIndex));
+				return;
 			}
-			
 		} // end of for loop
-		
-		// THIS POINT ONLY REACHED IF NO CASES REACHED.  RETURN SHOULD PREVENT THIS FROM BEING REACHED
-		// TO CHECK THIS WORKS
-		children.add(new NodeTest(subStringToAdd, subStringIndex));
-		
-		}
+	    }
 	}
 	
-	//TO DO - Fine better method name
+	
+	//TO DO - Find better method name
 	public String removeThisFromStringPrefix(String subStringArg){
 		return subStringArg.substring(this.subStringField.length(), subStringArg.length() );
 	}
@@ -144,28 +148,38 @@ public class NodeTest implements Node{
 	
 	@Override
 	public String getSubString() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.subStringField;
 	}
 
 
 	@Override
 	public void updateSubString(String subString, int subStringIndex) {
-		// TODO Auto-generated method stub
+		
+		if(this.subStringField == "$") {
+			System.out.println("$");
+			this.subStringField = subString;
+		} else {
+		this.subStringField += subString;
+		this.subStringIndex = subStringIndex;
+		}
+		Collections.sort(this.children);
 		
 	}
 
 
 	@Override
 	public List<Node> getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.children;
 	}
 
 
 	@Override
+	/**
+	 * Whenever child is added the collection is sorted to ensure any $ string are at the end
+	 */
 	public void addChild(Node node) {
 		this.children.add(node);
+		if(children.size() > 1) Collections.sort(this.children);
 	}
 
 

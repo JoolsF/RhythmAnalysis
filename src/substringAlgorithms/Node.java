@@ -1,8 +1,7 @@
 package substringAlgorithms;
-
 import java.util.List;
 
-public interface Node {
+public interface Node extends Comparable<Node> {
 	
 	/**
 	 * 
@@ -18,5 +17,10 @@ public interface Node {
 	public boolean isAPrefixOf(String string);
 	public boolean hasAPrefixOf(String string);
 	public void addChild(Node node);
+	
+	
+	public default int compareTo(Node o) {
+		return o.getSubString().compareTo(this.getSubString());
+	}
 	
 }
