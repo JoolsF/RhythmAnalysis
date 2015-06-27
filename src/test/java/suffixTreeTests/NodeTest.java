@@ -1,4 +1,4 @@
-package SuffixTreeTests;
+package suffixTreeTests;
 
 import static org.junit.Assert.*;
 
@@ -13,10 +13,7 @@ public class NodeTest {
 	private Node node1;
 	private Node leafNodeNoString;
 	private String testNode1String;
-	private final String ENDSYMBOL = "$";
 	
-	
-
     /**
      * Sets up the test fixture. 
      * (Called before every test case method.)
@@ -25,7 +22,7 @@ public class NodeTest {
     public void setUp() {
     	testNode1String = "ab11";
     	node1 = new NodeImpl(testNode1String, 0);
-    	leafNodeNoString = new NodeImpl(ENDSYMBOL,1);
+    	leafNodeNoString = new NodeImpl("$",1);
     }
 
     /**
@@ -118,9 +115,12 @@ public class NodeTest {
      */
     public void addChild_addChildrenAndEnsureSortOrderCorrect(){
     	node1.addChild(new NodeImpl("1",1));
-    	node1.addChild(new NodeImpl(ENDSYMBOL,2));
+    	node1.addChild(new NodeImpl("$",2));
     	node1.addChild(new NodeImpl("0",0));
- 
-    	assertEquals(ENDSYMBOL,node1.getChildren().get(node1.getChildren().size()-1).getSubString());
+    	node1.getChildren();
+//    	for(Node next: node1.getChildren()){
+//    		System.out.println(next.getSubString());
+//    	}
+    	assertEquals("$",node1.getChildren().get(node1.getChildren().size()-1).getSubString());
     }
 }

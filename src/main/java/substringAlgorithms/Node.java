@@ -1,7 +1,7 @@
 package substringAlgorithms;
 import java.util.List;
 
-public interface Node extends Comparable<Node> {
+public interface Node{
 	
 	/**
 	 * 
@@ -13,6 +13,7 @@ public interface Node extends Comparable<Node> {
 	public void addSubString(String subString, int subStringIndex);
 	public String getSubString();
 	public void updateSubString(String subString, int subStringIndex);
+	public void setSubString(String subString, int subStringIndex);
 	public List<Node> getChildren();
 	public int getSubStringIndex();
 	public boolean thisIsAPrefixOf(String string);
@@ -20,9 +21,7 @@ public interface Node extends Comparable<Node> {
 	public void addChild(Node node);
 	public void printTree();
 	
-	public default int compareTo(Node o) {
-		return o.getSubString().compareTo(this.getSubString());
-	}
-	String removePrefix(String subStringArg);
+
+	public String removePrefix(String subStringArg);
 	
 }

@@ -9,10 +9,10 @@ package substringAlgorithms;
  */
 public class SuffixTree {
 	//make this part of Node interface somehow?
-	Node root;
+	private Node root;
 	
 	public SuffixTree(){
-		root = new NodeImpl("ROOT",99); //TO DO FIX THIS
+		root = new NodeImpl("ROOT", -1); //TO DO FIX THIS
 		// When a root is created it is created with one child, the terminal character $ and the index 0
 		root.addChild(new NodeImpl("$", 0));
 	}
@@ -20,22 +20,16 @@ public class SuffixTree {
 	public void addString(String str){		
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
-				root.addSubString(str.substring(index, i+1), index);
+				root.addSubString(str.substring(index, i+1), index);		
 			}
 			//$ added at the end of each substring iteration
 			root.addSubString("$", i+1);
 			System.out.println("---NEXT----");
-			
-			
-		}
-		
-		
+						
+		}	
 	}
-	
-	public static void main(String [] args){
-		SuffixTree x = new SuffixTree();
-		x.addString("ab1100");
-		//x.root.printTree();
+	public Node getTree(){
+		return this.root;
 	}
 
 }

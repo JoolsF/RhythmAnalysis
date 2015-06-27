@@ -49,7 +49,6 @@ checking if the substring is a prefix of the child's substring e.g child's subst
 public class NodeImpl implements Node{
 	//TO DO CHANGE TO NODE INTERFACE
 	private List<Node> children;
-	private final String ENDSYMBOL = "$";
 	private String subStringField;
 	private Integer subStringIndex;
 	
@@ -65,21 +64,19 @@ public class NodeImpl implements Node{
 		
 		//BASE CASE 1 THERE ARE NO CHILDREN
 //		NEED TO CREATE ROOT NODE WITH NO STRING FIELD AND CHILD WITH $(0)
-		if(this.children.isEmpty()){
-//			System.out.println("--->>String Updated");
-//			System.out.println("sunStringToAdd " + subStringToAdd);
-//			System.out.println("sunStringIndex " + subStringIndex);
-			this.updateSubString(subStringToAdd, subStringIndex);
-			//System.out.println("children.isEmpty");
-		} else {
+		
+		
 			for(Node child: children) {
 //				System.out.println("Child = " + child.getSubString());
 //				System.out.println("Substring = " + subStringToAdd);
 //				System.out.println("");
-				
-				
-				
-				if (child.getSubString().equals("ENDSYMBOL")){ //<-- should be child?
+				if(this.getChildren().isEmpty()){
+					System.out.println("--->>String Updated");
+					this.updateSubString(subStringToAdd, subStringIndex);
+					return;
+				} else 
+				if (child.getSubString().equals("$")){ //<-- should be child?
+//					System.out.println("Child = " + child.getSubString());
 //					System.out.println("child substring is equal to $");
 //					System.out.println(subStringToAdd);
 //					System.out.println();
@@ -87,41 +84,44 @@ public class NodeImpl implements Node{
 					//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
 					//children will be sorted so that "$" for any given list of children will always be at the end.
 					//TO DO - UPDATE INDEX TOO FOR SAFETY?
-					child.updateSubString(subStringToAdd, subStringIndex);
+					child.setSubString(subStringToAdd, subStringIndex);
 					return;	
 					
 				} else if(child.thisIsAPrefixOf(subStringToAdd)){
-					System.out.println("child is a prefix of substring");
+//					System.out.println("child is a prefix of substring");
+//					System.out.println("Child = " + child.getSubString());
+//					System.out.println("Substring = " + subStringToAdd);
+//					System.out.println("Substring to add " + child.removePrefix(subStringToAdd));
+//					System.out.println();
+					//recursive case. Travel further down the tree removing the part of the substring already matched
+//BUG HERE TRY ADDING "ab" IS THIS RECURSIVE CASE CORRECT
+					
+					child.addSubString(child.removePrefix(subStringToAdd), subStringIndex);
+					
+				} else if(child.thisHasAPrefixOf(subStringToAdd)) {
+					System.out.println("child has a prefix of substring to add");
 					System.out.println("Child = " + child.getSubString());
 					System.out.println("Substring = " +subStringToAdd);
 					System.out.println();
-					//recursive case. Travel further down the tree removing the part of the substring already matched
-//BUG HERE TRY ADDING "ab" IS THIS RECURSIVE CASE CORRECT
-					child.addSubString(removePrefix(subStringToAdd), subStringIndex);
-				} else if(child.thisHasAPrefixOf(subStringToAdd)) {
-//					System.out.println("child has a prefix of substring to add");
-//					System.out.println("Child = " + child.getSubString());
-//					System.out.println("Substring = " +subStringToAdd);
-//					System.out.println();
 					//TWO CASES HERE
 					// 1 LEAF NODE
 					// 2 NON LEAF NODE
 					//
 			
 					//1
-					String prefix =  subStringField.substring(0, subStringToAdd.length());
+					String prefix =  child.getSubString().substring(0, subStringToAdd.length());
 					//2
-					String suffix = subStringField.substring(subStringToAdd.length(), subStringField.length());
+					String suffix = child.getSubString().substring(subStringToAdd.length(), child.getSubString().length());
 					//3 LEAF NODE
 					child.addChild(new NodeImpl(suffix, this.subStringIndex));
 					//4
 					//TO DO - DEAL WITH NON LEAF NODES DIFFERENTLY NOT WITH NULL
-					this.subStringIndex = null;
+					
 					//5
-					subStringField = prefix;
+					child.setSubString(prefix, -1); //TO DO CHECK -1
 					//6 string is null to represent the equivalent of $ terminating symbol
 					//TO DO - check first if these is already a terminating symbol $ here
-					children.add(new NodeImpl(ENDSYMBOL, subStringIndex)); 
+					children.add(new NodeImpl("$", subStringIndex)); 
 					//	
 						
 					return;		
@@ -134,7 +134,7 @@ public class NodeImpl implements Node{
 				return;
 			}
 		} // end of for loop
-	    }
+	    
 	}
 	
 	
@@ -146,7 +146,9 @@ public class NodeImpl implements Node{
 	 */
 	@Override
 	public String removePrefix(String subStringArg){
-//TO DO FIX BUG HERE		
+//TO DO FIX BUG HERE
+//		System.out.println("SS Field " + this.subStringField);
+//		System.out.println("SS arg " + this.subStringField);
 		return subStringArg.substring(this.subStringField.length());
 		
 	}
@@ -187,16 +189,16 @@ public class NodeImpl implements Node{
 	@Override
 	public void updateSubString(String subString, int subStringIndex) {
 		
-		if(this.subStringField == ENDSYMBOL) {
-			//The field is 
-			System.out.println(ENDSYMBOL);
+		if(this.subStringField == "$") {
 			this.subStringField = subString;
 			this.subStringIndex = subStringIndex;
 		} else {
 		this.subStringField += subString;
 		this.subStringIndex = subStringIndex;
 		}
-		Collections.sort(this.children);
+		
+		//TO DO CHECK
+		//Collections.sort(this.children);
 		
 	}
 
@@ -212,8 +214,11 @@ public class NodeImpl implements Node{
 	 * Whenever child is added the collection is sorted to ensure any $ string are at the end
 	 */
 	public void addChild(Node node) {
-		this.children.add(node);
-		if(children.size() > 1) Collections.sort(this.children);
+		if(node.getSubString() != "$"){
+			this.children.add(0,node);	
+		} else {
+			this.children.add(this.children.size(),node);
+		}
 	}
 
 	public void printTree (){
@@ -234,6 +239,14 @@ public class NodeImpl implements Node{
 	@Override
 	public int getSubStringIndex() {
 		return this.subStringIndex;
+	}
+
+
+	@Override
+	public void setSubString(String subString, int subStringIndex) {
+		this.subStringField = subString;
+		this.subStringIndex = subStringIndex;
+		
 	}
 	
 }
