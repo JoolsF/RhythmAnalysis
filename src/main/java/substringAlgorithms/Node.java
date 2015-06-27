@@ -14,8 +14,9 @@ public interface Node extends Comparable<Node> {
 	public String getSubString();
 	public void updateSubString(String subString, int subStringIndex);
 	public List<Node> getChildren();
-	public boolean isAPrefixOf(String string);
-	public boolean hasAPrefixOf(String string);
+	public int getSubStringIndex();
+	public boolean thisIsAPrefixOf(String string);
+	public boolean thisHasAPrefixOf(String string);
 	public void addChild(Node node);
 	public void printTree();
 	

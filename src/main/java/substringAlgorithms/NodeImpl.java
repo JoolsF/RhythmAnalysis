@@ -49,6 +49,7 @@ checking if the substring is a prefix of the child's substring e.g child's subst
 public class NodeImpl implements Node{
 	//TO DO CHANGE TO NODE INTERFACE
 	private List<Node> children;
+	private final String ENDSYMBOL = "$";
 	private String subStringField;
 	private Integer subStringIndex;
 	
@@ -78,7 +79,7 @@ public class NodeImpl implements Node{
 				
 				
 				
-				if (child.getSubString().equals("$")){ //<-- should be child?
+				if (child.getSubString().equals("ENDSYMBOL")){ //<-- should be child?
 //					System.out.println("child substring is equal to $");
 //					System.out.println(subStringToAdd);
 //					System.out.println();
@@ -89,7 +90,7 @@ public class NodeImpl implements Node{
 					child.updateSubString(subStringToAdd, subStringIndex);
 					return;	
 					
-				} else if(child.isAPrefixOf(subStringToAdd)){
+				} else if(child.thisIsAPrefixOf(subStringToAdd)){
 					System.out.println("child is a prefix of substring");
 					System.out.println("Child = " + child.getSubString());
 					System.out.println("Substring = " +subStringToAdd);
@@ -97,7 +98,7 @@ public class NodeImpl implements Node{
 					//recursive case. Travel further down the tree removing the part of the substring already matched
 //BUG HERE TRY ADDING "ab" IS THIS RECURSIVE CASE CORRECT
 					child.addSubString(removePrefix(subStringToAdd), subStringIndex);
-				} else if(child.hasAPrefixOf(subStringToAdd)) {
+				} else if(child.thisHasAPrefixOf(subStringToAdd)) {
 //					System.out.println("child has a prefix of substring to add");
 //					System.out.println("Child = " + child.getSubString());
 //					System.out.println("Substring = " +subStringToAdd);
@@ -120,7 +121,7 @@ public class NodeImpl implements Node{
 					subStringField = prefix;
 					//6 string is null to represent the equivalent of $ terminating symbol
 					//TO DO - check first if these is already a terminating symbol $ here
-					children.add(new NodeImpl("$", subStringIndex)); 
+					children.add(new NodeImpl(ENDSYMBOL, subStringIndex)); 
 					//	
 						
 					return;		
@@ -152,10 +153,10 @@ public class NodeImpl implements Node{
 	
 
 	@Override
-	/*checks if this object's subString field is a prefix of param string.
+	/**checks if this object's subString field is a prefix of param string.
 	 * checks length as well to make sure they're not exact match
-	*/
-	public boolean isAPrefixOf(String string) {
+	 */
+	public boolean thisIsAPrefixOf(String string) {
 		if(string.startsWith(this.subStringField) && string.length() > this.subStringField.length()){
 			return true;
 	    } else {
@@ -163,8 +164,13 @@ public class NodeImpl implements Node{
 	    }
 	}
 	
+	/**
+	 * Check if argument is a prefix of object's subString field 
+	 * @param string
+	 * @return
+	 */
 	@Override
-	public boolean hasAPrefixOf(String string) {
+	public boolean thisHasAPrefixOf(String string) {
 		if(this.subStringField.startsWith(string) && this.subStringField.length() >  string.length()){
 			return true;
 	    } else {
@@ -181,9 +187,11 @@ public class NodeImpl implements Node{
 	@Override
 	public void updateSubString(String subString, int subStringIndex) {
 		
-		if(this.subStringField == "$") {
-			System.out.println("$");
+		if(this.subStringField == ENDSYMBOL) {
+			//The field is 
+			System.out.println(ENDSYMBOL);
 			this.subStringField = subString;
+			this.subStringIndex = subStringIndex;
 		} else {
 		this.subStringField += subString;
 		this.subStringIndex = subStringIndex;
@@ -218,6 +226,14 @@ public class NodeImpl implements Node{
 		System.out.println("Node index = " + this.subStringIndex);
 		System.out.println();
 		
+	}
+
+
+	
+
+	@Override
+	public int getSubStringIndex() {
+		return this.subStringIndex;
 	}
 	
 }
