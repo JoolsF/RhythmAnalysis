@@ -20,11 +20,12 @@ public class SuffixTree {
 	public void addString(String str){		
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
-				root.addSubString(str.substring(index, i+1), index);		
-			}
+				root.addSubString(str.substring(index, i+1), index);
+				//System.out.println(str.substring(index, i+1));
+			}	
 			//$ added at the end of each substring iteration
 			root.addSubString("$", i+1);
-			System.out.println("---NEXT----");
+			//System.out.println("$ " + (i+1));
 						
 		}	
 	}
