@@ -46,13 +46,13 @@ checking if the substring is a prefix of the child's substring e.g child's subst
  **/
 
 
-public class NodeTest implements Node{
+public class NodeImpl implements Node{
 	//TO DO CHANGE TO NODE INTERFACE
 	private List<Node> children;
 	private String subStringField;
 	private Integer subStringIndex;
 	
-	public NodeTest(String subStringToAdd, int subStringIndex){
+	public NodeImpl(String subStringToAdd, int subStringIndex){
 		//TO DO, implement singleton pattern.  Only one root allowed
 		this.subStringField = subStringToAdd;
 		this.subStringIndex = subStringIndex;
@@ -112,7 +112,7 @@ public class NodeTest implements Node{
 					//2
 					String suffix = subStringField.substring(subStringToAdd.length(), subStringField.length());
 					//3 LEAF NODE
-					child.addChild(new NodeTest(suffix, this.subStringIndex));
+					child.addChild(new NodeImpl(suffix, this.subStringIndex));
 					//4
 					//TO DO - DEAL WITH NON LEAF NODES DIFFERENTLY NOT WITH NULL
 					this.subStringIndex = null;
@@ -120,7 +120,7 @@ public class NodeTest implements Node{
 					subStringField = prefix;
 					//6 string is null to represent the equivalent of $ terminating symbol
 					//TO DO - check first if these is already a terminating symbol $ here
-					children.add(new NodeTest("$", subStringIndex)); 
+					children.add(new NodeImpl("$", subStringIndex)); 
 					//	
 						
 					return;		
@@ -129,7 +129,7 @@ public class NodeTest implements Node{
 //				System.out.println("subStringToAdd");
 				// We are checking the last element in the current substring and no other cases have been matched.
 				// 
-				children.add(new NodeTest(subStringToAdd, subStringIndex));
+				children.add(new NodeImpl(subStringToAdd, subStringIndex));
 				return;
 			}
 		} // end of for loop
@@ -138,13 +138,16 @@ public class NodeTest implements Node{
 	
 	
 	//TO DO - Find better method name
+	/**
+	 * throws exception if arg is shorter than subStringfield
+	 * @param subStringArg
+	 * @return
+	 */
 	@Override
 	public String removePrefix(String subStringArg){
-		System.out.println("x");
 //TO DO FIX BUG HERE		
-		System.out.println("LENGTH " + this.subStringField.length());
-		//return subStringArg.substring(this.subStringField.length(), subStringArg.length() );
-		return "";
+		return subStringArg.substring(this.subStringField.length());
+		
 	}
 	
 

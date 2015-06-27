@@ -12,9 +12,9 @@ public class SuffixTree {
 	Node root;
 	
 	public SuffixTree(){
-		root = new NodeTest("ROOT",99); //TO DO FIX THIS
+		root = new NodeImpl("ROOT",99); //TO DO FIX THIS
 		// When a root is created it is created with one child, the terminal character $ and the index 0
-		root.addChild(new NodeTest("$", 0));
+		root.addChild(new NodeImpl("$", 0));
 	}
 	
 	public void addString(String str){		
