@@ -21,7 +21,8 @@ public interface Node{
 	public void addChild(Node node);
 	public void printTree();
 	
-
+	public String getChildStrings();
 	public String removePrefix(String subStringArg);
+
 	
 }

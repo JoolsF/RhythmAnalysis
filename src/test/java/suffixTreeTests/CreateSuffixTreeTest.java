@@ -66,12 +66,22 @@ public class CreateSuffixTreeTest {
 	 * 
 	 * Root should have 2 children
      */
-    @Test
+    //@Test
     public void addSubString_childrenLengthTest_DepthGreaterThan1(){
-    	String testInput = "aa";
+    	String testInput = "aaa";
     	suffixTree1.addString(testInput);
     	suffixTree1.getTree().printTree();
+    	//System.out.println(suffixTree1.getTree().getChildren().get(0).getChildStrings());
     	assertEquals(2 , suffixTree1.getTree().getChildren().size());
+    }
+    
+    @Test
+    public void addSubString_childrenLengthTest_INSERTNAMEHERE(){
+    	String testInput = "abaa";
+    	suffixTree1.addString(testInput);
+    	suffixTree1.getTree().printTree();
+    	//System.out.println(suffixTree1.getTree().getChildren().get(0).getChildStrings());
+    	assertEquals(3 , suffixTree1.getTree().getChildren().size());
     }
     
    
