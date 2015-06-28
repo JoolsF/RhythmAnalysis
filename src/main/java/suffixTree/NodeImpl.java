@@ -67,7 +67,7 @@ public class NodeImpl implements Node{
 	@Override
 	public void setSubString(String subString, int subStringIndex) {
 		//TO DO - Remove debug method
-		//printNodeCreationStatus("Setting substring to ", subString, subStringIndex);
+		printNodeCreationStatus("Setting substring to ", subString, subStringIndex);
 	
 		this.subStringField = subString;
 		this.subStringIndex = subStringIndex;	
@@ -76,7 +76,7 @@ public class NodeImpl implements Node{
 	@Override
 	public void updateSubString(String subString, int subStringIndex) {
 		//TO DO - Remove debug method
-		//printNodeCreationStatus("Updating substring to ", subString, subStringIndex);
+		printNodeCreationStatus("Updating substring to ", subString, subStringIndex);
 
 		if(this.subStringField == "$") {
 			this.subStringField = subString;
@@ -94,7 +94,7 @@ public class NodeImpl implements Node{
 	 */
 	public void addChild(Node node) {
 		//TO DO - Remove debug method
-		//printNodeCreationStatus("Setting substring to ", node.getSubString(), node.getSubStringIndex());
+		printNodeCreationStatus("Adding child ", node.getSubString(), node.getSubStringIndex());
 		
 		if(node.getSubString() != "$"){
 			this.children.add(0,node);	
@@ -140,7 +140,7 @@ public class NodeImpl implements Node{
 						}
 					}
 					//if previous symbol has matched and there are no terminating symbols
-					child.addChild(new NodeImpl("$", subStringIndex));
+/**/				child.addChild(new NodeImpl("$", subStringIndex));
 					return;
 				}
 		}else if (child.getSubString().equals("$")){ 
@@ -151,15 +151,17 @@ public class NodeImpl implements Node{
 			child.setSubString(subStringToAdd, subStringIndex);
 			return;	
 		} else if(child.thisHasAPrefixOf(subStringToAdd)) {
-			//TWO CASES HERE?
-			// 1 LEAF NODE
-			// 2 NON LEAF NODE
+			//  3 CASES HERE?
+			// 1  child's prefix is the substring to add and it is a LEAF NODE
+			// 2  child's prefix is the substring to add and it is a NON LEAF NODE where one of the substring is a prefix of one of the children
+			// 3  RECURSIVE CASE??
 			
 			String prefix =  child.getSubString().substring(0, subStringToAdd.length());
 			String suffix = child.getSubString().substring(subStringToAdd.length(), child.getSubString().length());
-			child.addChild(new NodeImpl(suffix, child.getSubStringIndex()));
+System.out.println("DEBUG");
+/**/		child.addChild(new NodeImpl(suffix, child.getSubStringIndex()));
 			child.setSubString(prefix, -1);
-			child.addChild(new NodeImpl("$", subStringIndex)); 
+/**/		child.addChild(new NodeImpl("$", subStringIndex)); 
 			//	
 			return;	
 			}else if(child.thisIsAPrefixOf(subStringToAdd)){
@@ -169,6 +171,7 @@ public class NodeImpl implements Node{
 					return;
 				} else {	
 					//RECURSIVE CASE.  child is a prefix of substring but there are more children to traverse
+//CHECK IF ANY $ VALUES AT THIS POINT AND UPDATE THEM
 						child.addSubString(child.removePrefix(subStringToAdd), subStringIndex);		
 						return;
 					}	
