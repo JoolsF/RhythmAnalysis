@@ -6,8 +6,8 @@ import java.util.Collections;
 
 import org.junit.*;
 
-import substringAlgorithms.Node;
-import substringAlgorithms.NodeImpl;
+import suffixTree.Node;
+import suffixTree.NodeImpl;
 
 public class NodeTest {
 	private Node node1;

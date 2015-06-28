@@ -1,14 +1,27 @@
-package substringAlgorithms;
+package suffixTree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Julian Fenner
+ * 
  *
  */
 
+/*
+ * TO REFACTOR
+ * Split node into three classes, Root, Non-Leaf and Leaf
+ * 
+ * Decompose addSubstring method so for better testability and readability
+ * 
+ * Streamline interface, is too "fat".  Will need to make more methods private
+ * Make prefix method and anything to do with implementation of the addsubstring() method 'private'.  
+ * This will require children to be 'visited' rather than checked from parent ie. else if(child.thisHasAPrefixOf(subStringToAdd))
+ */
 public class NodeImpl implements Node{
 	private List<Node> children;
 	private String subStringField;
@@ -140,7 +153,7 @@ public class NodeImpl implements Node{
 			child.setSubString(subStringToAdd, subStringIndex);
 			return;	
 		} else if(child.thisHasAPrefixOf(subStringToAdd)) {
-			//TWO CASES HERE
+			//TWO CASES HERE?
 			// 1 LEAF NODE
 			// 2 NON LEAF NODE
 			
@@ -169,6 +182,7 @@ public class NodeImpl implements Node{
 	}
 	
 	
+	//Substring helper functions
 	/**
 	 * throws exception if arg is shorter than subStringfield
 	 * @param subStringArg
@@ -208,24 +222,42 @@ public class NodeImpl implements Node{
 	
 	@Override
 	public void printTree(){
-		
+		Iterator<Node> itr = children.iterator();
+		while(itr.hasNext()){
+			Node element = itr.next();
+			System.out.println(" NODE: " + element.getSubString() + " (" + element.getSubStringIndex() + ")");
+			element.printTree();
+		}
+	}
+
+	@Override
+	public Map<String, List<Integer>> nodesToMap() {
+		Map<String, List<Integer>> nodeMap = new HashMap<String, List<Integer>>();
+		return nodesToMapHelper(nodeMap);
+	}
+	/**
+	 *  Helper method to allow map to passed around as argument recursively
+	 */
+	private Map<String, List<Integer>> nodesToMapHelper(Map<String, List<Integer>> accMap){	
 		Iterator<Node> itr = children.iterator();
 		while(itr.hasNext()){
 			
-			Node element = itr.next();
-			System.out.println(" NODE: " + element.getSubString() + " (" + element.getSubStringIndex() + ")");
-//			if(! itr.hasNext()) {
-//
-//				System.out.println("	NON LEAF " + element.getSubString() + " " + element.getSubStringIndex());
-//			}
-//				
-//			else if(element.getChildren().isEmpty()){
-//				System.out.println("	LEAF " + element.getSubString() + " " + element.getSubStringIndex());
-//			} else if(children.indexOf(element) == children.size()-1){
-//					System.out.println("	NON LEAF " + element.getSubString() + " " + element.getSubStringIndex());
-//			} else {
-				element.printTree();
-			//}		
+			// TO DO, refactor so casting isn't used here. Consider functional approach
+			 	
+			NodeImpl currentNode = (NodeImpl) itr.next();
+			String key = currentNode.getSubString();
+			int value = currentNode.getSubStringIndex();
+			
+			if(accMap.get(key) == null) {
+				accMap.put(key, new ArrayList<Integer>());	
+			}
+			
+			accMap.get(key).add(value);
+			currentNode.nodesToMapHelper(accMap);
 		}
-	}	
+			return accMap;	
+		
+	}
+	
+	
 }

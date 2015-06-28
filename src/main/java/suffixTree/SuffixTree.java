@@ -1,4 +1,4 @@
-package substringAlgorithms;
+package suffixTree;
 
 /**
  * @author Julian Fenner
