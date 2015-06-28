@@ -1,49 +1,13 @@
 package substringAlgorithms;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Julian Fenner
- * Root can have zero, one or more children.
  *
  */
-
-/* NODE SPLIT LOGIC
- *checking if the substring is a prefix of the child's substring e.g child's substring = 11 and substring = 1.
-If yes then SPLIT	  
-In other word the substring to add ends part of the way through the child's substring value.
- in this case the node must be split
- two cases one for lead and one for non leaf
-
-CASE FOR LEAF NODE
-checking if the substring is a prefix of the child's substring e.g child's substring = 11 and substring = 1 	
- This case turns a LEAF node where the substring to add is a prefix of this node's substring field value.  
- * i.e
- * 		   \
- * 			\
- * 			11 (2)  <- adding 1 to leaf
- * 
- * 			\
- *           \
- *            1
- * 			 / \
- * 			/   \
- * 		null(3)  1(2)
- * 		
- * 
- * 
- * This requires 
- * 1) var for matching prefix 
- * 2) var for rest of string i.e suffix
- * 3) adding a child leaf node which has the suffix as its value along with the index of the current node
- * 4) current node 'converted' into non-leaf node by deleting its index (not applicable now) 
- * 5) and setting its substring field to prefix
- * 6) finally we need to give the other index of the prefix 
- * 
- * 
- **/
-
 
 public class NodeImpl implements Node{
 	private List<Node> children;
@@ -244,12 +208,24 @@ public class NodeImpl implements Node{
 	
 	@Override
 	public void printTree(){
-		for(Node child: children){
-			if(child.getChildren().isEmpty()){
-				System.out.println(child.getSubString() + " " + child.getSubStringIndex());
-			} else {
-				child.printTree();
-			}		
+		
+		Iterator<Node> itr = children.iterator();
+		while(itr.hasNext()){
+			
+			Node element = itr.next();
+			System.out.println(" NODE: " + element.getSubString() + " (" + element.getSubStringIndex() + ")");
+//			if(! itr.hasNext()) {
+//
+//				System.out.println("	NON LEAF " + element.getSubString() + " " + element.getSubStringIndex());
+//			}
+//				
+//			else if(element.getChildren().isEmpty()){
+//				System.out.println("	LEAF " + element.getSubString() + " " + element.getSubStringIndex());
+//			} else if(children.indexOf(element) == children.size()-1){
+//					System.out.println("	NON LEAF " + element.getSubString() + " " + element.getSubStringIndex());
+//			} else {
+				element.printTree();
+			//}		
 		}
 	}	
 }

@@ -72,13 +72,37 @@ public class CreateSuffixTreeTest {
     	suffixTree1.addString(testInput);
     	assertEquals(2 , suffixTree1.getTree().getChildren().size());
     }
-    
+
+ /*THIS TEST PRODUCES WRONG TREE 
+  * Seems to be do with last AB
+  *  Try adding all results to array
+  *  NODE: a (-1)
+ NODE: b (-1)
+ NODE: 110011ab (0)
+ NODE: $ (8)  <-----
+ NODE: $ (8)  <----
+ NODE: b (-1)
+ NODE: 110011ab (1)
+ NODE: $ (9)
+ NODE: 1 (-1)
+ NODE: 1 (-1)
+ NODE: 0011ab (2)
+ NODE: ab (6)
+ NODE: 0011ab (3)
+ NODE: ab (7)
+ NODE: 0 (-1)
+ NODE: 011ab (4)
+ NODE: 11ab (5)
+ NODE: $ (10)
+  * 
+  */
     @Test
     public void addSubString_childrenLengthTest_INSERTNAMEHERE(){
     	String testInput = "ab110011ab";
     	suffixTree1.addString(testInput);
-    	suffixTree1.getTree().printTree();
-    	assertEquals(5 , suffixTree1.getTree().getChildren().size());
+    	//suffixTree1.getTree().printTree();
+    	//TO DO - implement proper test
+    	assertEquals(true,false);
     }
     
    
