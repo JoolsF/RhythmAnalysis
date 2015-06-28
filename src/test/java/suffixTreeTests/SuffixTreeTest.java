@@ -46,7 +46,7 @@ public class SuffixTreeTest {
      *    /  \     
      *  a(0)  $(1) 
      */
-   // @Test
+    @Test
     public void addSubString_childrenLengthTest_Depth1(){
     	String testInput = "a";
     	suffixTree1.addString(testInput);
@@ -66,7 +66,7 @@ public class SuffixTreeTest {
 	 * 
 	 * Root should have 2 children
      */
-    //@Test
+    @Test
     public void addSubString_childrenLengthTest_DepthGreaterThan1(){
     	String testInput = "aaa";
     	suffixTree1.addString(testInput);
@@ -76,16 +76,12 @@ public class SuffixTreeTest {
  /*THIS TEST PRODUCES WRONG TREE 
   * Input "abab"
   * Seems to be do with 2nd AB
-  *  NODE: a (-1)
-  *	 NODE: a (-1)
-  *	 NODE: b (-1)
-  *	 NODE: ab (0)
-  *	 NODE: $ (2)
-  *	 NODE: $ (2)
-  *	 NODE: b (-1)
-  *	 NODE: ab (1)
-  *	 NODE: $ (3)
-  *	 NODE: $ (4)
+  * 
+  * $: [2, 2, 3, 4] (extra 2 wrong)
+  *	a: [-1]
+  *	ab: [0, 1]
+  *	b: [-1, -1]
+  *
   *
   *	 Should produce tree
   *	 	     R_ _ 
@@ -100,32 +96,29 @@ public class SuffixTreeTest {
   *		$(2)      ab(0)  $(3)  ab(1)
   * 
   */
-    //@Test
-    public void addSubString_childrenLengthTest_INSERTNAMEHERE(){
-    	String testInput = "abab";
-    	suffixTree1.addString(testInput);
-    	//suffixTree1.getTree().printTree();
-    	//TO DO - implement proper test
-    	//assertEquals(true,false);
-    }
-    //abab
-    //ab110011ab
-   
-    
-    /*
-     *  return type Map<String, List<Integer>>
-     */
     @Test
-    public void nodesToMap_testReturnValid(){
+    public void addSubString_consecutivePatternOfTwoCharacters(){
     	String testInput = "abab";
     	suffixTree1.addString(testInput);
-    	Map<String, List<Integer>> x = suffixTree1.getTree().nodesToMap();
-    	for(Entry<String, List<Integer>> value: x.entrySet()){
-    		
-    		System.out.println(value.getKey());
-    		System.out.println(value.getValue());
-    		
+    	
+    	Map<String, List<Integer>> nodeMap = suffixTree1.getTree().nodesToMap();
+    	suffixTree1.getTree().printTree();
+    	System.out.println();
+    	for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+    		System.out.println(value.getKey() + ": " + value.getValue());
     	}
     }
+   
+      
+    
+//    /*
+//     *  return type Map<String, List<Integer>>
+//     */
+// 
+//    public void nodesToMap_testReturnValid(){
+//    	String testInput = "1010";
+//    	suffixTree1.addString(testInput);
+//    	
+//    }
     
 }

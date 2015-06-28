@@ -1,10 +1,10 @@
 package suffixTree;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Julian Fenner
@@ -21,6 +21,8 @@ import java.util.Map;
  * Streamline interface, is too "fat".  Will need to make more methods private
  * Make prefix method and anything to do with implementation of the addsubstring() method 'private'.  
  * This will require children to be 'visited' rather than checked from parent ie. else if(child.thisHasAPrefixOf(subStringToAdd))
+ * Implement logging to trace tree creation
+ * http://tutorials.jenkov.com/java-logging/logger.html
  */
 public class NodeImpl implements Node{
 	private List<Node> children;
@@ -64,21 +66,18 @@ public class NodeImpl implements Node{
 	//SETTERS
 	@Override
 	public void setSubString(String subString, int subStringIndex) {
-		
-//		System.out.println("Setting substring " + subString + " " + subStringIndex);
-//		System.out.println("This subString: " + this.subStringField + " " + this.subStringIndex);
-//		System.out.println("child subString: " + this.getChildStrings());
-//		System.out.println();
-		
+		//TO DO - Remove debug method
+		//printNodeCreationStatus("Setting substring to ", subString, subStringIndex);
+	
 		this.subStringField = subString;
 		this.subStringIndex = subStringIndex;	
 	}
 		
 	@Override
 	public void updateSubString(String subString, int subStringIndex) {
-		System.out.println("updateSubString " + subString + " " + subStringIndex);
-		System.out.println();
-		
+		//TO DO - Remove debug method
+		//printNodeCreationStatus("Updating substring to ", subString, subStringIndex);
+
 		if(this.subStringField == "$") {
 			this.subStringField = subString;
 			this.subStringIndex = subStringIndex;
@@ -86,19 +85,16 @@ public class NodeImpl implements Node{
 		this.subStringField += subString;
 		this.subStringIndex = subStringIndex;
 		}
-	
 	}
-
+	
+	//TREE UPDATES
 	@Override
 	/**
 	 * Whenever child the new subString is checked to see if it a terminating value $, if it is placed at the end
 	 */
 	public void addChild(Node node) {
-//		System.out.println("add child " + node.getSubString() + " " + node.getSubStringIndex());
-//		System.out.println("Adding child");
-//		System.out.println("This subString: " + this.subStringField + " " + this.subStringIndex);
-//		System.out.println("child subString: " + this.getChildStrings());
-//		System.out.println();
+		//TO DO - Remove debug method
+		//printNodeCreationStatus("Setting substring to ", node.getSubString(), node.getSubStringIndex());
 		
 		if(node.getSubString() != "$"){
 			this.children.add(0,node);	
@@ -114,8 +110,9 @@ public class NodeImpl implements Node{
 	@Override
 	public void addSubString(String subStringToAdd, int subStringIndex){
 	for(Node child: children) {
-//		System.out.println("----> SS TO ADD " + subStringToAdd + " " + subStringIndex);
-//		System.out.println("----> Child SS " + child.getSubString());
+		//TO DO - Remove debug method
+		//printNodeCreationStatus("Substring to add", subStringToAdd, subStringIndex);
+	
 		
 		/* 
 		 * TO DO - Refactor next block as too complicated and potentially buggy.
@@ -133,6 +130,7 @@ public class NodeImpl implements Node{
 		*/
 		// TRY COMMENTING THIS BLOCK AND OBSERVE WHAT HAPPENS WHEN YOU ADD "aaa"
 		if(child.getSubString().equals(subStringToAdd) && ! (subStringToAdd.equals("$"))){
+				//TO DO - Remove line.  For debugging
 				System.out.println("IN PROBLEM AREA------>");
 				if(! (child.getChildren().isEmpty())){
 					for(Node next: child.getChildren()){
@@ -232,12 +230,15 @@ public class NodeImpl implements Node{
 
 	@Override
 	public Map<String, List<Integer>> nodesToMap() {
-		Map<String, List<Integer>> nodeMap = new HashMap<String, List<Integer>>();
+		Map<String, List<Integer>> nodeMap = new TreeMap<String, List<Integer>>();
 		return nodesToMapHelper(nodeMap);
 	}
+	
 	/**
 	 *  Helper method to allow map to passed around as argument recursively
 	 */
+	//TO DO - Add exception if there are duplicate values in list value for given key.  
+	// Indicates problem with construction of tree
 	private Map<String, List<Integer>> nodesToMapHelper(Map<String, List<Integer>> accMap){	
 		Iterator<Node> itr = children.iterator();
 		while(itr.hasNext()){
@@ -258,6 +259,13 @@ public class NodeImpl implements Node{
 			return accMap;	
 		
 	}
+
 	
+	//TO DO - Remove and replace function with logger when refactoring.  Used to print trace of creational methods in tree
+	private void printNodeCreationStatus(String action, String subString, int subStringIndex){
+		System.out.println(action + " " + subString + " (" + subStringIndex + ")" + "\n"
+					+ "Current value: " + this.subStringField + " (" + this.subStringIndex + ")" + "\n"
+					+ "Child values: " + this.getChildStrings() + "\n");
+	}
 	
 }
