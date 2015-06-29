@@ -138,7 +138,8 @@ public class NodeImpl implements Node{
 		This needs refactoring
 		*/
 		// TRY COMMENTING THIS BLOCK AND OBSERVE WHAT HAPPENS WHEN YOU ADD "aaa"
-//CASE 1
+		//CASE 1
+//FOR NON LEAF		
 		if(childNode.getSubString().equals(subStringToAdd) && ! (subStringToAdd.equals("$"))){
 				//TO DO - Remove line.  For debugging
 				System.out.println("IN PROBLEM AREA------>");
@@ -149,22 +150,25 @@ public class NodeImpl implements Node{
 							return;
 						}
 					}
+//DONE	- Leaf				
 					//if previous symbol has matched and there are no terminating symbols
 					childNode.addChild(new NodeImpl("$", subStringIndex));
 					return;
 				}
+//DONE				
 		}else if (childNode.getSubString().equals("$")){ 
-//CASE 1.5
+		//CASE 1.5
 			//	BASE CASE 
 			//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
 			//children will be sorted so that "$" for any given list of children will always be at the end.
 			//TO DO - UPDATE INDEX TOO FOR SAFETY?
 			childNode.setSubString(subStringToAdd, subStringIndex);
 			return;
-//CASE 2	
+		//CASE 2	
 		} else if(childNode.thisHasAPrefixOf(subStringToAdd)) {
 			System.out.println("%");
 			printNodeCreationStatus("---------> IN child.thisHasAPrefixOf block ", subStringToAdd, subStringIndex);
+//i.e leaf			
 			if(childNode.getChildren().isEmpty()){
 				//i.e the childnode we are checking has no children
 				System.out.println("----------------> EMPTY");
@@ -192,12 +196,14 @@ public class NodeImpl implements Node{
 			
 
 			}else if(childNode.thisIsAPrefixOf(subStringToAdd)){
-//CASE 3
+			//CASE 3
 				printNodeCreationStatus("IN child.thisIsAPrefixOf block ", subStringToAdd, subStringIndex);
+			
 				
+//LEAF NODE
 				if(childNode.getChildren().isEmpty()) {
-//ADDITIONAL BASE CASE NEEDED.  If child.getChildren() NOT empty and one of the next children is a prefix of the substring
-//then remove this prefix from the children and add this onto the end of this child's substring
+				//ADDITIONAL BASE CASE NEEDED.  If child.getChildren() NOT empty and one of the next children is a prefix of the substring
+				//then remove this prefix from the children and add this onto the end of this child's substring
 					//BASE CASE. child is a prefix of substring to add and there's no more children to traverse
 					childNode.setSubString(subStringToAdd, subStringIndex);
 					return;
