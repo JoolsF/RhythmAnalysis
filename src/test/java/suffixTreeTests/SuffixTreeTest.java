@@ -46,7 +46,7 @@ public class SuffixTreeTest {
      *    /  \     
      *  a(0)  $(1) 
      */
-    @Test
+//    @Test
     public void addSubString_childrenLengthTest_Depth1(){
     	String testInput = "a";
     	suffixTree1.addString(testInput);
@@ -66,7 +66,7 @@ public class SuffixTreeTest {
 	 * 
 	 * Root should have 2 children
      */
-    @Test
+//    @Test
     public void addSubString_childrenLengthTest_DepthGreaterThan1(){
     	String testInput = "aaa";
     	suffixTree1.addString(testInput);
@@ -97,8 +97,9 @@ public class SuffixTreeTest {
   * 
   */
     @Test
-    public void addSubString_consecutivePatternOfTwoCharacters(){
-    	String testInput = "abab";
+    public void addSubString_matchingTwoCharPair_differentChars(){
+    	String testInput = "ababa";
+    	//String testInput = "aba";
     	suffixTree1.addString(testInput);
     	
     	Map<String, List<Integer>> nodeMap = suffixTree1.getTree().nodesToMap();

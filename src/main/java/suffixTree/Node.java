@@ -37,5 +37,11 @@ public interface Node{
 	
 	public Map<String, List<Integer>> nodesToMap();
 
+	void removePrefixFromThis(String prefixToRemove);
+
+	public void prepend(String parentSuffix);
+
+	public void updateSubString(String subStringToAdd);
+
 	
 }
