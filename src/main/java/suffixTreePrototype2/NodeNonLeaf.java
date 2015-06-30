@@ -1,4 +1,4 @@
-package suffixTreeAlternative;
+package suffixTreePrototype2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class NodeNonLeaf implements InnerNode {
 					return true;
 				} else if (child.nodeIsAPrefixOf(strMinusPrefix)){
 					child.addString(strMinusPrefix, index);
-				}
+				} // FINAL CASE TO ADD??
 				
 			}
 		}

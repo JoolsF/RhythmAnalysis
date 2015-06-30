@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import org.junit.*;
 
-import suffixTree.SuffixTree;
+import suffixTreeProtoType1.SuffixTree;
 import static org.junit.Assert.*;
 
 

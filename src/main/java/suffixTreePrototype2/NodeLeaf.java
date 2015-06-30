@@ -1,9 +1,9 @@
-package suffixTreeAlternative;
+package suffixTreePrototype2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import suffixTree.NodeImpl;
+import suffixTreeProtoType1.NodeImpl;
 
 
 public class NodeLeaf implements InnerNode {
@@ -26,11 +26,12 @@ public class NodeLeaf implements InnerNode {
 			//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
 			//children will be sorted so that "$" for any given list of children will always be at the end.
 			//TO DO - UPDATE INDEX TOO FOR SAFETY?
-			this.string = string;
+			this.string = this.removeNodeFromArg(string);
 			this.stringIndex = index;
 			return true;
 		} else if (this.string.equals(string)){
-			//DO SOMETHING
+			// DO SOMETHING
+			// DOES THIS CASE OCCUR??
 		} else if (this.nodeIsAPrefixOf(string)){
 			//BASE CASE
 //BUG need to add suffix of string (by minusing node from string)			

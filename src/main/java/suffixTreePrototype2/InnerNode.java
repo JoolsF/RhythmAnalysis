@@ -1,4 +1,4 @@
-package suffixTreeAlternative;
+package suffixTreePrototype2;
 
 
 

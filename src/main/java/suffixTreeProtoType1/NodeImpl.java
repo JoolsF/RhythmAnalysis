@@ -1,4 +1,4 @@
-package suffixTree;
+package suffixTreeProtoType1;
 
 import java.util.ArrayList;
 import java.util.Iterator;

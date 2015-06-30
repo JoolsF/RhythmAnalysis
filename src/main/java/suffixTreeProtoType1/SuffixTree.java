@@ -1,4 +1,4 @@
-package suffixTree;
+package suffixTreeProtoType1;
 
 /**
  * @author Julian Fenner

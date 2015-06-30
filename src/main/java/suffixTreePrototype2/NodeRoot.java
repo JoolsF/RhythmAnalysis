@@ -1,4 +1,4 @@
-package suffixTreeAlternative;
+package suffixTreePrototype2;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,8 +6,8 @@ import java.util.Collections;
 
 import org.junit.*;
 
-import suffixTree.Node;
-import suffixTree.NodeImpl;
+import suffixTreeProtoType1.Node;
+import suffixTreeProtoType1.NodeImpl;
 
 public class NodeTest {
 	private Node node1;
