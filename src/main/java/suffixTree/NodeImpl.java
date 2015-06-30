@@ -168,7 +168,7 @@ public class NodeImpl implements Node{
 		} else if(childNode.thisHasAPrefixOf(subStringToAdd)) {
 			System.out.println("%");
 			printNodeCreationStatus("---------> IN child.thisHasAPrefixOf block ", subStringToAdd, subStringIndex);
-//i.e leaf			
+//DONE//i.e leaf			
 			if(childNode.getChildren().isEmpty()){
 				//i.e the childnode we are checking has no children
 				System.out.println("----------------> EMPTY");
@@ -178,6 +178,7 @@ public class NodeImpl implements Node{
 				childNode.setSubString(prefix, -1);
 				childNode.addChild(new NodeImpl("$", subStringIndex));
 				return;
+//DONE		
 			} 			
 			
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -200,13 +201,14 @@ public class NodeImpl implements Node{
 				printNodeCreationStatus("IN child.thisIsAPrefixOf block ", subStringToAdd, subStringIndex);
 			
 				
-//LEAF NODE
+//LEAF NODE DONE
 				if(childNode.getChildren().isEmpty()) {
 				//ADDITIONAL BASE CASE NEEDED.  If child.getChildren() NOT empty and one of the next children is a prefix of the substring
 				//then remove this prefix from the children and add this onto the end of this child's substring
 					//BASE CASE. child is a prefix of substring to add and there's no more children to traverse
 					childNode.setSubString(subStringToAdd, subStringIndex);
 					return;
+//DONE
 				} else { // if (! child.getChildren().isEmpty())
 					for(Node next: childNode.getChildren()){
 						String suffixToCheck = childNode.removePrefix(subStringToAdd);

@@ -23,18 +23,43 @@ public class NodeRoot implements Node {
 	*	b still no matches then create new leaf node (only going to happen to $ after first iteration
 	*/		
 	@Override
-	public void addString(String string, int index) {
+	public boolean addString(String string, int index) {
 		if (this.children.isEmpty()){
-			children.add(new NodeLeaf(string, index, this));
+			this.children.add(new NodeLeaf(string, index, this));
+			return true;
 		} else{
 			for(Node child: children){
 				//for loop correct here?
-				child.addString(string, index);
-				//add return here?
+				if(child.addString(string, index)){
+					return true;
+				}
 			}
+		}
+		//i.e no matches found
+		addChildLeaf(string, index);
+		return true;
+		
+	}
+
+	@Override
+	public void convertLeafToNode(NodeLeaf nodeToDelete, NodeNonLeaf replacementNode) {
+		this.children.remove(nodeToDelete);
+		this.children.add(replacementNode);	
+	}
+
+	@Override
+	public void addChildLeaf(String string, int index) {
+		Node child = new NodeLeaf(string, index, this);
+		if(string.equals("$")){
+			this.children.add(this.children.size(),child);	
+		} else {
+			
+			this.children.add(0,child);
 		}
 		
 	}
+
+	
 
 	
 

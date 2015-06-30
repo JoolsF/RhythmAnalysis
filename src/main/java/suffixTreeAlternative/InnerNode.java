@@ -3,10 +3,10 @@ package suffixTreeAlternative;
 
 
 
-//contains implementations of various methods common to NodeLead and NodeNonLead
-public interface InnerLeaf {
+//contains implementations of methods common to NodeLead and NodeNonLead
+public interface InnerNode extends Node {
 	
-	public default boolean isAPrefixOf(String string) {
+	public default boolean nodeIsAPrefixOf(String string) {
 		if(string.startsWith(this.getString()) && string.length() > this.getString().length()){
 			return true;
 	    } else {
@@ -14,15 +14,39 @@ public interface InnerLeaf {
 	    }
 	}
 	
-	public default boolean thisHasAPrefixOf(String string) {
+	public default boolean nodeHasAPrefixOf(String string) {
 		if(this.getString().startsWith(string) && this.getString().length() >  string.length()){
 			return true;
 	    } else {
 	    	return false;
 	    }
 	}
+	
+	
 
 	public String getString();
+	public void setSubString(int start);
+	/**
+	 * i.e if getString() returns a and arg is abab the return is bab
+	 * @param string
+	 * @return
+	 */
+	public default String removeNodeFromArg(String string){
+		return string.substring(getString().length());
+	}
+	
+	
+	public default String getCommonPrefix(String string){
+		if(this.getString().length() > string.length()){
+			return this.getString().substring(0, string.length());
+		} else {
+			return string.substring(0, this.getString().length());
+		}
+	}
+	
+	
+	
+	
 /*
  * public void addSubString(String subString, int subStringIndex);
 	
