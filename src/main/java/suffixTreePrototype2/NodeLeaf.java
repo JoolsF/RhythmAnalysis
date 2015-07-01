@@ -88,6 +88,12 @@ public class NodeLeaf implements InnerNode {
 		
 	}
 
+	@Override
+	public void removeChild(Node child) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

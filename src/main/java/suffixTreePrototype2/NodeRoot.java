@@ -59,6 +59,12 @@ public class NodeRoot implements Node {
 		
 	}
 
+	@Override
+	public void removeChild(Node child) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 	

@@ -92,6 +92,15 @@ public class NodeNonLeaf implements InnerNode {
 			 *             
 			 * */
 			
+			String prefix = this.getCommonPrefix(str);
+			String suffix = this.removeArgFromNode(str);
+			
+			
+			List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
+			newNodeChildren.add(this);
+			Node newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren);
+			this.parent.removeChild(this);
+			
 		}
 		//if nothing matched
 		return false;
@@ -122,6 +131,12 @@ public class NodeNonLeaf implements InnerNode {
 	@Override
 	public void setSubString(int start) {
 		this.string = this.string.substring(start);
+	}
+
+	@Override
+	public void removeChild(Node child) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -36,6 +36,11 @@ public interface InnerNode extends Node {
 	}
 	
 	
+	public default String removeArgFromNode(String string){
+		return this.getString().substring(string.length());
+	}
+	
+	
 	public default String getCommonPrefix(String string){
 		if(this.getString().length() > string.length()){
 			return this.getString().substring(0, string.length());
