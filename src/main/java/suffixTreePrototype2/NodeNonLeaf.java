@@ -44,14 +44,54 @@ public class NodeNonLeaf implements InnerNode {
 			String commonPrefix = this.getCommonPrefix(str);
 			for(InnerNode child: children) {
 				if(child.nodeHasAPrefixOf(strMinusPrefix)){
+					//BASE CASE
 					this.string += strMinusPrefix;
 					child.setSubString(strMinusPrefix.length());
 					return true;
 				} else if (child.nodeIsAPrefixOf(strMinusPrefix)){
+					//i.e recursive case has next node is also a prefix of the string minus the prefix
 					child.addString(strMinusPrefix, index);
 				} // FINAL CASE TO ADD??
 				
 			}
+		} else if(this.nodeHasAPrefixOf(str)){
+			//BASE CASE (case in "3 Bug Potential Fix")
+			/* this means that we are in non leaf node i.e ABA(-1) and the incoming str is A(4)
+			 *                                            
+			 * 			node----R----node
+			 * 					|
+			 * 					|
+			 * 				   ABA(-1)                    <---- A(4)
+			 * 				  /   \
+			 *               /     \
+			 *             $(2)	    BA(0)
+			 *             
+			 * we must split the node ABA into A |BA
+			 * 1 new node is created A(-1) with 2 children
+			 * 		$(4) (terminal symbol + strindex)
+			 * 		The tree with BA(-1) as the head
+			 * 		
+			 * 2. new node's parent is BA(-1)s parent (R)
+			 * 3.  BA(-1s) parent is new node A(-1)
+			 * 		parent (R) has BA(-1) removed from its list of children
+			 * 		new child A(-1) added to Parent(R) children
+			 * 
+			 *         node----R----node
+			 * 				   |
+			 * 				   |
+			 * 				   A
+			 * 				  /	\
+			 * 			     /   \
+			 * 		        /	  \		
+			 * 			$(4)	  BA(-1)                   
+			 * 				      /   \
+			 *                   /     \
+			 *                 $(2)	    BA(0)
+			 * 
+			 *             
+			 *             
+			 * */
+			
 		}
 		//if nothing matched
 		return false;

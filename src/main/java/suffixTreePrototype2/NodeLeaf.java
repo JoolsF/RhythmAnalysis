@@ -40,11 +40,13 @@ public class NodeLeaf implements InnerNode {
 			return true;
 		} else if (this.nodeHasAPrefixOf(string)){
 			//BASE CASE
+			//HAS A PREFIX CASES ARE SPLIT / NEW NODE CASES
 			//convert leaf to node
 			// NEEDS TO GO BACK TO PARENT, GET DELETED AND HAVE A NONLEAF NODE PUT IN ITS PLACE
 			String prefix =  this.string.substring(0, string.length());
 			String suffix = this.string.substring(string.length(), this.string.length());
 			
+			//TO DO move into a method so can be fully tested.
 			//Build replacement node
 			NodeNonLeaf replacementNode = null;		
 			InnerNode leaf1 = new NodeLeaf(suffix, this.stringIndex, replacementNode); 
