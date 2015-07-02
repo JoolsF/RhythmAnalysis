@@ -43,7 +43,10 @@ public class SuffixTree {
 	}
 	
 	public static void main(String[] args){
-		SuffixTree test = new SuffixTree("ab1100");
+		//AB11AA NOT WORKING
+		//112233 NOT WORKING
+		//
+		SuffixTree test = new SuffixTree("AB11A");
 		//test.getTree().printTree();
 		
 		
