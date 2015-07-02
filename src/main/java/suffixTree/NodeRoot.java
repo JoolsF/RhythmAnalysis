@@ -1,13 +1,11 @@
 package suffixTree;
 
-import Node;
-import NodeImpl;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+
 
 
 //should be singleton
@@ -79,38 +77,13 @@ public class NodeRoot implements Node {
 		}
 		
 	}
-	
-	//
-	public Map<String, List<Integer>> nodesToMap() {
-		Map<String, List<Integer>> nodeMap = new TreeMap<String, List<Integer>>();
-		return nodesToMapHelper(nodeMap);
+
+	@Override
+	public List<InnerNode> getChildren() {
+		return this.children;
 	}
 	
-	/**
-	 *  Helper method to allow map to passed around as argument recursively
-	 */
-	//TO DO - Add exception if there are duplicate values in list value for given key.  
-	// Indicates problem with construction of tree
-	private Map<String, List<Integer>> nodesToMapHelper(Map<String, List<Integer>> accMap){	
-		Iterator<InnerNode> itr = children.iterator();
-		while(itr.hasNext()){
-			
-			// TO DO, refactor so casting isn't used here. Consider functional approach
-			 	
-			InnerNode currentNode = itr.next();
-			String key = currentNode.getString();
-			int value = currentNode.getStringIndex();
-			
-			if(accMap.get(key) == null) {
-				accMap.put(key, new ArrayList<Integer>());	
-			}
-			
-			accMap.get(key).add(value);
-			currentNode.nodesToMapHelper(accMap);
-		}
-			return accMap;	
-		
-	}
+
 	
 	
 	

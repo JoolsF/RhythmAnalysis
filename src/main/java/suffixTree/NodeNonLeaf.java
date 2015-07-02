@@ -168,6 +168,11 @@ System.out.println("IN HERE");
 		return this.stringIndex;
 	}
 
+	@Override
+	public List<InnerNode> getChildren() {
+		return this.children;
+	}
+
 	
 
 }

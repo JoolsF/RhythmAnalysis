@@ -108,6 +108,11 @@ public class NodeLeaf implements InnerNode {
 		return this.stringIndex;
 	}
 
+	@Override
+	public List<InnerNode> getChildren() {
+		return new ArrayList<InnerNode>();
+	}
+
 	
 
 	

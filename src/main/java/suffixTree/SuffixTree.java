@@ -1,5 +1,10 @@
 package suffixTree;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
+
 
 
 /**
@@ -38,8 +43,16 @@ public class SuffixTree {
 	}
 	
 	public static void main(String[] args){
-		SuffixTree test = new SuffixTree("ab110011ab");
-		test.getTree().printTree();
+		SuffixTree test = new SuffixTree("ab1100");
+		//test.getTree().printTree();
+		
+		
+		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
+		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+    		System.out.println(value.getKey() + ": " + value.getValue());
+    	}
+		
+		
 	}
 	
 }
