@@ -61,21 +61,12 @@ public class NodeNonLeaf implements InnerNode {
 			 * 			node----R----node
 			 * 					|
 			 * 					|
-			 * 				   ABA(-1)                    <---- A(4)
+			 * 				   ABA(-1)         <---- A(4)
 			 * 				  /   \
 			 *               /     \
 			 *             $(2)	    BA(0)
+			 *
 			 *             
-			 * we must split the node ABA into A |BA
-			 * 1 new node is created A(-1) with 2 children
-			 * 		$(4) (terminal symbol + strindex)
-			 * 		The tree with BA(-1) as the head
-			 * 		
-			 * 2. new node's parent is BA(-1)s parent (R)
-			 * 3.  BA(-1s) parent is new node A(-1)
-			 * 		parent (R) has BA(-1) removed from its list of children
-			 * 		new child A(-1) added to Parent(R) children
-			 * 
 			 *         node----R----node
 			 * 				   |
 			 * 				   |
@@ -90,16 +81,29 @@ public class NodeNonLeaf implements InnerNode {
 			 * 
 			 *             
 			 *             
+			 * we must split the node ABA into A |BA
+			 * 1 new node is created A(-1) with 2 children
+			 * 		$(4) (terminal symbol + strindex)
+			 * 		The tree with BA(-1) as the head
+			 * 		
+			 * 2. new node's parent is BA(-1)s parent (R)
+			 * 3.  BA(-1s) parent is new node A(-1)
+			 * 		parent (R) has BA(-1) removed from its list of children
+			 * 		new child A(-1) added to Parent(R) children
+			 * 
+			 
+			 *             
+			 *             
 			 * */
 			
-			String prefix = this.getCommonPrefix(str);
-			String suffix = this.removeArgFromNode(str);
-			
+			String prefix = this.getCommonPrefix(str);  //A
+			String suffix = this.removeArgFromNode(str);  //BA
+			this.string = suffix;
 			
 			List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
-			newNodeChildren.add(this);
-			Node newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren);
-			this.parent.removeChild(this);
+			newNodeChildren.add(this); //adding this node to the new node's children
+			NodeNonLeaf newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren); 
+			this.parent.swapNode(this, newNode);
 			
 		}
 		//if nothing matched
@@ -116,7 +120,7 @@ public class NodeNonLeaf implements InnerNode {
 
 
 	@Override
-	public void convertLeafToNode(NodeLeaf nodeToDelete, NodeNonLeaf replacementNode) {
+	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
 		this.children.remove(nodeToDelete);
 		this.children.add(replacementNode);
 		
@@ -133,11 +137,7 @@ public class NodeNonLeaf implements InnerNode {
 		this.string = this.string.substring(start);
 	}
 
-	@Override
-	public void removeChild(Node child) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 
 	

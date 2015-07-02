@@ -56,7 +56,7 @@ public class NodeLeaf implements InnerNode {
 			children.add(leaf1);
 			children.add(leaf2);		
 			replacementNode = new NodeNonLeaf(prefix, -1, this.parent, children);			
-			this.convertLeafToNode(this, replacementNode);
+			this.swapNode(this, replacementNode);
 			//TO DO CHECK RETURN TRUE MAKES SENSE HERE
 			return true;
 			
@@ -71,8 +71,8 @@ public class NodeLeaf implements InnerNode {
 	}
 
 	@Override
-	public void convertLeafToNode(NodeLeaf nodeToDelete, NodeNonLeaf replacementNode) {
-		parent.convertLeafToNode(nodeToDelete, replacementNode);
+	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
+		parent.swapNode(nodeToDelete, replacementNode);
 		
 	}
 
@@ -88,13 +88,7 @@ public class NodeLeaf implements InnerNode {
 		
 	}
 
-	@Override
-	public void removeChild(Node child) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
+	
 
 
 }

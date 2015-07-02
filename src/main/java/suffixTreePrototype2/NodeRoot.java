@@ -42,7 +42,7 @@ public class NodeRoot implements Node {
 	}
 
 	@Override
-	public void convertLeafToNode(NodeLeaf nodeToDelete, NodeNonLeaf replacementNode) {
+	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
 		this.children.remove(nodeToDelete);
 		this.children.add(replacementNode);	
 	}
@@ -59,14 +59,7 @@ public class NodeRoot implements Node {
 		
 	}
 
-	@Override
-	public void removeChild(Node child) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
-
 	
 
 
