@@ -22,12 +22,14 @@ public class SuffixTree {
 	public void addString(String str){		
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
+				System.out.println(str.substring(index, i+1) + "(" +index+")");
 				root.addString(str.substring(index, i+1), index);
-				//System.out.println(str.substring(index, i+1));
+				
 			}	
 			//$ added at the end of each substring iteration
 			root.addString("$", i+1);
-			//System.out.println("$ " + (i+1));
+			System.out.println("$ " + (i+1));
+			System.out.println();
 		}	
 	}
 	
@@ -36,7 +38,8 @@ public class SuffixTree {
 	}
 	
 	public static void main(String[] args){
-		new SuffixTree("ababaabab");
+		SuffixTree test = new SuffixTree("ab110011ab");
+		test.getTree().printTree();
 	}
 	
 }

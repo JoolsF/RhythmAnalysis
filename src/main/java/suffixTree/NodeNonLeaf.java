@@ -1,6 +1,7 @@
 package suffixTree;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class NodeNonLeaf implements InnerNode {
@@ -28,6 +29,7 @@ public class NodeNonLeaf implements InnerNode {
 
 	@Override
 	public boolean addString(String str, int index) {
+		System.out.println("HERE FIRST");
 		if(this.nodeIsAPrefixOf(str)){
 			//i.e this.string = a and str arg is ab then a is a prefix of ab
 			//now need to check children for b as we have matched the a prefix
@@ -38,7 +40,7 @@ public class NodeNonLeaf implements InnerNode {
 			// child = bab
 			// strMinusPrefix = b
 			// commonPrefix = a
-				
+
 			//child bab IS A prefix of strminusprefix bab 
 			String strMinusPrefix = this.removeNodeFromArg(str);
 			String commonPrefix = this.getCommonPrefix(str);
@@ -47,10 +49,16 @@ public class NodeNonLeaf implements InnerNode {
 					//BASE CASE
 					this.string += strMinusPrefix;
 					child.setSubString(strMinusPrefix.length());
+					System.out.println("child string " + child.getString());
+					System.out.println("str minus prefix " + strMinusPrefix);
+					
 					return true;
 				} else if (child.nodeIsAPrefixOf(strMinusPrefix)){
+System.out.println("IN HERE");
 					//i.e recursive case has next node is also a prefix of the string minus the prefix
+					System.out.println("STRING MINUS PREFIX: " + strMinusPrefix);
 					child.addString(strMinusPrefix, index);
+					return true;
 				} // FINAL CASE TO ADD??
 				
 			}
@@ -131,7 +139,11 @@ public class NodeNonLeaf implements InnerNode {
 	@Override
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
 		this.children.remove(nodeToDelete);
-		this.children.add(replacementNode);
+		if(replacementNode.getString().equals("$")){
+			this.children.add(this.children.size(),replacementNode);	
+		} else {	
+			this.children.add(0,replacementNode);
+		}	
 		
 	}
 
@@ -143,8 +155,17 @@ public class NodeNonLeaf implements InnerNode {
 
 	@Override
 	public void printTree() {
-		// TODO Auto-generated method stub
-		
+		Iterator<InnerNode> itr = children.iterator();
+		while(itr.hasNext()){
+			Node element = itr.next();
+			element.printTree();
+		}
+		System.out.println(" NODE: " + this.string + " (" + this.stringIndex + ") " + "type: " + this.getClass().toString());  //-> children: " + element.getChildStrings());
+	}
+
+	@Override
+	public int getStringIndex() {
+		return this.stringIndex;
 	}
 
 	
