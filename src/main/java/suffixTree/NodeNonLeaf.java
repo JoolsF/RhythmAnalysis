@@ -1,4 +1,4 @@
-package suffixTreePrototype2;
+package suffixTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ public class NodeNonLeaf implements InnerNode {
 	private List<InnerNode> children;
 	
 	
-	public NodeNonLeaf(String string, int StringIndex, Node parent){
+	public NodeNonLeaf(String string, int stringIndex, Node parent){
 		
 		this.string = string;
 		this.stringIndex = stringIndex;
@@ -95,22 +95,31 @@ public class NodeNonLeaf implements InnerNode {
 			 *             
 			 *             
 			 * */
-			
-			String prefix = this.getCommonPrefix(str);  //A
-			String suffix = this.removeArgFromNode(str);  //BA
-			this.string = suffix;
-			
-			List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
-			newNodeChildren.add(this); //adding this node to the new node's children
-			NodeNonLeaf newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren); 
-			this.parent.swapNode(this, newNode);
+			splitThisNode(str, index);
+			return true;
 			
 		}
 		//if nothing matched
 		return false;
-		
 	}
-
+	/**
+	 * Private helper method for addString
+	 */
+	private void splitThisNode(String str, int index){
+		String prefix = this.getCommonPrefix(str);  //A
+		String suffix = this.removeArgFromNode(str);  //BA
+		this.string = suffix;
+		
+		List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
+		
+		NodeNonLeaf newNode = null;
+		newNodeChildren.add(this); //adding this node to the new node's children
+		newNodeChildren.add(new NodeLeaf("$",index, newNode)); //adding this node to the new node's children
+		newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren); 
+		this.parent.swapNode(this, newNode);	
+	}
+	
+	
 	@Override
 	public String getString() {
 		return this.string;
@@ -126,23 +135,18 @@ public class NodeNonLeaf implements InnerNode {
 		
 	}
 
-	@Override
-	public void addChildLeaf(String string, int index) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void setSubString(int start) {
 		this.string = this.string.substring(start);
 	}
 
-
-
-
-	
-	
-
+	@Override
+	public void printTree() {
+		// TODO Auto-generated method stub
 		
+	}
+
+	
 
 }

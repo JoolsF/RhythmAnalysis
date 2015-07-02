@@ -1,4 +1,4 @@
-package suffixTreePrototype2;
+package suffixTree;
 
 
 
@@ -6,6 +6,12 @@ package suffixTreePrototype2;
 //contains implementations of methods common to NodeLead and NodeNonLead
 public interface InnerNode extends Node {
 	
+	//TO IMPLEMENT
+	public String getString();
+	public void setSubString(int start);
+	
+	
+	//DEFAULT METHODS
 	public default boolean nodeIsAPrefixOf(String string) {
 		if(string.startsWith(this.getString()) && string.length() > this.getString().length()){
 			return true;
@@ -23,9 +29,6 @@ public interface InnerNode extends Node {
 	}
 	
 	
-
-	public String getString();
-	public void setSubString(int start);
 	/**
 	 * i.e if getString() returns a and arg is abab the return is bab
 	 * @param string
@@ -47,46 +50,5 @@ public interface InnerNode extends Node {
 		} else {
 			return string.substring(0, this.getString().length());
 		}
-	}
-	
-	
-	
-	
-/*
- * public void addSubString(String subString, int subStringIndex);
-	
-	
-	
-	public void updateSubString(String subString, int subStringIndex);
-	
-	public void setSubString(String subString, int subStringIndex);
-	
-	public List<Node> getChildren();
-	
-	public int getSubStringIndex();
-	
-	public boolean thisIsAPrefixOf(String string);
-	
-	public boolean thisHasAPrefixOf(String string);
-	
-	public void addChild(Node node);
-	
-	public void printTree();
-	
-	public String getChildStrings();
-	
-	public String removePrefix(String subStringArg);
-	
-	public Map<String, List<Integer>> nodesToMap();
-
-	void removePrefixFromThis(String prefixToRemove);
-
-	public void prepend(String parentSuffix);
-
-	public void updateSubString(String subStringToAdd);
- */
-	
-	
-	
-	
+	}	
 }

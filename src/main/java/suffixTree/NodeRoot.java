@@ -1,4 +1,4 @@
-package suffixTreePrototype2;
+package suffixTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,21 +47,22 @@ public class NodeRoot implements Node {
 		this.children.add(replacementNode);	
 	}
 
-	@Override
-	public void addChildLeaf(String string, int index) {
+	private void addChildLeaf(String string, int index) {
 		Node child = new NodeLeaf(string, index, this);
 		if(string.equals("$")){
 			this.children.add(this.children.size(),child);	
 		} else {
 			
 			this.children.add(0,child);
-		}
-		
+		}		
 	}
 
+	@Override
+	public void printTree() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
-
-
-
+	
 }

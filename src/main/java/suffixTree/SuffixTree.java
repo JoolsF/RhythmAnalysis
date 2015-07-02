@@ -1,4 +1,4 @@
-package suffixTreePrototype2;
+package suffixTree;
 
 
 
@@ -14,9 +14,9 @@ public class SuffixTree {
 	
 	private Node root;
 	
-	public SuffixTree(String str, int index){
+	public SuffixTree(String str){
 		root = new NodeRoot();
-		//root.addString(str, index);
+		addString(str);
 	}
 	
 	public void addString(String str){		
@@ -28,11 +28,15 @@ public class SuffixTree {
 			//$ added at the end of each substring iteration
 			root.addString("$", i+1);
 			//System.out.println("$ " + (i+1));
-						
 		}	
 	}
+	
 	public Node getTree(){
 		return this.root;
+	}
+	
+	public static void main(String[] args){
+		new SuffixTree("ababaabab");
 	}
 	
 }

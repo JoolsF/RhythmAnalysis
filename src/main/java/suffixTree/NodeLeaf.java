@@ -1,9 +1,7 @@
-package suffixTreePrototype2;
+package suffixTree;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import suffixTreeProtoType1.NodeImpl;
 
 
 public class NodeLeaf implements InnerNode {
@@ -76,17 +74,21 @@ public class NodeLeaf implements InnerNode {
 		
 	}
 
-	@Override
-	public void addChildLeaf(String string, int index) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void setSubString(int start) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void printTree() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 	
 
