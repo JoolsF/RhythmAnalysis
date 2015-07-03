@@ -52,4 +52,14 @@ public interface InnerNode extends Node {
 			return string.substring(0, this.getString().length());
 		}
 	}	
+	
+	
+	public default void debugTrace(String location, String str, int index){
+		System.out.println("	*******************");
+		System.out.println("	Location: " + location + " " + this.getString() + "(" +this.getStringIndex() + ")");
+		System.out.println("	Node type: " + this.getClass());
+		System.out.println("	String to add: " + str + "(" + index +")");
+		System.out.println();
+		System.out.println();
+	}
 }

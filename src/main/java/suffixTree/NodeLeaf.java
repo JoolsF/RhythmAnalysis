@@ -21,6 +21,7 @@ public class NodeLeaf implements InnerNode {
 	@Override
 	public boolean addString(String string, int index) {
 		if(this.string.equals("$")){
+debugTrace("This string = $", string, index);
 			//BASE CASE 
 			//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
 			//children will be sorted so that "$" for any given list of children will always be at the end.
@@ -28,21 +29,20 @@ public class NodeLeaf implements InnerNode {
 //			System.out.println("String " + string + ": (" + index +")");
 //			System.out.println(this.removeArgFromNode(string);
 			this.string = string;
-			System.out.println("----------> "+ this.string);
 			this.stringIndex = index;
 			return true;
 		} else if (this.string.equals(string)){
 			// DO SOMETHING
-			
+debugTrace("this string = sting arg.  **DOING NOTHING CURRENTLY**", string, index);			
 			// DOES THIS CASE OCCUR??
 		} else if (this.nodeIsAPrefixOf(string)){
-			System.out.println("DEBUG");
+debugTrace("Node is a prefix ", string, index);
 			//BASE CASE			
 			this.string += this.removeNodeFromArg(string);
-			System.out.println("----------> "+ this.string);
 			this.stringIndex = index;
 			return true;
 		} else if (this.nodeHasAPrefixOf(string)){
+debugTrace("Node has a prefix, child has a prefix", string, index);
 			//BASE CASE
 			//HAS A PREFIX CASES ARE SPLIT / NEW NODE CASES
 			//convert leaf to node
@@ -53,6 +53,7 @@ public class NodeLeaf implements InnerNode {
 			
 		}
 		//IF IT GETS TO THIS POINT NO STRING HAS BEEN ADDED AND THE METHOD RETURNS FALSE TO CONFIRM
+debugTrace("No matches and node returning false", string, index);
 		return false;
 	}
 
@@ -63,7 +64,6 @@ public class NodeLeaf implements InnerNode {
 	
 	//TO DO - reassess having public method here not in Node interface
 	public void prepNodeSwap(String str, int index){
-//		System.out.println("DEBUG");
 		String prefix =  this.string.substring(0, str.length());
 		String suffix = this.string.substring(str.length(), this.string.length());
 //		System.out.println("String: " + str);

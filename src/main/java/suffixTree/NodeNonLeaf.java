@@ -29,7 +29,6 @@ public class NodeNonLeaf implements InnerNode {
 
 	@Override
 	public boolean addString(String str, int index) {
-		System.out.println("HERE FIRST");
 		if(this.nodeIsAPrefixOf(str)){
 			//i.e this.string = a and str arg is ab then a is a prefix of ab
 			//now need to check children for b as we have matched the a prefix
@@ -40,23 +39,20 @@ public class NodeNonLeaf implements InnerNode {
 			// child = bab
 			// strMinusPrefix = b
 			// commonPrefix = a
-
+debugTrace("Node is a prefix, child has a prefix", str, index);
 			//child bab IS A prefix of strminusprefix bab 
 			String strMinusPrefix = this.removeNodeFromArg(str);
 			String commonPrefix = this.getCommonPrefix(str);
 			for(InnerNode child: children) {
 				if(child.nodeHasAPrefixOf(strMinusPrefix)){
+child.debugTrace("     Node is a prefix, child has a prefix", strMinusPrefix, index);
 					//BASE CASE
 					this.string += strMinusPrefix;
-					child.setSubString(strMinusPrefix.length());
-					System.out.println("child string " + child.getString());
-					System.out.println("str minus prefix " + strMinusPrefix);
-					
+					child.setSubString(strMinusPrefix.length());					
 					return true;
 				} else if (child.nodeIsAPrefixOf(strMinusPrefix)){
-System.out.println("IN HERE");
+child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMinusPrefix, index);
 					//i.e recursive case has next node is also a prefix of the string minus the prefix
-					System.out.println("STRING MINUS PREFIX: " + strMinusPrefix);
 					child.addString(strMinusPrefix, index);
 					return true;
 				} // FINAL CASE TO ADD??
@@ -103,11 +99,12 @@ System.out.println("IN HERE");
 			 *             
 			 *             
 			 * */
+debugTrace("Node has a prefix -> split this node", str, index);
 			splitThisNode(str, index);
 			return true;
 			
 		}
-		//if nothing matched
+debugTrace("Nothing matched in NodeNonLeaf - Returning false", str, index);
 		return false;
 	}
 	/**
