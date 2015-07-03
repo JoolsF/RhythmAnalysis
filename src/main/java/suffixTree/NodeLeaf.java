@@ -99,7 +99,8 @@ debugTrace("No matches and node returning false " + this.string + "(" + this.str
 
 	@Override
 	public void printTree() {
-		System.out.println(" NODE: " + this.string + " (" + this.stringIndex + ") type: " + this.getClass().toString());
+		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
+				+ "\n  Type: " + this.getClass().toString()+"\n");
 		
 	}
 

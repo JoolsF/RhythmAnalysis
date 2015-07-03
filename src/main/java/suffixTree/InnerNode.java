@@ -1,5 +1,7 @@
 package suffixTree;
 
+import java.util.List;
+
 
 
 
@@ -12,6 +14,7 @@ public interface InnerNode extends Node {
 	public void setStringIndex(int index);
 	public void setString(String str);
 	public void setSubString(int start);
+	public List<InnerNode> getChildren();
 	
 	
 	//DEFAULT METHODS
@@ -59,9 +62,23 @@ public interface InnerNode extends Node {
 	public default void debugTrace(String location, String str, int index){
 		System.out.println("	*******************");
 		System.out.println("	Location: " + location + " " + this.getString() + "(" +this.getStringIndex() + ")");
+		System.out.println("	Child values: " + getChildValues() );
 		System.out.println("	Node type: " + this.getClass());
 		System.out.println("	String to add: " + str + "(" + index +")");
 		System.out.println();
 		System.out.println();
 	}
+	
+	
+	public default String getChildValues(){
+		String childValues = "";
+		//guard condition needed for LeafNode
+		if(this.getChildren() != null) {
+			for(InnerNode next: this.getChildren()){
+				childValues += next.getString() + "(" +next.getStringIndex()+")  - ";
+				}
+		}
+		return childValues;
+	}
+	
 }

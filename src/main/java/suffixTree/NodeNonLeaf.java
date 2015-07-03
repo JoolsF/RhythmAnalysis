@@ -184,7 +184,9 @@ debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIn
 			Node element = itr.next();
 			element.printTree();
 		}
-		System.out.println(" NODE: " + this.string + " (" + this.stringIndex + ") " + "type: " + this.getClass().toString());  //-> children: " + element.getChildStrings());
+		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ") " 
+							+ "\n" + "  Type: " + this.getClass().toString() 
+							+ "\n  Children: " + this.getChildValues() +"\n");
 	}
 
 	@Override
