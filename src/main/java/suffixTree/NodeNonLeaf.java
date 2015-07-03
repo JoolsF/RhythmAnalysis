@@ -29,7 +29,21 @@ public class NodeNonLeaf implements InnerNode {
 
 	@Override
 	public boolean addString(String str, int index) {
-		if(this.nodeIsAPrefixOf(str)){
+		
+		if(this.string.equals(str)){
+debugTrace("Node string, = str", str, index);
+			for(InnerNode child: children){
+				if(child.getString().equals("$")){
+debugTrace("	Child has string of $, nothing done ", str, index);					
+					//DOES THIS NEED ACTION?					
+					return true;
+				}
+debugTrace("	No child with $ value, creating leaf node ", str, index);			
+				this.addChildLeaf("$", index);
+				return true;
+			}
+			return true;
+		} else if(this.nodeIsAPrefixOf(str)){
 			//i.e this.string = a and str arg is ab then a is a prefix of ab
 			//now need to check children for b as we have matched the a prefix
 			// if one of the children's string HAS a prefix of b i.e bab then we need to take this prefix
@@ -55,7 +69,14 @@ child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMin
 					//i.e recursive case has next node is also a prefix of the string minus the prefix
 					child.addString(strMinusPrefix, index);
 					return true;
-				} // FINAL CASE TO ADD??
+				} else if(child.getString().equals("$")){
+child.debugTrace("$$$$$		Node is a prefix, child is $", strMinusPrefix, index);		
+					child.setString(strMinusPrefix);
+					child.setStringIndex(index);
+					return true;
+				}
+				//SHOULD GET HERE.  ARE ALL CASES COVERED.
+				// FINAL CASE TO ADD??
 				
 			}
 		} else if(this.nodeHasAPrefixOf(str)){
@@ -103,8 +124,14 @@ debugTrace("Node has a prefix -> split this node", str, index);
 			splitThisNode(str, index);
 			return true;
 			
+		} else if(this.string.equals("$")){
+//BUG HERE
+debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
+			this.string = string;
+			this.stringIndex = index;
+			return true;
 		}
-debugTrace("Nothing matched in NodeNonLeaf - Returning false", str, index);
+debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
 		return false;
 	}
 	/**
@@ -170,6 +197,25 @@ debugTrace("Nothing matched in NodeNonLeaf - Returning false", str, index);
 		return this.children;
 	}
 
-	
+	@Override
+	public void setString(String str) {
+			this.string = str;
+	}
 
+	@Override
+	public void setStringIndex(int index) {
+		this.stringIndex = index;
+		
+	}
+
+	
+	private void addChildLeaf(String string, int index) {
+		InnerNode child = new NodeLeaf(string, index, this);
+		if(string.equals("$")){
+			this.children.add(this.children.size(),child);	
+		} else {
+			
+			this.children.add(0,child);
+		}		
+	}
 }

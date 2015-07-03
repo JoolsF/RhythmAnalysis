@@ -45,10 +45,10 @@ System.out.println();
 	}
 	
 	public static void main(String[] args){
-		//AB11AA NOT WORKING
-		//112233 NOT WORKING
-		//
-		SuffixTree test = new SuffixTree("A");
+		// WORKING UP TO AB11AA
+		// WORKING 112233
+		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3.
+		SuffixTree test = new SuffixTree("AB11AB");
 		//test.getTree().printTree();
 		
 		

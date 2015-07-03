@@ -9,6 +9,8 @@ public interface InnerNode extends Node {
 	//TO IMPLEMENT
 	public String getString();
 	public int getStringIndex();
+	public void setStringIndex(int index);
+	public void setString(String str);
 	public void setSubString(int start);
 	
 	

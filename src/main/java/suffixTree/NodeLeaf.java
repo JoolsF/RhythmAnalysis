@@ -53,7 +53,7 @@ debugTrace("Node has a prefix, child has a prefix", string, index);
 			
 		}
 		//IF IT GETS TO THIS POINT NO STRING HAS BEEN ADDED AND THE METHOD RETURNS FALSE TO CONFIRM
-debugTrace("No matches and node returning false", string, index);
+debugTrace("No matches and node returning false " + this.string + "(" + this.stringIndex +")", string, index);
 		return false;
 	}
 
@@ -111,6 +111,16 @@ debugTrace("No matches and node returning false", string, index);
 	@Override
 	public List<InnerNode> getChildren() {
 		return new ArrayList<InnerNode>();
+	}
+
+	@Override
+	public void setString(String str) {
+		this.string = str;
+	}
+
+	@Override
+	public void setStringIndex(int index) {
+		this.stringIndex = index;
 	}
 
 	
