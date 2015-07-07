@@ -72,9 +72,9 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 	@Override
 	public void printTree() {
 		Iterator<InnerNode> itr = children.iterator();
+		System.out.println("ROOT:  \n  Children: " + this.getChildValues()+"\n");
 		while(itr.hasNext()){
-			Node element = itr.next();
-			//System.out.println(" NODE: " + element.getSubString() + " (" + element.getSubStringIndex() + ") -> children: " + element.getChildStrings());
+			InnerNode element = itr.next();
 			element.printTree();
 		}
 		
@@ -85,8 +85,16 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 		return this.children;
 	}
 	
-
 	
-	
-	
+	//TO DO - refactor this is in InnerNode interface too
+	private String getChildValues(){
+		String childValues = "";
+		//guard condition needed for LeafNode
+		if(this.getChildren() != null) {
+			for(InnerNode next: this.getChildren()){
+				childValues += next.getString() + "(" +next.getStringIndex()+")  - ";
+				}
+		}
+		return childValues;	
+	}
 }

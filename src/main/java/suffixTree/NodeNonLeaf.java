@@ -57,56 +57,69 @@ debugTrace("Node is a prefix, child has a prefix", str, index);
 			//child bab IS A prefix of strminusprefix bab 
 			String strMinusPrefix = this.removeNodeFromArg(str);
 			String commonPrefix = this.getCommonPrefix(str);
+			
 			for(InnerNode child: children) {
-				if(child.nodeHasAPrefixOf(strMinusPrefix)){					
-					
-					// needs sub cases.  If child exists with same first letter
-					// str minus prefix then need to split node
-					// check whether removing subString from child leaves two nodes
-					// two children with starting with same first letter
-					// if so then need to split node						
-					String newChildValue = child.getString().substring(strMinusPrefix.length());
-/*POTENTIAL BUG*/	if(this.hasChildWithSameFirstLetter(newChildValue)){
-						//BASE CASE	
-child.debugTrace("     Node is a prefix, child has a prefix.  Need to split", strMinusPrefix, index);
-						child.setSubString(strMinusPrefix.length());
-						InnerNode newNode = null;
-						InnerNode newChildNode = new NodeLeaf("$", index, newNode);
-						List<InnerNode> newChildren = new ArrayList<InnerNode>();
-						//make sure add childNode second refactor so that $ always last
-						// or doesn't rely on sort order
-						newChildren.add(child);
-						newChildren.add(newChildNode);
-						newChildNode = new NodeNonLeaf(commonPrefix, -1, this, newChildren);
-						this.children.remove(child);
-						//to do refactor childen add, see comment above
-						this.children.add(0,newChildNode);
-						return true;
+			if(child.getString().equals(strMinusPrefix)){
+				child.addString(strMinusPrefix, index);
+					return true;
+				//RECURSIVE
+			}else if(child.nodeHasAPrefixOf(strMinusPrefix)){					
 						
-/*END POTENTIAL BUG*/} else {
+						// needs sub cases.  If child exists with same first letter
+						// str minus prefix then need to split node
+						// check whether removing subString from child leaves two nodes
+						// two children with starting with same first letter
+						// if so then need to split node						
+						String newChildValue = child.getString().substring(strMinusPrefix.length());
+	/*POTENTIAL BUG*/	if(this.hasChildWithSameFirstLetter(newChildValue)){
+//							if(child.getClass().toString().equals("class suffixTree.NodeLeaf")){
+//								System.out.println("LEAF!");
+//								System.out.println("strMnusPrefix " + strMinusPrefix);
+//								System.out.println("index " + index);
+//								child.addString(strMinusPrefix, index);
+//								return true;
+//							}
+							//BASE CASE	
+//BUG SPLIT RULES FOR LEAF NODE DIFFERENT
+// CHECK INPUT 110011110 110(6)
+	child.debugTrace("     Node is a prefix, child has a prefix.  Need to split", strMinusPrefix, index);
+	System.out.println(child.getClass());
+							child.setSubString(strMinusPrefix.length());
+							InnerNode newNode = null;
+							InnerNode newChildNode = new NodeLeaf("$", index, newNode);
+							List<InnerNode> newChildren = new ArrayList<InnerNode>();
+							//make sure add childNode second refactor so that $ always last
+							// or doesn't rely on sort order
+							newChildren.add(child);
+							newChildren.add(newChildNode);
+							newChildNode = new NodeNonLeaf(commonPrefix, -1, this, newChildren);
+							this.children.remove(child);
+							//to do refactor childen add, see comment above
+							this.children.add(0,newChildNode);
+							return true;
+							
+/*END POTENTIAL BUG*/	} else {
+							//BASE CASE
+	child.debugTrace("     Node is a prefix, child has a prefix", strMinusPrefix, index);
+							this.string += strMinusPrefix;
+							child.setSubString(strMinusPrefix.length());					
+							return true;	
+						}	
+					}else if (child.nodeIsAPrefixOf(strMinusPrefix)){
+	child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMinusPrefix, index);
+						//i.e RECURSIVE CASE - next node is also a prefix of the string (minus the prefix)
+						child.addString(strMinusPrefix, index);
+						return true;
+					}  else if(child.getString().equals("$")){ //NEED TO COME LAST
+	System.out.println(children.get(children.size()-1).getString());					
+	child.debugTrace("$$$$$		Node is a prefix, child is $", strMinusPrefix, index);		
 						//BASE CASE
-child.debugTrace("     Node is a prefix, child has a prefix", strMinusPrefix, index);
-						this.string += strMinusPrefix;
-						child.setSubString(strMinusPrefix.length());					
-						return true;	
+						child.setString(strMinusPrefix);
+						child.setStringIndex(index);
+						return true;
 					}
-
-
-					
-				} else if(child.getString().equals("$")){
-child.debugTrace("$$$$$		Node is a prefix, child is $", strMinusPrefix, index);		
-					//BASE CASE
-					child.setString(strMinusPrefix);
-					child.setStringIndex(index);
-					return true;
-				}else if (child.nodeIsAPrefixOf(strMinusPrefix)){
-child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMinusPrefix, index);
-					//i.e RECURSIVE CASE - next node is also a prefix of the string (minus the prefix)
-					child.addString(strMinusPrefix, index);
-					return true;
-				}
-				//SHOULD NOT GET HERE.  ARE ALL CASES COVERED??
-				//throw assert / exception
+					//SHOULD NOT GET HERE.  ARE ALL CASES COVERED??
+					//throw assert / exception
 			} // end of for loop
 		} else if(this.nodeHasAPrefixOf(str)){
 			//BASE CASE (case in "3 Bug Potential Fix")
@@ -163,6 +176,10 @@ debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
 debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
 		return false;
 	}
+	
+	
+	
+	
 	/**
 	 * Private helper method for addString
 	 */
@@ -190,7 +207,7 @@ debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIn
 
 
 	@Override
-	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
+	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {		
 		this.children.remove(nodeToDelete);
 		if(replacementNode.getString().equals("$")){
 			this.children.add(this.children.size(),replacementNode);	
@@ -255,4 +272,9 @@ debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIn
 		this.parent = parent;
 		
 	}
+	
+	
+	
+	
+	
 }

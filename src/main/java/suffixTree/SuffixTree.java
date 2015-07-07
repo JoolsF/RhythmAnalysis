@@ -14,6 +14,11 @@ import java.util.Map.Entry;
  * https://www.cs.helsinki.fi/u/ukkonen
  * http://www.geeksforgeeks.org/ukkonens-suffix-tree-construction-part-1/
  */
+/*
+ * TO REFACTOR
+ * CHANGE OVER CHILD NODES FOR HASHMAPS 
+ * 	Means order of nodes won't matter i.e $ last and no need to iterate through children
+ */
 
 public class SuffixTree {
 	
@@ -52,7 +57,8 @@ System.out.println();
 		//
 		// WORKING AB11001
 		// WORKING AB110011AB
-		// NEEDS TO BE TESTED WTIH TREES OF DEPTH 4+
+		// WORKING 11001111
+		// NOT WORKING 110011110 
 		SuffixTree test = new SuffixTree("AB110011AB"); //trace construction debug output carefully
 		test.getTree().printTree();
 		

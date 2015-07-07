@@ -86,6 +86,7 @@ debugTrace("No matches and node returning false " + this.string + "(" + this.str
 
 	@Override
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
+System.out.println(this.parent);
 		parent.swapNode(nodeToDelete, replacementNode);
 		
 	}
@@ -94,13 +95,14 @@ debugTrace("No matches and node returning false " + this.string + "(" + this.str
 
 	@Override
 	public void setSubString(int start) {
+
 		this.string = this.string.substring(start);
 	}
 
 	@Override
 	public void printTree() {
-		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
-				+ "\n  Type: " + this.getClass().toString()+"\n");
+//		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
+//				+ "\n  Type: " + this.getClass().toString()+"\n");
 		
 	}
 
