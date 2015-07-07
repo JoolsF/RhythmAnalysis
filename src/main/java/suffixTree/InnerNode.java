@@ -11,11 +11,12 @@ public interface InnerNode extends Node {
 	//TO IMPLEMENT
 	public String getString();
 	public int getStringIndex();
+	public List<InnerNode> getChildren();
+	
 	public void setStringIndex(int index);
 	public void setString(String str);
 	public void setSubString(int start);
-	public List<InnerNode> getChildren();
-	
+	public void setParent(Node parent);
 	
 	//DEFAULT METHODS
 	public default boolean nodeIsAPrefixOf(String string) {
@@ -58,17 +59,16 @@ public interface InnerNode extends Node {
 		}
 	}	
 	
-	
-	public default void debugTrace(String location, String str, int index){
-		System.out.println("	*******************");
-		System.out.println("	Location: " + location + " " + this.getString() + "(" +this.getStringIndex() + ")");
-		System.out.println("	Child values: " + getChildValues() );
-		System.out.println("	Node type: " + this.getClass());
-		System.out.println("	String to add: " + str + "(" + index +")");
-		System.out.println();
-		System.out.println();
+	public default boolean hasChildWithSameFirstLetter(String str){
+		char charToCheck = str.toCharArray()[0];
+		for(InnerNode next: this.getChildren()){
+			if(next.getString().toCharArray()[0] == str.toCharArray()[0]){
+				return true;
+			}
+		}
+		return false;
+		
 	}
-	
 	
 	public default String getChildValues(){
 		String childValues = "";
@@ -81,4 +81,13 @@ public interface InnerNode extends Node {
 		return childValues;
 	}
 	
+	public default void debugTrace(String location, String str, int index){
+		System.out.println("	*******************");
+		System.out.println("	Location: " + location + " " + this.getString() + "(" +this.getStringIndex() + ")");
+		System.out.println("	Child values: " + getChildValues() );
+		System.out.println("	Node type: " + this.getClass());
+		System.out.println("	String to add: " + str + "(" + index +")");
+		System.out.println();
+		System.out.println();
+	}
 }

@@ -32,18 +32,18 @@ public class NodeNonLeaf implements InnerNode {
 		
 		if(this.string.equals(str)){
 debugTrace("Node string, = str", str, index);
-			for(InnerNode child: children){
-				if(child.getString().equals("$")){
-debugTrace("	Child has string of $, nothing done ", str, index);					
-					//DOES THIS NEED ACTION?					
+System.out.println("CHILDREN GET " + children.get(children.size()-1).getString());
+
+				if(children.get(children.size()-1).getString().equals("$")){
+					debugTrace("	Child has string of $, nothing done ", str, index);					
+					children.get(children.size()-1).setStringIndex(index);				
+					return true;
+				} else {
+debugTrace("	No child with $ value, creating leaf node ", str, index);			
+					this.addChildLeaf("$", index);
 					return true;
 				}
-debugTrace("	No child with $ value, creating leaf node ", str, index);			
-				this.addChildLeaf("$", index);
-				return true;
-			}
-			return true;
-		} else if(this.nodeIsAPrefixOf(str)){
+			} else if(this.nodeIsAPrefixOf(str)){
 			//i.e this.string = a and str arg is ab then a is a prefix of ab
 			//now need to check children for b as we have matched the a prefix
 			// if one of the children's string HAS a prefix of b i.e bab then we need to take this prefix
@@ -58,27 +58,56 @@ debugTrace("Node is a prefix, child has a prefix", str, index);
 			String strMinusPrefix = this.removeNodeFromArg(str);
 			String commonPrefix = this.getCommonPrefix(str);
 			for(InnerNode child: children) {
-				if(child.nodeHasAPrefixOf(strMinusPrefix)){
+				if(child.nodeHasAPrefixOf(strMinusPrefix)){					
+					
+					// needs sub cases.  If child exists with same first letter
+					// str minus prefix then need to split node
+					// check whether removing subString from child leaves two nodes
+					// two children with starting with same first letter
+					// if so then need to split node						
+					String newChildValue = child.getString().substring(strMinusPrefix.length());
+/*POTENTIAL BUG*/	if(this.hasChildWithSameFirstLetter(newChildValue)){
+						//BASE CASE	
+child.debugTrace("     Node is a prefix, child has a prefix.  Need to split", strMinusPrefix, index);
+						child.setSubString(strMinusPrefix.length());
+						InnerNode newNode = null;
+						InnerNode newChildNode = new NodeLeaf("$", index, newNode);
+						List<InnerNode> newChildren = new ArrayList<InnerNode>();
+						//make sure add childNode second refactor so that $ always last
+						// or doesn't rely on sort order
+						newChildren.add(child);
+						newChildren.add(newChildNode);
+						newChildNode = new NodeNonLeaf(commonPrefix, -1, this, newChildren);
+						this.children.remove(child);
+						//to do refactor childen add, see comment above
+						this.children.add(0,newChildNode);
+						return true;
+						
+/*END POTENTIAL BUG*/} else {
+						//BASE CASE
 child.debugTrace("     Node is a prefix, child has a prefix", strMinusPrefix, index);
-					//BASE CASE
-					this.string += strMinusPrefix;
-					child.setSubString(strMinusPrefix.length());					
-					return true;
-				} else if (child.nodeIsAPrefixOf(strMinusPrefix)){
-child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMinusPrefix, index);
-					//i.e recursive case has next node is also a prefix of the string minus the prefix
-					child.addString(strMinusPrefix, index);
-					return true;
+						this.string += strMinusPrefix;
+						child.setSubString(strMinusPrefix.length());					
+						return true;	
+					}
+
+
+					
 				} else if(child.getString().equals("$")){
 child.debugTrace("$$$$$		Node is a prefix, child is $", strMinusPrefix, index);		
+					//BASE CASE
 					child.setString(strMinusPrefix);
 					child.setStringIndex(index);
 					return true;
+				}else if (child.nodeIsAPrefixOf(strMinusPrefix)){
+child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMinusPrefix, index);
+					//i.e RECURSIVE CASE - next node is also a prefix of the string (minus the prefix)
+					child.addString(strMinusPrefix, index);
+					return true;
 				}
-				//SHOULD GET HERE.  ARE ALL CASES COVERED.
-				// FINAL CASE TO ADD??
-				
-			}
+				//SHOULD NOT GET HERE.  ARE ALL CASES COVERED??
+				//throw assert / exception
+			} // end of for loop
 		} else if(this.nodeHasAPrefixOf(str)){
 			//BASE CASE (case in "3 Bug Potential Fix")
 			/* this means that we are in non leaf node i.e ABA(-1) and the incoming str is A(4)
@@ -219,5 +248,11 @@ debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIn
 			
 			this.children.add(0,child);
 		}		
+	}
+
+	@Override
+	public void setParent(Node parent) {
+		this.parent = parent;
+		
 	}
 }

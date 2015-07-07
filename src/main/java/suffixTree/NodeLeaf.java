@@ -124,6 +124,12 @@ debugTrace("No matches and node returning false " + this.string + "(" + this.str
 		this.stringIndex = index;
 	}
 
+	@Override
+	public void setParent(Node parent) {
+		this.parent = parent;
+		
+	}
+
 	
 
 	

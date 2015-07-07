@@ -51,11 +51,9 @@ System.out.println();
 		// WORKING 112233
 		//
 		// WORKING AB11001
-		// WORKING AB110011 <- depth 3 check debug output at 11(6).
-		// 	case where 10011(2) and 0011(3) and can't move 1 up as you 
-		// then have 2 nodes starting with 0 therefore need to split edge
-		// NOT WORKING AB110011
-		SuffixTree test = new SuffixTree("AB110011"); //trace construction debug output carefully
+		// WORKING AB110011AB
+		// NEEDS TO BE TESTED WTIH TREES OF DEPTH 4+
+		SuffixTree test = new SuffixTree("AB110011AB"); //trace construction debug output carefully
 		test.getTree().printTree();
 		
 		
