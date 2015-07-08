@@ -2,6 +2,8 @@ package suffixTree;
 
 import java.util.List;
 
+import javafx.scene.Parent;
+
 
 
 
@@ -17,6 +19,7 @@ public interface InnerNode extends Node {
 	public void setString(String str);
 	public void setSubString(int start);
 	public void setParent(Node parent);
+	public Node getParent();
 	
 	//DEFAULT METHODS
 	public default boolean nodeIsAPrefixOf(String string) {
@@ -60,9 +63,12 @@ public interface InnerNode extends Node {
 	}	
 	
 	public default boolean hasChildWithSameFirstLetter(String str){
-		char charToCheck = str.toCharArray()[0];
+		
+		char charToCheck[] = str.toCharArray();
 		for(InnerNode next: this.getChildren()){
-			if(next.getString().toCharArray()[0] == str.toCharArray()[0]){
+			if(next.getString().toCharArray()[0] == charToCheck[0]
+					&& charToCheck[0] != charToCheck[1]
+							){
 				return true;
 			}
 		}
@@ -79,6 +85,18 @@ public interface InnerNode extends Node {
 				}
 		}
 		return childValues;
+	}
+	
+	
+	//check if this' siblings, excluding $ if exists 
+	public default boolean okToSplitNode(char x){
+		List<InnerNode> siblings = this.getParent().getChildren();
+		siblings.remove(this);
+		if(siblings.get(siblings.size()-1).equals("$")) siblings.remove(siblings.size()-1);
+		for(InnerNode next: siblings){
+			if(next.getString().indexOf(x) == 0) return false;
+		}
+		return true;
 	}
 	
 	public default void debugTrace(String location, String str, int index){

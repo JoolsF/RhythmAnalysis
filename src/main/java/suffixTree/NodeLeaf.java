@@ -132,6 +132,11 @@ System.out.println(this.parent);
 		
 	}
 
+	@Override
+	public Node getParent() {
+		return this.parent;
+	}
+
 	
 
 	
