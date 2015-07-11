@@ -7,16 +7,15 @@ import java.util.Map;
 
 public interface Node {
 
+	public String getString();
 	public boolean addString(String str, int index); //returns true if string added successfully
+	public void setString(String str);
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
 	public void printTree();
 	public List<InnerNode> getChildren();
-	//
-//	public Map<String, List<Integer>> nodesToMap() {
-//		Map<String, List<Integer>> nodeMap = new TreeMap<String, List<Integer>>();
-//		return nodesToMapHelper(nodeMap);
-//	}
-	
+	public void addChild(InnerNode child);
+	public void removeChild(InnerNode child);
+
 	/**
 	 *  
 	 */

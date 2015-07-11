@@ -33,16 +33,15 @@ public class SuffixTree {
 	public void addString(String str){		
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
-System.out.println("NODE TO ADD: " + str.substring(index, i+1) + "(" +index+")");
+				System.out.println("NODE TO ADD: " + str.substring(index, i+1) + "(" +index+")");
 				root.addString(str.substring(index, i+1), index);
 				
 			}	
 			//$ added at the end of each substring iteration
 			root.addString("$", i+1);
-System.out.println("$ " + (i+1));
-System.out.println("%% END OF SUBSTRING %%");
-System.out.println();
-System.out.println();
+			System.out.println("$ " + (i+1));
+			System.out.println("%% END OF SUBSTRING %%");
+
 		}	
 	}
 	
@@ -51,42 +50,18 @@ System.out.println();
 	}
 	
 	public static void main(String[] args){
-		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3. 
+	//NOT WORKING
+	//AB1ABAB1AB
 		
-		// WORKING UP TO AB11AA
-		// WORKING 112233
-		//
-		// WORKING AB11001
-		// NOT WORKING AB110011AB
-		// NOT WORKING WORKING 11001111
-		// NOT WORKING 110011110 
-		
-//		SuffixTree test = new SuffixTree("AB11001"); //trace construction debug output carefully
-//		test.getTree().printTree();
-//		
-//		
-//		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
-//		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-//    		System.out.println(value.getKey() + ": " + value.getValue());
-//    	}
-		
-		Node root = new NodeRoot();
-		List<InnerNode> children = new ArrayList<InnerNode>();
-		InnerNode nonLeaf = new NodeNonLeaf("a", 1, root, children);
+		SuffixTree test = new SuffixTree("AB1ABAB1AB"); //trace construction debug output carefully
+		test.getTree().printTree();
 		
 		
-		InnerNode leafOther = new NodeLeaf("001111",0,nonLeaf);
-		InnerNode leafOther2 = new NodeLeaf("001111",0,nonLeaf);
-		InnerNode leaf$ = new NodeLeaf("$",6,nonLeaf);
-		children.add(leafOther);
-		//children.add(leafOther2);
-		children.add(leaf$);
-		
-		
-		System.out.println(leafOther.okToSplitNode('0'));
-		
-		
-		
+		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
+		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+    		System.out.println(value.getKey() + ": " + value.getValue());
+    	}
+
 		
 	}
 	
