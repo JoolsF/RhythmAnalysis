@@ -11,8 +11,7 @@ public class NodeLeaf implements InnerNode {
 	private int stringIndex;
 	private Node parent;
 	
-	public NodeLeaf(String string, int stringIndex, Node parent){
-		
+	public NodeLeaf(String string, int stringIndex, Node parent){	
 		this.string = string;
 		this.stringIndex = stringIndex;
 		this.parent = parent;
@@ -27,10 +26,12 @@ public class NodeLeaf implements InnerNode {
 			// NEEDS TO GO BACK TO PARENT, GET DELETED AND HAVE A NONLEAF NODE PUT IN ITS PLACE
 			debugTrace("Node has a prefix, child has a prefix", string, index);
 			if(this.needToSplitNode()){
+				debugTrace("Splitting Node ", string, index);	
 				prepNodeSwap(string, index);
 				return true;
 			} else {
 				this.movePrefixUp(string);
+				debugTrace("Moving prefix up ", string, index);
 				return true;
 			}
 			
@@ -65,8 +66,7 @@ public class NodeLeaf implements InnerNode {
 	}
 	
 	//TO DO - reassess having public method here not in Node interface
-	public void prepNodeSwap(String str, int index){
-		
+	public void prepNodeSwap(String str, int index){		
 //POTENTIAL BUG
 		remove$Children();
 //POTENTIAL BUG
@@ -137,7 +137,7 @@ public class NodeLeaf implements InnerNode {
 		return this.parent;
 	}
 
-	//THESE TWO METHODS SHOULDN'T BE HERE
+	//THESE TWO METHODS SHOULDN'T BE HERE - Rethink interface.
 	@Override
 	public void addChild(InnerNode child) {
 		// TODO Auto-generated method stub
@@ -149,6 +149,14 @@ public class NodeLeaf implements InnerNode {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void addChildren(List<InnerNode> children) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 	
 

@@ -30,6 +30,8 @@ public class NodeNonLeaf implements InnerNode {
 		
 		
 		if(this.nodeHasAPrefixOf(str)){
+
+
 			debugTrace("Node has a a prefix of: ", str, index);
 			//BASE CASE
 			//TO DO check case if parent is root.
@@ -45,20 +47,32 @@ public class NodeNonLeaf implements InnerNode {
 			
 		} else if(this.string.equals(str)){
 			//BASE CASE
-			// TO DO TIDY THIS BLOCK UP
-			//BASE CASES
-			debugTrace("Node string, = str", str, index);
-	//IF HAS A $ SIBLING THIS NEEDS TO BE REMOVED
-	//IGNORE IF PARENT IS ROOT THOUGH
-			this.remove$Children();
-			if(children.get(children.size()-1).getString().equals("$")){
-				debugTrace("	Child has string of $, index changed only ", str, index);					
-				children.get(children.size()-1).setStringIndex(index);				
+//BUG AREA START
+			if(! this.needToSplitNode()  && ! (this.parent instanceof NodeRoot)){ // TO DO - refactor this.  Avoid checking class
+				System.out.println("IN BUG AREA");
+				//i.e the current node matches str 100%
+				//do we also need to check if current node has no $ children??	
+				//move the prefix to the parent and remove this node				
+				this.getParent().setString(this.getParent().getString() + this.getCommonPrefix(str));
+				this.getParent().addChildren(this.children);
+				this.getParent().removeChild(this);
 				return true;
+//BUG AREA END
 			} else {
-				debugTrace("	No child with $ value, creating leaf node ", str, index);			
-				this.addChildLeaf("$", index);
-				return true;
+				
+				debugTrace("Node string, = str", str, index);
+				//IF HAS A $ SIBLING THIS NEEDS TO BE REMOVED
+				//IGNORE IF PARENT IS ROOT THOUGH
+				this.remove$Children();
+				if(children.get(children.size()-1).getString().equals("$")){
+					debugTrace("	Child has string of $, index changed only ", str, index);					
+					children.get(children.size()-1).setStringIndex(index);				
+					return true;
+				} else {
+					debugTrace("	No child with $ value, creating leaf node ", str, index);			
+					this.addChildLeaf("$", index);
+					return true;
+				}
 			}
 		} else if(this.nodeIsAPrefixOf(str)){
 			debugTrace("Node is a prefix of:",  str, index);
@@ -74,13 +88,11 @@ public class NodeNonLeaf implements InnerNode {
 		} else if(this.string.equals("$")){
 			//BASE CASE
 			//MEANS WE ARE AT LAST CHILD BECAUSE $ WHERE IT EXISTS WILL ALWAYS BE AT THE END
-			//BUG HERE?
 			debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
 			this.string = string;
 			this.stringIndex = index;
 			return true;
 		} else {
-			//ARE ALL CASES COVERED ABOVE
 			debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
 			return false;
 		}
@@ -93,17 +105,17 @@ public class NodeNonLeaf implements InnerNode {
 	 * Private helper method for addString
 	 */
 	private void splitThisNode(String str, int index){
-		//POTENTIAL BUG
-				remove$Children();
-		//POTENTIAL BUG
-		String prefix = this.getCommonPrefix(str);  //A
-		String suffix = this.removeArgFromNode(str);  //BA
+//POTENTIAL BUG
+		remove$Children();
+//POTENTIAL BUG
+		String prefix = this.getCommonPrefix(str);  
+		String suffix = this.removeArgFromNode(str);  
 		List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
 		NodeNonLeaf newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren); 
 		this.parent = newNode;
 		this.string = suffix;
-		newNodeChildren.add(this); //adding this node to the new node's children
-		newNodeChildren.add(new NodeLeaf("$",index, newNode)); //adding this node to the new node's children
+		newNodeChildren.add(this); 
+		newNodeChildren.add(new NodeLeaf("$",index, newNode));
 		newNode.parent.removeChild(this);
 		newNode.parent.addChild(newNode);
 	}
@@ -198,6 +210,21 @@ public class NodeNonLeaf implements InnerNode {
 	@Override
 	public void removeChild(InnerNode child) {
 		this.children.remove(child);
+		
+	}
+
+	@Override
+	public void addChildren(List<InnerNode> children) {
+		for(InnerNode next: children){
+			next.setParent(this);
+			
+			if(next.getString().equals("$")){
+				this.children.add(this.children.size(),next);	
+			} else {
+				this.children.add(0,next);
+			}	
+			
+		}
 		
 	}
 	

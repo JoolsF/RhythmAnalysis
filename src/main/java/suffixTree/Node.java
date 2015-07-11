@@ -15,7 +15,8 @@ public interface Node {
 	public List<InnerNode> getChildren();
 	public void addChild(InnerNode child);
 	public void removeChild(InnerNode child);
-
+	public void addChildren(List<InnerNode> children);
+	
 	/**
 	 *  
 	 */

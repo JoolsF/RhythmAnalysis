@@ -127,4 +127,19 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 		this.children.remove(child);
 		
 	}
+
+	@Override
+	public void addChildren(List<InnerNode> children) {
+		for(InnerNode next: children){
+			next.setParent(this);
+			
+			if(next.getString().equals("$")){
+				this.children.add(this.children.size(),next);	
+			} else {
+				this.children.add(0,next);
+			}	
+			
+		}
+		
+	}
 }

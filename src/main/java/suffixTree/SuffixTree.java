@@ -50,10 +50,15 @@ public class SuffixTree {
 	}
 	
 	public static void main(String[] args){
-	//NOT WORKING
-	//AB1ABAB1AB
+	//1100101 <- class cast error
+	// AB1ABA WORKING
+	// AB1ABAB WORKING
+	// AB1ABAB1 WORKING
+	// AB1ABAB1A WORKING
+	// AB1ABAB1AB WORKING
+	
 		
-		SuffixTree test = new SuffixTree("AB1ABAB1AB"); //trace construction debug output carefully
+		SuffixTree test = new SuffixTree("1010010"); 
 		test.getTree().printTree();
 		
 		
