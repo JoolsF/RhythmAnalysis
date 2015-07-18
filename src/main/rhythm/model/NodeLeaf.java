@@ -1,4 +1,4 @@
-package suffixTree;
+package model;
 
 
 import java.util.ArrayList;

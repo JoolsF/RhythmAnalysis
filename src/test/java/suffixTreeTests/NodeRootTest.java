@@ -1,15 +1,14 @@
 package suffixTreeTests;
 
 import static org.junit.Assert.*;
+import model.InnerNode;
+import model.Node;
+import model.NodeLeaf;
+import model.NodeRoot;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import suffixTree.InnerNode;
-import suffixTree.Node;
-import suffixTree.NodeLeaf;
-import suffixTree.NodeRoot;
 
 public class NodeRootTest {
 	
