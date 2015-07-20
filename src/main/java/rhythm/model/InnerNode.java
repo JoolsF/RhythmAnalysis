@@ -1,8 +1,10 @@
-package model;
+package java.rhythm.model;
+
+
 
 import java.util.List;
 
-import javafx.scene.Parent;
+
 
 
 
@@ -13,6 +15,7 @@ public interface InnerNode extends Node {
 	//TO IMPLEMENT
 	public String getString();
 	public int getStringIndex();
+	@Override
 	public List<InnerNode> getChildren();
 	
 	public void setStringIndex(int index);

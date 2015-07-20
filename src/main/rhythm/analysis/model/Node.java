@@ -1,9 +1,11 @@
-package model;
+package analysis.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 public interface Node {
 
@@ -12,10 +14,7 @@ public interface Node {
 	public void printTree();
 	public List<InnerNode> getChildren();
 	//
-//	public Map<String, List<Integer>> nodesToMap() {
-//		Map<String, List<Integer>> nodeMap = new TreeMap<String, List<Integer>>();
-//		return nodesToMapHelper(nodeMap);
-//	}
+
 	
 	/**
 	 *  
@@ -42,6 +41,17 @@ public interface Node {
 			return accMap;	
 		
 	}
+	
+	public default List<String> nodesToList(){
+		Map<String, List<Integer>> nodeMap = nodesToMap(new TreeMap<String, List<Integer>>());
+		List<String> nodesList = new ArrayList<String>();
+		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+			nodesList.add(value.getKey() + ": " + value.getValue());
+		}
+		return nodesList;
+	}
+	
+	
 	
 	
 }

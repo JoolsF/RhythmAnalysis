@@ -1,10 +1,15 @@
-package model;
+package analysis.model;
+//http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+
+import analysis.Rhythm_controller;
+import analysis.view.Rhythm_viewer;
+
 
 
 
@@ -21,12 +26,19 @@ import java.util.Map.Entry;
  * 	Means order of nodes won't matter i.e $ last and no need to iterate through children
  */
 
-public class SuffixTree {
+public class Rhythm_model {
 	
 	private Node root;
+	private Rhythm_controller controller = null;
+	private Rhythm_viewer viewer = null;
+
 	
-	public SuffixTree(String str){
+	public Rhythm_model(){
 		root = new NodeRoot();
+	}
+	
+	public Rhythm_model(String str){
+		this();
 		addString(str);
 	}
 	
@@ -43,12 +55,25 @@ public class SuffixTree {
 			System.out.println("%% END OF SUBSTRING %%");
 			System.out.println();
 			System.out.println();
-		}	
+		}
+		//update NodeValues after each string is added.
+		
 	}
 	
 	public Node getTree(){
 		return this.root;
 	}
+
+	public void setController(Rhythm_controller r) {
+		this.controller = r;
+		
+	}
+
+	public void setViewer(Rhythm_viewer v) {
+		this.viewer = v;
+	}
+	
+	
 	
 	
 	

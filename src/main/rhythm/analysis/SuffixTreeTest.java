@@ -1,4 +1,4 @@
-package controller;
+package analysis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,16 +6,16 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import model.InnerNode;
-import model.Node;
-import model.NodeLeaf;
-import model.NodeNonLeaf;
-import model.NodeRoot;
-import model.SuffixTree;
+import analysis.model.InnerNode;
+import analysis.model.Node;
+import analysis.model.NodeLeaf;
+import analysis.model.NodeNonLeaf;
+import analysis.model.NodeRoot;
+import analysis.model.Rhythm_model;
 
 
 
-public class MainApp {
+public class SuffixTreeTest {
 
 	public static void main(String[] args){
 		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3. 
@@ -28,14 +28,17 @@ public class MainApp {
 		// NOT WORKING WORKING 11001111
 		// NOT WORKING 110011110 
 		
-		SuffixTree test = new SuffixTree("AB11001"); //trace construction debug output carefully
+		Rhythm_model test = new Rhythm_model("AB11001"); //trace construction debug output carefully
 		test.getTree().printTree();
 		
 		
-		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
-		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-    		System.out.println(value.getKey() + ": " + value.getValue());
-    	}
+//		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
+//		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+//    		System.out.println(value.getKey() + ": " + value.getValue());
+//    	}
+		
+		
+	
 		
 //		Node root = new NodeRoot();
 //		List<InnerNode> children = new ArrayList<InnerNode>();

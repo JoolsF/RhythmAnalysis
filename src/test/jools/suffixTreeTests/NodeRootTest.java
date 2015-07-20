@@ -1,15 +1,12 @@
 package suffixTreeTests;
 
 import static org.junit.Assert.*;
-
+import model.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import analysis.model.InnerNode;
-import analysis.model.Node;
-import analysis.model.NodeLeaf;
-import analysis.model.NodeRoot;
+
 
 public class NodeRootTest {
 	
