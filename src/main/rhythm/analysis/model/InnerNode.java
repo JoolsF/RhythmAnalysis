@@ -2,7 +2,10 @@ package analysis.model;
 
 import java.util.List;
 
+<<<<<<< HEAD:src/main/rhythm/analysis/model/InnerNode.java
 
+=======
+>>>>>>> 3e8689bb344f48149bb0765be8111cbadf916b68:src/main/java/suffixTree/InnerNode.java
 
 
 
@@ -15,7 +18,6 @@ public interface InnerNode extends Node {
 	public List<InnerNode> getChildren();
 	
 	public void setStringIndex(int index);
-	public void setString(String str);
 	public void setSubString(int start);
 	public void setParent(Node parent);
 	public Node getParent();
@@ -86,19 +88,46 @@ public interface InnerNode extends Node {
 		return childValues;
 	}
 	
+	public default InnerNode getLastChild(){
+		return this.getChildren().get(this.getChildren().size()-1);
+	}
 	
-	//check if this' siblings, excluding $ if exists 
-	public default boolean okToSplitNode(char x){
-		List<InnerNode> siblings = this.getParent().getChildren();
-		siblings.remove(this);
-		if(siblings.get(siblings.size()-1).equals("$")) siblings.remove(siblings.size()-1);
-		for(InnerNode next: siblings){
-			if(next.getString().indexOf(x) == 0) return false;
+	public default String getLastSiblingValue(){
+		return this.getParent().getChildren().get(this.getParent().getChildren().size()-1).getString();
+	}
+	
+	public default InnerNode getLastSibling(){
+		return this.getParent().getChildren().get(this.getParent().getChildren().size()-1);
+	}
+	
+	
+	public default List<InnerNode> getSiblings(){
+		return this.getParent().getChildren();
+	}
+	
+	// returns true if the child has a non "$" sibling
+	public default boolean needToSplitNode(){
+		System.out.println("THIS VALUE " + this.getString());
+		System.out.println("PARENT VALUE " + this.getString());
+		if ((getLastSiblingValue().equals("$") && this.getSiblings().size() > 2) ||
+		 (! getLastSiblingValue().equals("$") && this.getSiblings().size() > 1)) {
+				
+			return true;
+		}else {
+			return false;
 		}
-		return true;
+					
+	}
+	
+	public default void movePrefixUp(String str){	
+		//TO DO - fix this, have to cast.  What about if parent is Root etc
+		InnerNode parent = (InnerNode) this.getParent();
+		parent.setString(parent.getString() + this.getCommonPrefix(str));
+		this.setSubString(str.length());	
 	}
 	
 	public default void debugTrace(String location, String str, int index){
+		
 		System.out.println("	*******************");
 		System.out.println("	Location: " + location + " " + this.getString() + "(" +this.getStringIndex() + ")");
 		System.out.println("	Child values: " + getChildValues() );
@@ -107,4 +136,18 @@ public interface InnerNode extends Node {
 		System.out.println();
 		System.out.println();
 	}
+	
+	public default void remove$Children(){
+		//REMOVE ANY $ CHILDREN FROM PARENT (IF PARENT NOT ROOT)
+		
+			if(this.getLastSiblingValue().equals("$")){
+				
+				this.getParent().removeChild(getLastSibling());
+			}
+				
+			
+		}
+	
+	
+	
 }

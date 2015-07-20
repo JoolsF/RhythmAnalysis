@@ -25,47 +25,45 @@ public class NodeNonLeaf implements InnerNode {
 		this.children = children;
 	}
 	
-	
-
 	@Override
-	public boolean addString(String str, int index) {	
-		 if(this.nodeHasAPrefixOf(str)){
-			 debugTrace("Node has a prefix -> split this node", str, index);
-				//BASE CASE
-				/* this means that we are in non leaf node i.e ABA(-1) and the incoming str is A(4)      
-				 * we must split the node ABA into A |BA
-				 * 1 new node is created A(-1) with 2 children
-				 * 		$(4) (terminal symbol + strindex)
-				 * 		The tree with BA(-1) as the head
-				 * 		
-				 * 2. new node's parent is BA(-1)s parent (R)
-				 * 3.  BA(-1s) parent is new node A(-1)
-				 * 		parent (R) has BA(-1) removed from its list of children
-				 * 		new child A(-1) added to Parent(R) children
-				 * */
-			 if(this.parent instanceof NodeRoot)
-	//if parent is root or cannot move up letter without creating clash or there is one other non $ child
+	public boolean addString(String str, int index) {
+		
+		
+		if(this.nodeHasAPrefixOf(str)){
+
+
+			debugTrace("Node has a a prefix of: ", str, index);
+			//BASE CASE
+			//TO DO check case if parent is root.
+			if(this.needToSplitNode()){
 				splitThisNode(str, index);
 				return true;
-	/*else
-	 * modify parent and this accordingly
-	 * child.debugTrace("     Node is a prefix, child has a prefix", strMinusPrefix, index);
-						this.string += strMinusPrefix;
-						child.setSubString(strMinusPrefix.length());					
-						return true;	
-	*/
-				
-			} else if(this.string.equals("$")){
-				//BUG HERE
-				debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
-				this.string = string;
-				this.stringIndex = index;
-				return true;
-			} else if(this.string.equals(str)){
-				//BASE CASES
-				debugTrace("Node string, = str", str, index);
-				System.out.println("CHILDREN GET " + children.get(children.size()-1).getString());
+			} else {
+				System.out.println("  MOVE PREFIX ONTO PARENT AND REMOVE FROM THIS");
+				//Move prefix onto parent and remove from this.
+				movePrefixUp(str);				
+				return true;	
+			}
 			
+		} else if(this.string.equals(str)){
+			//BASE CASE
+//BUG AREA START
+			if(! this.needToSplitNode()  && ! (this.parent instanceof NodeRoot)){ // TO DO - refactor this.  Avoid checking class
+				System.out.println("IN BUG AREA");
+				//i.e the current node matches str 100%
+				//do we also need to check if current node has no $ children??	
+				//move the prefix to the parent and remove this node				
+				this.getParent().setString(this.getParent().getString() + this.getCommonPrefix(str));
+				this.getParent().addChildren(this.children);
+				this.getParent().removeChild(this);
+				return true;
+//BUG AREA END
+			} else {
+				
+				debugTrace("Node string, = str", str, index);
+				//IF HAS A $ SIBLING THIS NEEDS TO BE REMOVED
+				//IGNORE IF PARENT IS ROOT THOUGH
+				this.remove$Children();
 				if(children.get(children.size()-1).getString().equals("$")){
 					debugTrace("	Child has string of $, index changed only ", str, index);					
 					children.get(children.size()-1).setStringIndex(index);				
@@ -75,71 +73,51 @@ public class NodeNonLeaf implements InnerNode {
 					this.addChildLeaf("$", index);
 					return true;
 				}
-			} else if(this.nodeIsAPrefixOf(str)){
-				debugTrace("Node is a prefix, child has a prefix", str, index);
-				//i.e this.string = a and str arg is ab then a is a prefix of ab
-				//now need to check children for b as we have matched the a prefix
-				// if one of the children's string HAS a prefix of b i.e bab then we need to take this prefix
-				// from the child i.e ab and "move it onto the a above
-				// str = ab
-				//	this = a
-				// child = bab
-				// strMinusPrefix = b
-				// commonPrefix = a
-				
-				//child bab IS A prefix of strminusprefix bab 
-				String strMinusPrefix = this.removeNodeFromArg(str);
-				String commonPrefix = this.getCommonPrefix(str);
+			}
+		} else if(this.nodeIsAPrefixOf(str)){
+			debugTrace("Node is a prefix of:",  str, index);
+			//I.e the incoming string 'str' is a prefix of this then the next path must be chosen.  Each child will be iterated through
+			for(InnerNode child: children){
+				//goes through the children in turn, if a match is found will return true else will return false and continue
+				if (child.addString(this.removeNodeFromArg(str), index)){
+					return true;
+				}
+			}
+			return false;
 			
-			for(InnerNode child: children) {
-				if(child.nodeHasAPrefixOf(strMinusPrefix)){					
-						child.debugTrace("     Node is a prefix, child has a prefix", strMinusPrefix, index);
-						this.string += strMinusPrefix;
-						child.setSubString(strMinusPrefix.length());					
-						return true;	
-							
-
-				} else if(child.getString().equals("$")){ //NEED TO COME LAST
-					System.out.println(children.get(children.size()-1).getString());					
-					child.debugTrace("$$$$$		Node is a prefix, child is $", strMinusPrefix, index);		
-					//BASE CASE
-					child.setString(strMinusPrefix);
-					child.setStringIndex(index);
-					return true;
-				} else if(child.getString().equals(strMinusPrefix)
-							|| child.nodeIsAPrefixOf(strMinusPrefix)){
-					child.debugTrace("		Node is a prefix, child is a prefix. RECURSIVE CASE", strMinusPrefix, index);
-					child.addString(strMinusPrefix, index);
-					return true;
-				}	
-					
-				//SHOULD NOT GET HERE.  ARE ALL CASES COVERED??
-				//throw assert / exception
-			} // end of for loop
-		
+		} else if(this.string.equals("$")){
+			//BASE CASE
+			//MEANS WE ARE AT LAST CHILD BECAUSE $ WHERE IT EXISTS WILL ALWAYS BE AT THE END
+			debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
+			this.string = string;
+			this.stringIndex = index;
+			return true;
+		} else {
+			debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
+			return false;
 		}
-debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
-		return false;
+		
 	}
 	
-	
-	
-	
+
+		
 	/**
 	 * Private helper method for addString
 	 */
 	private void splitThisNode(String str, int index){
-		String prefix = this.getCommonPrefix(str);  //A
-		String suffix = this.removeArgFromNode(str);  //BA
-		this.string = suffix;
-		
+//POTENTIAL BUG
+		remove$Children();
+//POTENTIAL BUG
+		String prefix = this.getCommonPrefix(str);  
+		String suffix = this.removeArgFromNode(str);  
 		List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
-		
-		NodeNonLeaf newNode = null;
-		newNodeChildren.add(this); //adding this node to the new node's children
-		newNodeChildren.add(new NodeLeaf("$",index, newNode)); //adding this node to the new node's children
-		newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren); 
-		this.parent.swapNode(this, newNode);	
+		NodeNonLeaf newNode = new NodeNonLeaf(prefix, -1, this.parent, newNodeChildren); 
+		this.parent = newNode;
+		this.string = suffix;
+		newNodeChildren.add(this); 
+		newNodeChildren.add(new NodeLeaf("$",index, newNode));
+		newNode.parent.removeChild(this);
+		newNode.parent.addChild(newNode);
 	}
 	
 	
@@ -222,9 +200,33 @@ debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIn
 	public Node getParent() {
 		return this.parent;
 	}
-	
-	
-	
+
+	@Override
+	public void addChild(InnerNode child) {
+		this.children.add(child);
+		
+	}
+
+	@Override
+	public void removeChild(InnerNode child) {
+		this.children.remove(child);
+		
+	}
+
+	@Override
+	public void addChildren(List<InnerNode> children) {
+		for(InnerNode next: children){
+			next.setParent(this);
+			
+			if(next.getString().equals("$")){
+				this.children.add(this.children.size(),next);	
+			} else {
+				this.children.add(0,next);
+			}	
+			
+		}
+		
+	}
 	
 	
 }

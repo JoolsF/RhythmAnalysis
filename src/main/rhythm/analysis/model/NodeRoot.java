@@ -97,4 +97,49 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 		}
 		return childValues;	
 	}
+
+	@Override
+	public void setString(String str) {
+		//HAS NO STRING NEED TO RETHINK THE INTERFACE DESIGN
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addChild(InnerNode child) {
+		if(child.getString().equals("$")){
+			this.children.add(this.children.size(),child);	
+		} else {
+			
+			this.children.add(0,child);
+		}	
+		
+	}
+
+	@Override
+	public void removeChild(InnerNode child) {
+		this.children.remove(child);
+		
+	}
+
+	@Override
+	public void addChildren(List<InnerNode> children) {
+		for(InnerNode next: children){
+			next.setParent(this);
+			
+			if(next.getString().equals("$")){
+				this.children.add(this.children.size(),next);	
+			} else {
+				this.children.add(0,next);
+			}	
+			
+		}
+		
+	}
 }
