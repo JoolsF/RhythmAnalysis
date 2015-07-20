@@ -2,10 +2,10 @@ package analysis.model;
 
 import java.util.List;
 
-<<<<<<< HEAD:src/main/rhythm/analysis/model/InnerNode.java
-
-=======
->>>>>>> 3e8689bb344f48149bb0765be8111cbadf916b68:src/main/java/suffixTree/InnerNode.java
+//<<<<<<< HEAD:src/main/rhythm/analysis/model/InnerNode.java
+//
+//=======
+//>>>>>>> 3e8689bb344f48149bb0765be8111cbadf916b68:src/main/java/suffixTree/InnerNode.java
 
 
 
