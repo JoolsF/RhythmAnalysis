@@ -1,4 +1,4 @@
-package analysis;
+package rhythm.analysis;
 
 // TO DO LATER - Implement simple MVC pattern so its as decoupled as possible
 //http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
@@ -16,7 +16,7 @@ public class Runner {
 	
 	public void launchViewer(){
 		//https://github.com/processing/processing/wiki/Window-Size-and-Full-Screen
-		PApplet.main(new String[] { "analysis.view.Rhythm_viewer" });
+		PApplet.main(new String[] { "rhythm.analysis.view.Rhythm_viewer" });
 	}
 	
 

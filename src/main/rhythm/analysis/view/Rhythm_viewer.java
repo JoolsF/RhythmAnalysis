@@ -1,11 +1,12 @@
-package analysis.view;
+package rhythm.analysis.view;
+
 
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textfield;
-import analysis.Rhythm_controller;
-import analysis.model.Rhythm_model;
 import processing.core.*;
+import rhythm.analysis.Rhythm_controller;
+import rhythm.analysis.model.Rhythm_model;
 
 public class Rhythm_viewer extends PApplet{
 	private static final long serialVersionUID = 1L;

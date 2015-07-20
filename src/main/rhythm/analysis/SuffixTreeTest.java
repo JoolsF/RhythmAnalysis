@@ -1,4 +1,4 @@
-package analysis;
+package rhythm.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import analysis.model.InnerNode;
-import analysis.model.Node;
-import analysis.model.NodeLeaf;
-import analysis.model.NodeNonLeaf;
-import analysis.model.NodeRoot;
-import analysis.model.Rhythm_model;
+
 
 
 
@@ -28,8 +23,8 @@ public class SuffixTreeTest {
 		// NOT WORKING WORKING 11001111
 		// NOT WORKING 110011110 
 		
-		Rhythm_model test = new Rhythm_model("AB11001"); //trace construction debug output carefully
-		test.getTree().printTree();
+//		Rhythm_model test = new Rhythm_model("AB11001"); //trace construction debug output carefully
+//		test.getTree().printTree();
 		
 		
 //		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());

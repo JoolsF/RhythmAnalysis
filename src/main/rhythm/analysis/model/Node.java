@@ -1,20 +1,23 @@
-package analysis.model;
+package rhythm.analysis.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public interface Node {
 
+	public String getString();
 	public boolean addString(String str, int index); //returns true if string added successfully
+	public void setString(String str);
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
 	public void printTree();
 	public List<InnerNode> getChildren();
-	//
-
+	public void addChild(InnerNode child);
+	public void removeChild(InnerNode child);
+	public void addChildren(List<InnerNode> children);
 	
 	/**
 	 *  
@@ -42,16 +45,15 @@ public interface Node {
 		
 	}
 	
+	
 	public default List<String> nodesToList(){
 		Map<String, List<Integer>> nodeMap = nodesToMap(new TreeMap<String, List<Integer>>());
-		List<String> nodesList = new ArrayList<String>();
+		List<String> nodeList = new ArrayList<String>();
 		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-			nodesList.add(value.getKey() + ": " + value.getValue());
-		}
-		return nodesList;
+    		nodeList.add((value.getKey() + ": " + value.getValue()));
+    	}
+		return nodeList;
 	}
-	
-	
 	
 	
 }

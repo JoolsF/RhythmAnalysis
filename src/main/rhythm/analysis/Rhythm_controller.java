@@ -1,11 +1,13 @@
-package analysis;
+package rhythm.analysis;
 
 //controller
 //http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
 import java.util.List;
 
-import analysis.model.Rhythm_model;
-import analysis.view.Rhythm_viewer;
+import rhythm.analysis.model.Rhythm_model;
+import rhythm.analysis.view.Rhythm_viewer;
+
+
 
 
 public class Rhythm_controller {

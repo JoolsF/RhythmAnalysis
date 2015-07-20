@@ -1,4 +1,4 @@
-package suffixTreeTests;
+package rhythm.suffixTreeTests;
 
 import static org.junit.Assert.*;
 

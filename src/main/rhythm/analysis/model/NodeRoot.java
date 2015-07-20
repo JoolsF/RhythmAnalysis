@@ -1,4 +1,4 @@
-package analysis.model;
+package rhythm.analysis.model;
 
 
 

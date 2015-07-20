@@ -1,15 +1,10 @@
-package analysis.model;
-//http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
+package rhythm.analysis.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
-
-import analysis.Rhythm_controller;
-import analysis.view.Rhythm_viewer;
-
 
 
 
@@ -29,11 +24,9 @@ import analysis.view.Rhythm_viewer;
 public class Rhythm_model {
 	
 	private Node root;
-	private Rhythm_controller controller = null;
-	private Rhythm_viewer viewer = null;
-
 	
-	public Rhythm_model(){
+	
+	public Rhythm_model() {
 		root = new NodeRoot();
 	}
 	
@@ -42,6 +35,8 @@ public class Rhythm_model {
 		addString(str);
 	}
 	
+	
+
 	public void addString(String str){		
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
@@ -53,28 +48,33 @@ public class Rhythm_model {
 			root.addString("$", i+1);
 			System.out.println("$ " + (i+1));
 			System.out.println("%% END OF SUBSTRING %%");
-			System.out.println();
-			System.out.println();
-		}
-		//update NodeValues after each string is added.
-		
+
+		}	
 	}
 	
 	public Node getTree(){
 		return this.root;
 	}
+	
+	public static void main(String[] args){
+	//1100101 <- class cast error
+	// AB1ABA WORKING
+	// AB1ABAB WORKING
+	// AB1ABAB1 WORKING
+	// AB1ABAB1A WORKING
+	// AB1ABAB1AB WORKING
+	
+		
+		Rhythm_model test = new Rhythm_model("1010010"); 
+		test.getTree().printTree();
+		
+		
+		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
+		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+    		System.out.println(value.getKey() + ": " + value.getValue());
+    	}
 
-	public void setController(Rhythm_controller r) {
-		this.controller = r;
 		
 	}
-
-	public void setViewer(Rhythm_viewer v) {
-		this.viewer = v;
-	}
-	
-	
-	
-	
 	
 }
