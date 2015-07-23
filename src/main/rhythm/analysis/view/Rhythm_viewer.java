@@ -1,10 +1,19 @@
 package rhythm.analysis.view;
 
+//http://www.gicentre.net/utils/multiwindow/
+//http://www.sojamo.de/libraries/controlP5/
+//http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
+//http://forum.processing.org/two/discussion/1368/controlp5-buttons-controls-trigger-automatically-on-sketch-start
+
+import processing.core.*;
+
+import org.gicentre.utils.multisketch.*;
 
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
+import controlP5.Textarea;
 import controlP5.Textfield;
-import processing.core.*;
+
 import rhythm.analysis.Rhythm_controller;
 import rhythm.analysis.model.Rhythm_model;
 
@@ -13,9 +22,12 @@ public class Rhythm_viewer extends PApplet{
 	
 	String textValue = "";
 	ControlP5 cp5;
+	Textarea myTextarea;
 	
 	Rhythm_controller controller = null;
 	Rhythm_model model = null;
+	
+	PopupWindow arcView = null;
 	
 	/**
 	 * setup() called first
@@ -28,7 +40,10 @@ public class Rhythm_viewer extends PApplet{
 		controller = new Rhythm_controller();
 		controller.initAll(this);
 		
-		
+
+		//Start second windows
+		arcView = new PopupWindow(this, new Arc_viewer()); 
+
 		//ControlP5 setup code starts here
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -42,8 +57,38 @@ public class Rhythm_viewer extends PApplet{
 		 	.setFont(font)
 		 	.setFocus(true)
 		 	.setColor(color(255,0,0));
-		}
 		
+		//button
+		cp5.addButton("print_tree")
+			.setBroadcast(false)	
+			.setValue(100)
+			.setPosition(20,200)
+			.setSize(200,19)
+			.setBroadcast(true);
+			
+		
+		cp5.addButton("showArcTree")
+		.setBroadcast(false)
+		.setValue(100)
+		.setPosition(20,300)
+		.setSize(200,19)
+		.setBroadcast(true);
+		
+		
+		
+		//text area
+		myTextarea = cp5.addTextarea("txt")
+	    .setPosition(20,400)
+	    .setSize(200,200)
+	    .setFont(createFont("arial",12))
+	    .setLineHeight(14)
+	    .setColor(color(128))
+	    .setColorBackground(color(255,100))
+	    .setColorForeground(color(255,100));		
+	}
+		
+
+	
 	/**
 	 * draw() called second
 	 */
@@ -84,74 +129,26 @@ public class Rhythm_viewer extends PApplet{
 
 	/**
 	 * 
-	 * 
 	 * @param theText
 	 */
 	public void input(String theText) {
-			// automatically receives results from controller input
-			println("a textfield event for controller 'input' : "+theText);
-		}
+		// automatically receives results from controller input
+		println("a textfield event for controller 'input' : "+theText);
+		this.controller.createNewTree(theText);
+	}
 	
+	//BUTTONS
+	
+	//Takes input from print_tree button and prints some text to screen
+	public void print_tree(){
+		//throws java.lang.reflect.InvocationTargetException
+		this.myTextarea.setText(controller.getTreeAsList().toString());	
+	}
+	
+	public void showArcTree(){
+		arcView.setVisible(true);
+	}
 	
 	
 }
-//https://processing.org/tutorials/text/
-//http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
-
-//public class Rhythm_viewer extends PApplet {
-//	Rhythm_controller controller = null;
-//	Rhythm_model model = null;
-//	//PFont f;
-//	
-//	/**
-//	 * The MVC system is started from here.
-//	 * PApplet will call this method first
-//	 */
-//	public void setUp(){
-//		controller = new Rhythm_controller();
-//		controller.initAll(this);
-//	}
-//
-//	public void setModel(Rhythm_model m) {
-//		this.model = m;
-//		
-//	}
-//	
-////	public void setup() {
-////		  
-////		  controller = new Rhythm_controller();
-////		  controller.createNewTree("AB11001");
-////		  size(200,200);
-////		  f = createFont("Arial",16,true); // STEP 3 Create Font
-////		}
-////
-////	public void draw() {
-////		
-////		background(255);
-////		textFont(f,16);                 // STEP 4 Specify font to be used
-////		fill(0);                        // STEP 5 Specify font color 
-////		
-////		
-////		for(String next: controller.getTreeAsList()){
-////			text(next + "\n", 10, 100);
-////		}
-////		
-////		
-////		//text("Hello Strings!",10,100);  // STEP 6 Display Text
-////		}
-//	
-////	public void setup() {
-////	    size(200,200);
-////	    background(0);
-////	  }
-////
-////	  public void draw() {
-////	    stroke(255);
-////	    if (mousePressed) {
-////	      line(mouseX,mouseY,pmouseX,pmouseY);
-////	    }
-////	  }
-//	  
-//	  
-//	  
-//}
+	

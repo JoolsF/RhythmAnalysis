@@ -1,7 +1,7 @@
 package rhythm.analysis;
 
 //controller
-//http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
+
 import java.util.List;
 
 import rhythm.analysis.model.Rhythm_model;
@@ -30,9 +30,9 @@ public class Rhythm_controller {
 		model = new Rhythm_model();
 		
 		//create references between MVC components
-//		model.setController(this);
-//		viewer.setModel(model);
-//		model.setViewer(viewer);
+		model.setController(this);
+		viewer.setModel(model);
+		model.setViewer(viewer);
 	}
 	
 	
@@ -82,6 +82,7 @@ public class Rhythm_controller {
 		
 	}
 	public List<String> getTreeAsList(){
+		System.out.println(this.model.getTree().nodesToList());
 		return this.model.getTree().nodesToList();
 	}
 	

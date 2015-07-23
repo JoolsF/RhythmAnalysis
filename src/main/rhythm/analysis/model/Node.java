@@ -50,7 +50,7 @@ public interface Node {
 		Map<String, List<Integer>> nodeMap = nodesToMap(new TreeMap<String, List<Integer>>());
 		List<String> nodeList = new ArrayList<String>();
 		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-    		nodeList.add((value.getKey() + ": " + value.getValue()));
+    		nodeList.add((value.getKey() + ": " + value.getValue() +"\n"));
     	}
 		return nodeList;
 	}

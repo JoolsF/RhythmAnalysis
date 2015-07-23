@@ -6,5 +6,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="C:/Jools/lib/processing/core.jar"/>
 	<classpathentry kind="lib" path="C:/Jools/lib/processing/controlP5.jar"/>
+	<classpathentry kind="lib" path="C:/Jools/lib/processing/G4P.jar"/>
+	<classpathentry kind="lib" path="C:/Jools/lib/processing/gicentreUtils.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
