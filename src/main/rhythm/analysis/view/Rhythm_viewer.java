@@ -1,10 +1,12 @@
 package rhythm.analysis.view;
 
-//http://www.gicentre.net/utils/multiwindow/
-//http://www.sojamo.de/libraries/controlP5/
-//http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
-//http://forum.processing.org/two/discussion/1368/controlp5-buttons-controls-trigger-automatically-on-sketch-start
-
+/*
+Referenced
+http://www.gicentre.net/utils/multiwindow/
+http://www.sojamo.de/libraries/controlP5/
+http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
+http://forum.processing.org/two/discussion/1368/controlp5-buttons-controls-trigger-automatically-on-sketch-start
+*/
 import processing.core.*;
 
 import org.gicentre.utils.multisketch.*;
@@ -146,6 +148,7 @@ public class Rhythm_viewer extends PApplet{
 	}
 	
 	public void showArcTree(){
+		
 		arcView.setVisible(true);
 	}
 	
