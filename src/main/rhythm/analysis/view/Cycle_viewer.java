@@ -92,7 +92,14 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	             }
 	         }
 	      }
+	    noLoop();
 	    }
+	
+	public void testMethod(){
+		println("hi");
+		fill(0);
+		text("hello",20,20);
+	}
 
 
 }

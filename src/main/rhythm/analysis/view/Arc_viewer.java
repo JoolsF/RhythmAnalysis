@@ -15,11 +15,16 @@ public class Arc_viewer extends EmbeddedSketch {
 	 private final int screenWidth = 900;
 	 private final int screenHeight = 600;
 	 private final int screenBorder = 100;
+	 private final int screenMidY = screenHeight / 2;
+	 
+	 String testStr = "abcdefghijklmnopqrstuvwxyz"; ;
+	 float lineLength = screenWidth - (screenBorder * 2);
+	 float lineSubDivision = lineLength / (testStr.length() -1);
 	 
 	 PFont f;
 	 
 	 PopupWindow cycleView = null;
-	 
+	 Cycle_viewer cycleViewer;
 	 
 	  // Initialises the sketch ready to display the arc diagram
 	 public void setup() {
@@ -33,7 +38,8 @@ public class Arc_viewer extends EmbeddedSketch {
 	    
 	    //TO DO - move to button handler method
 	    //Start period viewer window
-	    cycleView = new PopupWindow(this, new Cycle_viewer()); 
+	    cycleViewer = new Cycle_viewer();
+	    cycleView = new PopupWindow(this, cycleViewer); 
 	   
 	    }
 	 
@@ -44,13 +50,14 @@ public class Arc_viewer extends EmbeddedSketch {
 	    
 	    drawArcDiagram();  
 	    cycleView.setVisible(true);
+	    noLoop();
 	  }
 	 /**
 	  * Draw arc diagram on the screen
 	  */
 	 public void drawArcDiagram(){ 
 		 //Test data would come from model
-		 String str = "abcdefghijklmnopqrstuvwxyz"; 
+		
 		 int[][] nodePairs = new int[2][4]; // [number or pairs][nodes per pair]
 		 nodePairs[0][0] = 0;
 		 nodePairs[0][1] = 3;
@@ -78,22 +85,20 @@ public class Arc_viewer extends EmbeddedSketch {
 		 
 		 
 		 
-		 float yMid = screenHeight / 2;
-		 float lineLength = screenWidth - (screenBorder * 2);
-		 float lineSubDivision = lineLength / (str.length() -1);
+		
 		 
 		 println("lineSubDivision: " + lineSubDivision);
 		 
 		// Draw line using processing line(x1,y1,x2,y2)
-		 line(screenBorder,yMid, screenWidth - screenBorder,yMid);
+		 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
 		 
 		
 		 
 		// Render characters along line
 		 float linePosition = screenBorder;
-		 for(char currentChar: str.toCharArray()){
+		 for(char currentChar: testStr.toCharArray()){
 		    	pushMatrix();
-		    	translate(linePosition, (screenHeight / 2));
+		    	translate(linePosition, screenMidY);
 		    	linePosition += lineSubDivision;
 		    	text(currentChar,0, +30); //= 30 so that characters appear below the line
 		    	ellipse(0,-0,5,5);
@@ -130,25 +135,37 @@ public class Arc_viewer extends EmbeddedSketch {
 			 float nodeTo = getMidPoint(regionBstart, regionBend);
 			 		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
-			 float arcY = screenHeight / 2;
+			 
 			 float arcWidth = nodeTo - nodeFrom; 
-			 float height = 300; // arbitrary for now
-				 
+			 float height = 300; // arbitrary for now				 
 			 pushStyle(); //start style region
 			 noFill();
 			 stroke(100,127); // 2nd arg is alpha value
 			 strokeWeight(nodeLength);
 			 strokeCap(SQUARE); // Makes ends of arc square			 
-			 arc(arcMiddle, arcY, arcWidth, height, -PI, 0);
+			 arc(arcMiddle, screenMidY, arcWidth, height, -PI, 0);
 			 popStyle(); //end style region
 		 }	 
-		 
-
+		 println("!");
+		 cycleViewer.testMethod();
 		 
 	 }
 	 
 	 public float getMidPoint(float x, float y){
 		 return (x + y) / 2;
+	 }
+	 
+	 public void mouseClicked(){
+		 int clickTolerance = 20;
+		 if(mouseY >= (screenMidY - clickTolerance) && mouseY <= (screenMidY + clickTolerance)){
+			 println("X: " + getXPosition(mouseX));	 
+		 }
+	 }
+	 
+	 public float getXPosition(int xPixels){
+		 return (xPixels - screenBorder) / lineSubDivision;
+		
+		 
 	 }
 
 }
