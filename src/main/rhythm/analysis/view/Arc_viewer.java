@@ -1,5 +1,6 @@
 package rhythm.analysis.view;
 import processing.core.*;
+
 import org.gicentre.utils.multisketch.*;
 /*
 Referenced
@@ -17,8 +18,10 @@ public class Arc_viewer extends EmbeddedSketch {
 	 
 	 PFont f;
 	 
+	 PopupWindow cycleView = null;
 	 
-	  // Initialises the sketch ready to display some animated text.
+	 
+	  // Initialises the sketch ready to display the arc diagram
 	 public void setup() {
 	    size(screenWidth, screenHeight);
 	    f = createFont("Georgia",15,true);
@@ -27,6 +30,10 @@ public class Arc_viewer extends EmbeddedSketch {
 	 // The text must be centred
 	    textAlign(CENTER);
 	    smooth();
+	    
+	    //TO DO - move to button handler method
+	    //Start period viewer window
+	    cycleView = new PopupWindow(this, new Cycle_viewer()); 
 	    
 	    }
 	 
@@ -136,29 +143,7 @@ public class Arc_viewer extends EmbeddedSketch {
 			 popStyle(); //end style region
 		 }	 
 		 
-//		 //Render arc
-//		 //https://processing.org/reference/arc_.html
-//		 for(int[] next: nodePairs){
-//			
-//			 int nodeFrom = next[0] * lineSubDivision + screenBorder;
-//			 int nodeTo = next[1] * lineSubDivision + screenBorder;
-//			
-//			 int arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
-//			 int arcY = screenHeight / 2;
-//			 int arcWidth = nodeTo - nodeFrom; 
-//			 int height = 500; // arbitrary for now
-//			
-//			 
-//			 pushStyle(); //start style region
-//			 noFill();
-//			 stroke(100,127); // 2nd arg is alpha value
-//			 strokeWeight(120);
-//			 strokeCap(SQUARE); // Makes ends of arc square			 
-//			 arc(arcMiddle, arcY, arcWidth, height, -PI, 0);
-//			 popStyle(); //end style region
-//		 }	 
-		 
-		 
+
 		 
 	 }
 	 
