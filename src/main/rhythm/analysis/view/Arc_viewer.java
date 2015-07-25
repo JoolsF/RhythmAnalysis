@@ -35,65 +35,52 @@ public class Arc_viewer extends EmbeddedSketch {
 	    super.draw();   // Should be the first line of draw(). 
 	    background(200, 255, 200); // Should be second line of draw(). 
 	    
-	    drawArcDiagram();
-//	    //arc
-//	    noFill();
-//	    stroke(100);
-//	    
-//	    arc(187, 300, 175, 500, -PI, 0);
-//	    
-//	    
-//	 
-//	    String str = "hello";
-//	    
-//	    float linePosition = 100;
-//	    line(100,screenHeight /2,800,screenHeight /2);
-//	    
-//	    text("HI",0,0);
-//	    
-//	    for(char currentChar: str.toCharArray()){
-//	    	pushMatrix();
-//	    	translate(linePosition, (screenHeight / 2));
-//	    	//float w = textWidth(currentChar);
-//	    	linePosition += 175; //length of string - 1 / width of line (-1 because first character start on line
-//	    	text(currentChar,0,+30);
-//	    	ellipse(0,-0,5,5);
-//	    	popMatrix();
-//	    }
-	    
-	    
+	    drawArcDiagram();  
 	    
 	  }
-	 
+	 /**
+	  * Draw arc diagram on the screen
+	  */
 	 public void drawArcDiagram(){
 		 //Test data would come from model
-		 String str = "12341566"; 
-		 int[][] nodePairs = new int[2][2]; // [number of pairs] [2]
+		 String str = "abcdefghijklmnopqrstuvwxyz"; 
+		 int[][] nodePairs = new int[2][4]; // [number or pairs][nodes per pair]
 		 nodePairs[0][0] = 0;
-		 nodePairs[0][1] = 4;
-		 nodePairs[1][0] = 6;
-		 nodePairs[1][1] = 7;
+		 nodePairs[0][1] = 3;
+		 nodePairs[0][2] = 9;
+		 nodePairs[0][3] = 12;
+		 nodePairs[1][0] = 11;
+		 nodePairs[1][1] = 12;
+		 nodePairs[1][2] = 24;
+		 nodePairs[1][3] = 25;
 		 //Test data end
 		 
-		 int yMid = screenHeight / 2;
-		 int lineLength = screenWidth - (screenBorder * 2);
-		 int lineSubDivision = lineLength / (str.length() -1);
-		 
-		// Draw line using processing line(x1,y1,x2,y2)
-		 line(screenBorder,yMid, screenWidth - screenBorder,yMid);
 		 
 		 /*
 		  * 
 		 	 * Steps
 		 	 * 1. Draw line.  
-		 	 * 			Y position = middle of screen i.e. (height / 2)
-		 	 * 		    X position.  Line start  at (width + 100) and ends at (width - 100).  100 represents the border value.
+		 	 *	Y position = middle of screen i.e. (height / 2)
+		 	 *	X position.  Line start  at (width + 100) and ends at (width - 100).  100 represents the border value.
 		 	 * 2.Render characters and corresponding character markers onto the line
-		 	 * 			i)  Calculate line subdivision e.g for string s "12341566" 
-		 	 * 			ii) Given that first character of string will be rendered at start of line the line should be 
-		 	 *    		    divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
-		 	 *              therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
+		 	 *	i)  Calculate line subdivision e.g for string s "12341566" 
+		 	 *	ii) Given that first character of string will be rendered at start of line the line should be 
+		 	 *  	divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
+		 	 *		therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
 		 */
+		 
+		 
+		 
+		 float yMid = screenHeight / 2;
+		 float lineLength = screenWidth - (screenBorder * 2);
+		 float lineSubDivision = lineLength / (str.length() -1);
+		 
+		 println("lineSubDivision: " + lineSubDivision);
+		 
+		// Draw line using processing line(x1,y1,x2,y2)
+		 line(screenBorder,yMid, screenWidth - screenBorder,yMid);
+		 
+		
 		 
 		// Render characters along line
 		 float linePosition = screenBorder;
@@ -109,13 +96,20 @@ public class Arc_viewer extends EmbeddedSketch {
 		 
 		 /*
 		 * 3.Render arcs
-	 	 * 			Arcs in arc diagrams connect two nodes on a line.  An arc has two basic arguments therefore, (int nodeFrom, int nodeTo)
-	 	 * 			representing the character to go from and to.
-	 	 *          In processing an arc is defined as follows 
-	 	 *          	arc(x, y, width, height, start, stop);
-		 *				x represents the middle of the 'ellipse' which will be nodeTo - ((nodeTo position - nodeFrom position) / 2)
-	 	 *          	The width will simply be nodeTo position - nodeFrom position
-	 	 * 				Height can be any value for now
+	 	 *  Arcs connect two repetition regions in a string.  
+	 	 * 	The width of the arc is the width of one of the repetition regions (they are the same)
+	 	 * 	Each arc has four args (int regionAstart, int regionAend, int regionBstart, int regionBend)   
+	 	 * 	These represent the two repetition regions A and B to be joined.
+	 	 *  
+	 	 *  In processing an arc is defined as follows 
+	 	 *  	arc(x, y, width, height, start, stop);
+		 *		x represents the middle of the 'ellipse' which will be nodeTo - ((nodeTo position - nodeFrom position) / 2)
+		 *		As we need to take into account the width of the arc using strokeWeight(), we will need to calculate the
+		 *		nodeFrom and nodeTo position as being midway between regionAstart -> regionAend and regionBstart -> regionBstend respectively
+		 *		The width will simply be nodeTo position - nodeFrom position
+		 *		The strokeWeight will be the distance regionAstart -> regionAend 
+		 *		Height can be any value for now
+	 	 *        
 	 	 */                                                       
 		 
 		 
@@ -123,33 +117,72 @@ public class Arc_viewer extends EmbeddedSketch {
 		 //https://processing.org/reference/arc_.html
 		 for(int[] next: nodePairs){
 			
-			 int nodeFrom = next[0] * lineSubDivision + screenBorder;
-			 int nodeTo = next[1] * lineSubDivision + screenBorder;
 			
-			 int arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
-			 int arcY = screenHeight / 2;
-			 int arcWidth = nodeTo - nodeFrom; 
-			 int height = 500; // arbitrary for now
+			 
+			 
+			 float regionAstart = next[0] * lineSubDivision + screenBorder;
+			 float regionAend = next[1] * lineSubDivision + screenBorder;
+			 float regionBstart = next[2] * lineSubDivision + screenBorder;
+			 float regionBend= next[3] * lineSubDivision + screenBorder;
+			
+			 
+			 println("regionAstart: " + regionAstart);
+			 println("regionAend: "+ regionAend);
+			 println("regionBstart: " + regionBstart);
+			 println("regionBend: "+ regionBend);
+			 
+			 
+			 float nodeLength = regionAend - regionAstart;
+			 float nodeFrom = getMidPoint(regionAstart, regionAend);
+			 float nodeTo = getMidPoint(regionBstart, regionBend);
+			 
+			 println("nodeFrom: " + nodeFrom);
+			 println("nodeTo: " + nodeTo);
+			 
+			 
+			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
+			 float arcY = screenHeight / 2;
+			 float arcWidth = nodeTo - nodeFrom; 
+			 float height = 300; // arbitrary for now
+			
+			 
+			 pushStyle(); //start style region
 			 noFill();
-			 stroke(100);
-			 
-			 println(arcMiddle);
-			 
-			 
-			 arc(arcMiddle, arcY, arcWidth, 500, -PI, 0);
-			 //arc(arcMiddle, arcY, arcWidth, height, -PI, 0);
-			
-		 }
+			 stroke(100,127); // 2nd arg is alpha value
+			 strokeWeight(nodeLength);
+			 strokeCap(SQUARE); // Makes ends of arc square			 
+			 arc(arcMiddle, arcY, arcWidth, height, -PI, 0);
+			 popStyle(); //end style region
+		 }	 
 		 
-		 	
-	
-		 	         
-		 	
-//		 	noFill();
-//		    stroke(100);
-//		    
-//		    arc(187, 300, 175, 500, -PI, 0);
+//		 //Render arc
+//		 //https://processing.org/reference/arc_.html
+//		 for(int[] next: nodePairs){
+//			
+//			 int nodeFrom = next[0] * lineSubDivision + screenBorder;
+//			 int nodeTo = next[1] * lineSubDivision + screenBorder;
+//			
+//			 int arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
+//			 int arcY = screenHeight / 2;
+//			 int arcWidth = nodeTo - nodeFrom; 
+//			 int height = 500; // arbitrary for now
+//			
+//			 
+//			 pushStyle(); //start style region
+//			 noFill();
+//			 stroke(100,127); // 2nd arg is alpha value
+//			 strokeWeight(120);
+//			 strokeCap(SQUARE); // Makes ends of arc square			 
+//			 arc(arcMiddle, arcY, arcWidth, height, -PI, 0);
+//			 popStyle(); //end style region
+//		 }	 
 		 
+		 
+		 
+	 }
+	 
+	 public float getMidPoint(float x, float y){
+		 return (x + y) / 2;
 	 }
 
 }
