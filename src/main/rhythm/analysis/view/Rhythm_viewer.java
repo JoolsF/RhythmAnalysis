@@ -86,6 +86,8 @@ public class Rhythm_viewer extends PApplet{
 	    .setColor(color(128))
 	    .setColorBackground(color(255,100))
 	    .setColorForeground(color(255,100));		
+		
+		
 	}
 		
 

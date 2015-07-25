@@ -34,7 +34,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	    //TO DO - move to button handler method
 	    //Start period viewer window
 	    cycleView = new PopupWindow(this, new Cycle_viewer()); 
-	    
+	   
 	    }
 	 
 	  // Displays some text and animates a change in size.
@@ -43,12 +43,12 @@ public class Arc_viewer extends EmbeddedSketch {
 	    background(200, 255, 200); // Should be second line of draw(). 
 	    
 	    drawArcDiagram();  
-	    
+	    cycleView.setVisible(true);
 	  }
 	 /**
 	  * Draw arc diagram on the screen
 	  */
-	 public void drawArcDiagram(){
+	 public void drawArcDiagram(){ 
 		 //Test data would come from model
 		 String str = "abcdefghijklmnopqrstuvwxyz"; 
 		 int[][] nodePairs = new int[2][4]; // [number or pairs][nodes per pair]
