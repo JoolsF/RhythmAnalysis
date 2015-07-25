@@ -95,7 +95,7 @@ public class Arc_viewer extends EmbeddedSketch {
 		 
 		 
 		 /*
-		 * 3.Render arcs
+		 * 3.Render arcs https://processing.org/reference/arc_.html
 	 	 *  Arcs connect two repetition regions in a string.  
 	 	 * 	The width of the arc is the width of one of the repetition regions (they are the same)
 	 	 * 	Each arc has four args (int regionAstart, int regionAend, int regionBstart, int regionBend)   
@@ -108,44 +108,25 @@ public class Arc_viewer extends EmbeddedSketch {
 		 *		nodeFrom and nodeTo position as being midway between regionAstart -> regionAend and regionBstart -> regionBstend respectively
 		 *		The width will simply be nodeTo position - nodeFrom position
 		 *		The strokeWeight will be the distance regionAstart -> regionAend 
-		 *		Height can be any value for now
-	 	 *        
+		 *		Height can be any value for now       
 	 	 */                                                       
-		 
-		 
-		 //Render arc
-		 //https://processing.org/reference/arc_.html
-		 for(int[] next: nodePairs){
-			
-			
-			 
-			 
+		 		 
+		 //Render arc 
+		 for(int[] next: nodePairs){	 
 			 float regionAstart = next[0] * lineSubDivision + screenBorder;
 			 float regionAend = next[1] * lineSubDivision + screenBorder;
 			 float regionBstart = next[2] * lineSubDivision + screenBorder;
 			 float regionBend= next[3] * lineSubDivision + screenBorder;
 			
-			 
-			 println("regionAstart: " + regionAstart);
-			 println("regionAend: "+ regionAend);
-			 println("regionBstart: " + regionBstart);
-			 println("regionBend: "+ regionBend);
-			 
-			 
 			 float nodeLength = regionAend - regionAstart;
 			 float nodeFrom = getMidPoint(regionAstart, regionAend);
 			 float nodeTo = getMidPoint(regionBstart, regionBend);
-			 
-			 println("nodeFrom: " + nodeFrom);
-			 println("nodeTo: " + nodeTo);
-			 
-			 
+			 		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
 			 float arcY = screenHeight / 2;
 			 float arcWidth = nodeTo - nodeFrom; 
 			 float height = 300; // arbitrary for now
-			
-			 
+				 
 			 pushStyle(); //start style region
 			 noFill();
 			 stroke(100,127); // 2nd arg is alpha value

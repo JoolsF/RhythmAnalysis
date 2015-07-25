@@ -1,4 +1,4 @@
-package rhythm.analysis;
+package rhythm.analysis.control;
 
 //controller
 

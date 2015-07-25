@@ -1,6 +1,6 @@
 package rhythm.analysis.model;
 
-import rhythm.analysis.Rhythm_controller;
+import rhythm.analysis.control.Rhythm_controller;
 import rhythm.analysis.view.Rhythm_viewer;
 
 import java.util.ArrayList;
