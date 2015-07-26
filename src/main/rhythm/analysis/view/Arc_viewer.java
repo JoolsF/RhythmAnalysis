@@ -10,21 +10,20 @@ https://processing.org/tutorials/curves/
 */
 public class Arc_viewer extends EmbeddedSketch {
 	private static final long serialVersionUID = 1L;
+	private float textScale;  
+	private final int screenWidth = 900;
+	private final int screenHeight = 600;
+	private final int screenBorder = 100;
+	private final int screenMidY = screenHeight / 2;
 	
-	 private float textScale;  
-	 private final int screenWidth = 900;
-	 private final int screenHeight = 600;
-	 private final int screenBorder = 100;
-	 private final int screenMidY = screenHeight / 2;
-	 
-	 String testStr = "abcdefghijklmnopqrstuvwxyz"; ;
-	 float lineLength = screenWidth - (screenBorder * 2);
-	 float lineSubDivision = lineLength / (testStr.length() -1);
-	 
-	 PFont f;
-	 
-	 PopupWindow cycleView = null;
-	 Cycle_viewer cycleViewer;
+	private String testStr = "abcdefghijklmnopqrstuvwxyz"; ;
+	private float lineLength = screenWidth - (screenBorder * 2);
+	private float lineSubDivision = lineLength / (testStr.length() -1);
+	
+	private PFont f;
+	
+	private PopupWindow cycleView = null;
+	private Cycle_viewer cycleViewer;
 	 
 	  // Initialises the sketch ready to display the arc diagram
 	 public void setup() {
@@ -40,16 +39,17 @@ public class Arc_viewer extends EmbeddedSketch {
 	    //Start period viewer window
 	    cycleViewer = new Cycle_viewer();
 	    cycleView = new PopupWindow(this, cycleViewer); 
+	    
 	   
 	    }
 	 
 	  // Displays some text and animates a change in size.
 	 public  void draw()  { 
+		 
 	    super.draw();   // Should be the first line of draw(). 
 	    background(200, 255, 200); // Should be second line of draw(). 
 	    
 	    drawArcDiagram();  
-	    cycleView.setVisible(true);
 	    noLoop();
 	  }
 	 /**
@@ -81,19 +81,12 @@ public class Arc_viewer extends EmbeddedSketch {
 		 	 *	ii) Given that first character of string will be rendered at start of line the line should be 
 		 	 *  	divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
 		 	 *		therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
-		 */
-		 
-		 
-		 
-		
-		 
+		 */		 
 		 println("lineSubDivision: " + lineSubDivision);
 		 
 		// Draw line using processing line(x1,y1,x2,y2)
 		 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
-		 
-		
-		 
+
 		// Render characters along line
 		 float linePosition = screenBorder;
 		 for(char currentChar: testStr.toCharArray()){
@@ -155,10 +148,16 @@ public class Arc_viewer extends EmbeddedSketch {
 		 return (x + y) / 2;
 	 }
 	 
+	 /**
+	  * mouse clicked checks if click on line and which node it is nearest.  It will then render the relevant "cycle" at this point
+	  */
+	 
 	 public void mouseClicked(){
+		 cycleView.setVisible(true);
 		 int clickTolerance = 20;
 		 if(mouseY >= (screenMidY - clickTolerance) && mouseY <= (screenMidY + clickTolerance)){
-			 println("X: " + getXPosition(mouseX));	 
+			 cycleViewer.setOnsets(new int[]{1,5,10,15});
+			 //println("X: " + Math.round(getXPosition(mouseX)));	 
 		 }
 	 }
 	 

@@ -16,13 +16,20 @@ import processing.core.PVector;
 public class Cycle_viewer extends EmbeddedSketch  {
 	private static final long serialVersionUID = 1L;
 	
-	int numPulses = 30;
-	PVector[] points = new PVector[numPulses];
-	PVector[] charPoints = new PVector[numPulses];
-	float radius = 200;
+	//TO DO - move to constructor
+	private int numPulses = 30;
+	private PVector[] points = new PVector[numPulses];
+	private PVector[] charPoints = new PVector[numPulses];
+	private float radius = 200;
 	
-	//testdata end
-	int[][] onsets = new int[4][2]; 
+	//Test data
+	private int[] onsets = new int[]{};
+	
+	public Cycle_viewer(){
+		
+		
+		
+	}
 	
 
 	 
@@ -52,24 +59,21 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	    * 
 	    * 
 	    */
-	    onsets[0][0] = 5;
-	    onsets[0][1] = 6;
-	    onsets[1][0] = 6;
-	    onsets[1][1] = 13;
-	    onsets[2][0] = 13;
-	    onsets[2][1] = 25;
-	    onsets[3][0] = 25;
-	    onsets[3][1] = 5;
-	    //test data end
+	    
+	    createLineCoordinates(new int[]{1,5,10,20});
 	    noLoop();     
 	}
 	 
 	public void draw(){	
-		 translate(width/2, height/2);
 		smooth();
 	    background(100);
 	    fill(0);
-	    	
+		renderCircle();
+	}
+	
+	
+	public void renderCircle(){
+		translate(width/2, height/2);
 	    pushStyle();
 	    fill(255);
 	    ellipse(0,0, radius * 2, radius * 2); //draws circle
@@ -84,7 +88,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	        	popStyle();
 	        	text(i, charPoints[i].x -5, charPoints[i].y +5); 
 	        	if ( j != i ) {
-	        		for(int[] onset: onsets){
+	        		for(int[] onset: createLineCoordinates(onsets)){
 	                	if(onset[0] == i && onset[1] == j){ // if we are at point in circle matching an onset
 	                		line( points[i].x, points[i].y, points[j].x, points[j].y );
 	                	}
@@ -92,13 +96,34 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	             }
 	         }
 	      }
-	    noLoop();
-	    }
+	    noLoop();	
+	}
+
+	/**
+	 * Takes an array of numbers representing beat onsets in a sequence.
+	 */
+	private int[][] createLineCoordinates(int[] nodes){
+		int[][] lineCoords = new int[nodes.length][2];
+		for(int i = 0; i < nodes.length; i++){
+			lineCoords[i][0] = nodes[i];
+			if(i == nodes.length -1){
+				lineCoords[i][1] = nodes[0];	
+			} else {
+				lineCoords[i][1] = nodes[i + 1];
+			}
+		}
+		return lineCoords;
+	}
 	
 	public void testMethod(){
-		println("hi");
+		//println("hi");
 		fill(0);
 		text("hello",20,20);
+	}
+	
+	public void setOnsets(int[] onsets){
+		this.onsets = onsets;
+		//draw();
 	}
 
 
