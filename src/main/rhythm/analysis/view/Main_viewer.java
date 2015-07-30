@@ -13,12 +13,13 @@ import org.gicentre.utils.multisketch.*;
 
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
+import controlP5.Slider;
 import controlP5.Textarea;
 import controlP5.Textfield;
 import rhythm.analysis.control.Rhythm_controller;
 import rhythm.analysis.model.Rhythm_model;
 
-public class Rhythm_viewer extends PApplet{
+public class Main_viewer extends PApplet{
 	private static final long serialVersionUID = 1L;
 	
 	String textValue = "";
@@ -27,23 +28,24 @@ public class Rhythm_viewer extends PApplet{
 	
 	Rhythm_controller controller = null;
 	Rhythm_model model = null;
+	Arc_viewer arcView = null;
 	
-	PopupWindow arcView = null;
-	
+	PopupWindow arcViewWindow = null;
+		
 	/**
 	 * setup() called first
 	 */
 	public void setup() {  
 		//The size of UI screen
-		size(900,600);
+		size(600,600);
 		
 		//MVC system started here
 		controller = new Rhythm_controller();
 		controller.initAll(this);
 		
-
 		//Start second windows
-		arcView = new PopupWindow(this, new Arc_viewer()); 
+		arcView = new Arc_viewer();
+		arcViewWindow = new PopupWindow(this, arcView); 
 
 		//ControlP5 setup code starts here
 		//Fontsetup
@@ -63,7 +65,7 @@ public class Rhythm_viewer extends PApplet{
 		cp5.addButton("print_tree")
 			.setBroadcast(false)	
 			.setValue(100)
-			.setPosition(20,200)
+			.setPosition(20,175)
 			.setSize(200,19)
 			.setBroadcast(true);
 			
@@ -71,27 +73,36 @@ public class Rhythm_viewer extends PApplet{
 		cp5.addButton("showArcTree")
 		.setBroadcast(false)
 		.setValue(100)
-		.setPosition(20,300)
+		.setPosition(20,225)
 		.setSize(200,19)
 		.setBroadcast(true);
 		
 		
-		
+ // add a vertical slider
+		cp5.addSlider("slider")
+		.setBroadcast(false)
+		.setPosition(20,275)
+		.setSize(200,20)
+		.setRange(1,10)
+		.setNumberOfTickMarks(10)
+		.setValue(1)
+		.setBroadcast(true);
+	     
+	  // use Slider.FIX or Slider.FLEXIBLE to change the slider handle
+	  // by default it is Slider.FIX
+	    
 		//text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(20,400)
+	    .setPosition(20,350)
 	    .setSize(200,200)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
 	    .setColor(color(128))
 	    .setColorBackground(color(255,100))
-	    .setColorForeground(color(255,100));		
-		
-		
+	    .setColorForeground(color(255,100));				
 	}
 		
 
-	
 	/**
 	 * draw() called second
 	 */
@@ -141,7 +152,6 @@ public class Rhythm_viewer extends PApplet{
 	}
 	
 	//BUTTONS
-	
 	//Takes input from print_tree button and prints some text to screen
 	public void print_tree(){
 		//throws java.lang.reflect.InvocationTargetException
@@ -149,10 +159,15 @@ public class Rhythm_viewer extends PApplet{
 	}
 	
 	public void showArcTree(){
-		
-		arcView.setVisible(true);
+		arcViewWindow.setVisible(true);
 	}
 	
+	
+	public void slider(int arcMinimum) {
+		println("a slider event. setting min arc to " + arcMinimum);
+		arcView.setArcMinimum(arcMinimum);
+		arcView.redraw();
+	}
 	
 }
 	

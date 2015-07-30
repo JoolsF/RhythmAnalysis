@@ -11,6 +11,7 @@ public class NodeLeaf implements InnerNode {
 	private int stringIndex;
 	private Node parent;
 	
+	
 	public NodeLeaf(String string, int stringIndex, Node parent){	
 		this.string = string;
 		this.stringIndex = stringIndex;

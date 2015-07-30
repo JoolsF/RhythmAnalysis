@@ -5,14 +5,14 @@ package rhythm.analysis.control;
 import java.util.List;
 
 import rhythm.analysis.model.Rhythm_model;
-import rhythm.analysis.view.Rhythm_viewer;
+import rhythm.analysis.view.Main_viewer;
 
 
 
 
 public class Rhythm_controller {
 	
-	Rhythm_viewer viewer = null;
+	Main_viewer viewer = null;
 	Rhythm_model model = null;
 	
 	
@@ -22,7 +22,7 @@ public class Rhythm_controller {
 	public Rhythm_controller(){
 	}
 	
-	public void initAll(Rhythm_viewer v){
+	public void initAll(Main_viewer v){
 		//init viewer
 		viewer = v;
 		
@@ -34,13 +34,7 @@ public class Rhythm_controller {
 		viewer.setModel(model);
 		model.setViewer(viewer);
 	}
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	public void createNewTree(String str){
 		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3. 

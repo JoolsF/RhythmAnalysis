@@ -1,7 +1,7 @@
 package rhythm.analysis.model;
 
 import rhythm.analysis.control.Rhythm_controller;
-import rhythm.analysis.view.Rhythm_viewer;
+import rhythm.analysis.view.Main_viewer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Rhythm_model {
 	
 	private Node root;
 	private Rhythm_controller controller = null;
-	private Rhythm_viewer viewer = null;
+	private Main_viewer viewer = null;
 	
 	
 	public Rhythm_model() {
@@ -66,7 +66,7 @@ public class Rhythm_model {
 		
 	}
 
-	public void setViewer(Rhythm_viewer viewer) {
+	public void setViewer(Main_viewer viewer) {
 		this.viewer = viewer;
 		
 	}

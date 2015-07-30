@@ -16,7 +16,7 @@ public class Runner {
 	
 	public void launchViewer(){
 		//https://github.com/processing/processing/wiki/Window-Size-and-Full-Screen
-		PApplet.main(new String[] { "rhythm.analysis.view.Rhythm_viewer" });
+		PApplet.main(new String[] { "rhythm.analysis.view.Main_viewer" });
 	}
 	
 

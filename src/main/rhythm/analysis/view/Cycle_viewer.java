@@ -17,7 +17,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	private static final long serialVersionUID = 1L;
 	
 	//TO DO - move to constructor
-	private int numPulses = 30;
+	private int numPulses = 20;
 	private PVector[] points = new PVector[numPulses];
 	private PVector[] charPoints = new PVector[numPulses];
 	private float radius = 200;
@@ -118,12 +118,11 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	public void testMethod(){
 		//println("hi");
 		fill(0);
-		text("hello",20,20);
+		
 	}
 	
 	public void setOnsets(int[] onsets){
 		this.onsets = onsets;
-		//draw();
 	}
 
 
