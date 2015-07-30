@@ -41,7 +41,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	private int arcMinimum = 1; //minimum arc size given starting value of 1
 		
 	//Fields for all  sliders
-	//TO DO - Refactor to seperate clas
+	//TO DO - Refactor to seperate class
 	private int sliderWidth = 15;
 	private int sliderRadius = sliderWidth / 2;
 	
@@ -62,19 +62,15 @@ public class Arc_viewer extends EmbeddedSketch {
 	//Processing font
 	private PFont f;
 	
-	//Nested window
-	private PopupWindow cycleView = null;
-	private Cycle_viewer cycleViewer;
-	 
-	
 	ControlP5 cp5;
 	Textarea myTextarea;
 	
+	//Nested windows
+	private PopupWindow textViewWindow = null;
+	private Text_viewer textViewer;
 	
 	//TO DO - insert constructor here
-	
-	
-	
+		
 	/*-----------------------------------------------------------------------------------------
 	 * Getters and setters
 	 *----------------------------------------------------------------------------------------*/
@@ -100,8 +96,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	  */
 	 public void setup() {
 		size(screenWidth, screenHeight);
-		
-		
+				
 		setSlider1(slider1xPixels);
 		setSlider2(slider2xPixels);
 		
@@ -112,11 +107,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	    textAlign(CENTER); // The text must be centred
 	   
 	    cp5 = new ControlP5(this);
-	    
-	    //Start cycle viewer window
-	    cycleViewer = new Cycle_viewer(); 
-	    cycleView = new PopupWindow(this, cycleViewer);
-	    
+	    	    
 	    pushStyle();
 	    myTextarea = cp5.addTextarea("txt")
 	    	    .setPosition(20,25)
@@ -126,9 +117,16 @@ public class Arc_viewer extends EmbeddedSketch {
 	    	    .setColor(color(00));	
 	    popStyle();
 	    
+	    //setup text viewer window
+	    textViewer = new Text_viewer();
+	    textViewWindow = new PopupWindow(this, textViewer); 
+	    textViewWindow.setVisible(true)
+	 ;
+	    
 	 }
 	 
-	  /**
+	
+	 /**
 	   * Draw method run in a loop - redraws the screen
 	   */
 	 public  void draw()  {
@@ -139,12 +137,9 @@ public class Arc_viewer extends EmbeddedSketch {
 	    this.myTextarea.setText("Slider 1: " +  slider1 +
 	    						"\n" +
 	                            "Slider 1: " + slider2);
-	    //this.myTextarea.setText("SliderB");
-	    
 	 }
 	
-	 
-	 
+	 	 
 	 
 	 
 	 /*-----------------------------------------------------------------------------------------
@@ -226,15 +221,8 @@ public class Arc_viewer extends EmbeddedSketch {
 	 private float getMidPoint(float x, float y){
 		 return (x + y) / 2;
 	 }
-	 //Helper method
-	 private int getXPosition(int xPixels){
-		 return (int) ((xPixels - screenBorder) / lineSubDivision);		 
-	 }
-	 
 	
-	 
-	 
-	 
+		 
 
 	/*-----------------------------------------------------------------------------------------
 	 * Slider methods
@@ -261,9 +249,13 @@ public class Arc_viewer extends EmbeddedSketch {
 		 popStyle();
 		 
 	 }
+	 //Helper method
+	 private int getXPosition(int xPixels){
+		 return (int) ((xPixels - screenBorder) / lineSubDivision);		 
+	 }
 	 private boolean overSlider(int xPosition, int offset){
-		 if(mouseY >= screenMidY - offset && 
-			mouseY <= screenMidY + offset && 
+		 if(mouseY >= screenMidY - offset  && 
+			mouseY <= screenMidY + offset  && 
 		    mouseX >=  xPosition - offset  && 
 			mouseX <=  xPosition + offset){
 			 return true;
@@ -286,6 +278,10 @@ public class Arc_viewer extends EmbeddedSketch {
 		}
 	
 	 //TO DO - needs refactoring and simplifying
+	 
+	 public void mouseClicked(){
+		 
+	 }
 	 public void mouseDragged() {
 		  if(slider1locked) {
 			  if(mouseX >= screenWidth /2){

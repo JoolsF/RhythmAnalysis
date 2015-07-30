@@ -1,14 +1,23 @@
 package rhythm.analysis.view;
 
 import org.gicentre.utils.multisketch.EmbeddedSketch;
+import g4p_controls.*;
 
 
+import controlP5.ControlP5;
+import controlP5.Textarea;
 import processing.core.PVector;
 
+
+/**
+ * 
+ * @author Julian Fenner
+ * Shows two cycle (periods) in the data and compares their geoshape.
+ *
+ */
 /*
  * REFERENCES
  * http://www.openprocessing.org/sketch/27952 for connecting points in a circle
- * 
  *
  */
 
@@ -20,21 +29,25 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	private int numPulses = 20;
 	private PVector[] points = new PVector[numPulses];
 	private PVector[] charPoints = new PVector[numPulses];
-	private float radius = 200;
+	private float radius = 100;
 	
+		
 	//Test data
 	private int[] onsets = new int[]{};
 	
-	public Cycle_viewer(){
-		
-		
-		
+	GTextArea txaSample;
+	
+	public Cycle_viewer(){	
 	}
 	
 
 	 
 	public void setup() {
-	    size( 500, 500 );
+		//TEST LINE
+		setOnsets(new int[]{1,10,15});
+		//TEST LINE
+		
+		size( 800, 800 );
 	    textSize(15);
 	    float angle = TWO_PI / numPulses;
 	     
@@ -48,35 +61,33 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	        float y = sin( angle * i ) * (radius + 20);
 	        charPoints[i] = new PVector( x, y );
 	   } 
-
- 
-	    //test data start
-	   /*
-	    * Based on single array of points to connect [1,3,6] which is returned by model
-	    * This class will need a method that takes this and assign the from / to nodes for each line
-	    * E.g. 1 -> 3, 3 -> 6, 6 -> 1  NOTE. the number 6 must point to the first element in the array
-	    * as its circular
-	    * 
-	    * 
-	    */
-	    
 	    createLineCoordinates(new int[]{1,5,10,20});
-	    noLoop();     
+	    
+	  
+	    
+	    //noLoop();     
 	}
 	 
 	public void draw(){	
-		smooth();
-	    background(100);
+		background(128);
+	    smooth();
 	    fill(0);
-		renderCircle();
+		renderCircle(width/4, height /4);
+		renderCircle((width/4) * 3, height /4);
 	}
 	
 	
-	public void renderCircle(){
-		translate(width/2, height/2);
-	    pushStyle();
-	    fill(255);
+	public void renderCircle(int xTranslate, int yTranslate){
+		pushStyle();
+		pushMatrix();
+		fill(255);
+		translate(xTranslate, yTranslate);
 	    ellipse(0,0, radius * 2, radius * 2); //draws circle
+	    
+	  
+	    
+	    
+	    //rect(-150, 200, radius*3, 300);
 	    popStyle();
 	    
 	    //TO DO - refactor so less nested and more readable
@@ -96,12 +107,20 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	             }
 	         }
 	      }
-	    noLoop();	
+	    popMatrix();
+	    //noLoop();	
 	}
 
 	/**
 	 * Takes an array of numbers representing beat onsets in a sequence.
-	 */
+	 *
+     * Based on single array of points to connect [1,3,6] which is returned by model
+     * This class will need a method that takes this and assign the from / to nodes for each line
+     * E.g. 1 -> 3, 3 -> 6, 6 -> 1  NOTE. the number 6 must point to the first element in the array
+     * as its circular
+     * 
+     * 
+     */
 	private int[][] createLineCoordinates(int[] nodes){
 		int[][] lineCoords = new int[nodes.length][2];
 		for(int i = 0; i < nodes.length; i++){
@@ -124,7 +143,12 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	public void setOnsets(int[] onsets){
 		this.onsets = onsets;
 	}
-
+	
+	public void handleButtonEvents(GButton button, GEvent event){
+		if (event == GEvent.CLICKED) {
+			txaSample.setSelectedTextStyle(G4P.POSTURE, G4P.POSTURE_OBLIQUE);;
+		}
+	}
 
 }
 	

@@ -7,6 +7,8 @@ http://www.sojamo.de/libraries/controlP5/
 http://cs.smith.edu/dftwiki/index.php/Tutorial:_A_Model-View-Controller_in_Processing
 http://forum.processing.org/two/discussion/1368/controlp5-buttons-controls-trigger-automatically-on-sketch-start
 */
+
+//TO DO look into performance.  I.e when new string analysed other screen should close and their objects be destroyed
 import processing.core.*;
 
 import org.gicentre.utils.multisketch.*;
@@ -22,15 +24,19 @@ import rhythm.analysis.model.Rhythm_model;
 public class Main_viewer extends PApplet{
 	private static final long serialVersionUID = 1L;
 	
-	String textValue = "";
-	ControlP5 cp5;
-	Textarea myTextarea;
+	private String textValue = "";
+	private ControlP5 cp5;
+	private Textarea myTextarea;
 	
-	Rhythm_controller controller = null;
-	Rhythm_model model = null;
-	Arc_viewer arcView = null;
+	private Rhythm_controller controller = null;
+	private Rhythm_model model = null;
 	
-	PopupWindow arcViewWindow = null;
+	private PopupWindow arcViewWindow = null;
+	private Arc_viewer arcView = null;
+	
+	//Nested windows
+	private PopupWindow cycleViewWindow = null;
+	private Cycle_viewer cycleViewer;
 		
 	/**
 	 * setup() called first
@@ -46,7 +52,12 @@ public class Main_viewer extends PApplet{
 		//Start second windows
 		arcView = new Arc_viewer();
 		arcViewWindow = new PopupWindow(this, arcView); 
-
+		
+		
+		//Start cycle viewer window
+	    cycleViewer = new Cycle_viewer(); 
+	    cycleViewWindow = new PopupWindow(this, cycleViewer);
+		
 		//ControlP5 setup code starts here
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -77,11 +88,18 @@ public class Main_viewer extends PApplet{
 		.setSize(200,19)
 		.setBroadcast(true);
 		
+		cp5.addButton("showCycleViewer")
+		.setBroadcast(false)
+		.setValue(100)
+		.setPosition(20,275)
+		.setSize(200,19)
+		.setBroadcast(true);
+		
 		
  // add a vertical slider
 		cp5.addSlider("slider")
 		.setBroadcast(false)
-		.setPosition(20,275)
+		.setPosition(20,315)
 		.setSize(200,20)
 		.setRange(1,10)
 		.setNumberOfTickMarks(10)
@@ -160,6 +178,12 @@ public class Main_viewer extends PApplet{
 	
 	public void showArcTree(){
 		arcViewWindow.setVisible(true);
+	}
+	
+	public void showCycleViewer(){
+		cycleViewer.setOnsets(new int[]{1,10,15});
+		cycleViewWindow.setVisible(true);
+		
 	}
 	
 	
