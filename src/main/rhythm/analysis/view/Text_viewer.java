@@ -21,8 +21,15 @@ public class Text_viewer  extends EmbeddedSketch{
 	private int characterSpacing = 15;
 	Random rand = new Random();
 	
+	private Arc_viewer arcViewerParent = null;
 	
 	Map<Integer, Integer> colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.  
+	
+	
+	public Text_viewer(Arc_viewer arcViewerParent){
+		this.arcViewerParent = arcViewerParent;	
+	}
+	
 	
 	public void setup() {
 		size(screenWidth, screenHeight);	
@@ -36,23 +43,21 @@ public class Text_viewer  extends EmbeddedSketch{
 	public void draw(){
 		background(128);
 		smooth();
-		
-		
-		String[] tStr = testString(1000);
+	
 		int currentChar = 20;
 		int currentline = lineHeight;
-	
-		for(int i = 0; i < tStr.length ;i ++){
-			
-			
-			
+		char[] charArray = arcViewerParent.getStringAsArray();
+		int from = arcViewerParent.getSlider1();
+		int to = arcViewerParent.getSlider2();
+		
+		for(int i = from; i < to ;i ++){	
 			if(colourMap.get(i) != null){
 				pushStyle();
 				fill(colourMap.get(i),255,255);
-				text(tStr[i], currentChar, currentline);
+				text(charArray[i], currentChar, currentline);
 				popStyle();
 			} else {
-				text(tStr[i], currentChar, currentline);	
+				text(charArray[i], currentChar, currentline);	
 			}
 			
 			currentChar += characterSpacing;
@@ -64,14 +69,6 @@ public class Text_viewer  extends EmbeddedSketch{
 		
 	}
 	
-	private String[] testString(int size){
-		String[] strArray = new String[size];
-		for(int i = 0; i < size; i++){
-			strArray[i] = "x";
-		}
-		return strArray;
-		
-	}
 	
 	/**
 	 * Takes a 2d array representing pairs of matching words
@@ -89,20 +86,20 @@ public class Text_viewer  extends EmbeddedSketch{
 		colourMap.put(4, colour);
 		colourMap.put(5, colour);
 		
-		colourMap.put(20, colour);
-		colourMap.put(21, colour);
-		colourMap.put(22, colour);
+		colourMap.put(8, colour);
+		colourMap.put(9, colour);
+		colourMap.put(10, colour);
 		
 		int colour2 = getRandomNumber(255);
-		colourMap.put(33, colour2);
+		colourMap.put(20, colour2);
+		colourMap.put(21, colour2);
+		colourMap.put(22, colour2);
+		colourMap.put(23, colour2);
+		
 		colourMap.put(34, colour2);
 		colourMap.put(35, colour2);
 		colourMap.put(36, colour2);
-		
-		colourMap.put(40, colour2);
-		colourMap.put(41, colour2);
-		colourMap.put(42, colour2);
-		colourMap.put(43, colour2);
+		colourMap.put(37, colour2);
 		//TEST DATA END
 		
 	}

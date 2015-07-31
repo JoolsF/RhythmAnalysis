@@ -27,7 +27,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	private static final long serialVersionUID = 1L;	
 
 	//The data being analysed
-	private String stringData = "123456789123456789123456789";
+	private String stringData = "1001010101011111111110100010001000101010100001101000001100101";
 	
 	//Screen size variables - Immutable
 	private final int screenWidth = 900;
@@ -65,7 +65,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	ControlP5 cp5;
 	Textarea myTextarea;
 	
-	//Nested windows
+	//Nested window
 	private PopupWindow textViewWindow = null;
 	private Text_viewer textViewer;
 	
@@ -78,12 +78,24 @@ public class Arc_viewer extends EmbeddedSketch {
 		 this.arcMinimum = min;
 	 }
 	
+	public char[] getStringAsArray(){
+		return this.stringData.toCharArray();
+	}
+	
 	public void setSlider1(int pixels){
 		this.slider1 = getXPosition(slider1xPixels);
 	}
 	
 	public void setSlider2(int pixels){
 		this.slider2 = getXPosition(slider2xPixels);
+	}
+	
+	public int getSlider1(){
+		return this.slider1;
+	}
+	
+	public int getSlider2(){
+		return this.slider2;
 	}
 	
 	
@@ -118,10 +130,9 @@ public class Arc_viewer extends EmbeddedSketch {
 	    popStyle();
 	    
 	    //setup text viewer window
-	    textViewer = new Text_viewer();
+	    textViewer = new Text_viewer(this);
 	    textViewWindow = new PopupWindow(this, textViewer); 
-	    textViewWindow.setVisible(true)
-	 ;
+	    
 	    
 	 }
 	 
@@ -136,7 +147,8 @@ public class Arc_viewer extends EmbeddedSketch {
 	    drawSliders();
 	    this.myTextarea.setText("Slider 1: " +  slider1 +
 	    						"\n" +
-	                            "Slider 1: " + slider2);
+	                            "Slider 1: " + slider2 + 
+	                            "\nSubdiv: " + lineSubDivision);
 	 }
 	
 	 	 
@@ -166,16 +178,36 @@ public class Arc_viewer extends EmbeddedSketch {
 		 */		 
 		 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
 
-		// Render characters along line
+		/*
+		 *  Render characters along line
+		 *  If stringdata length l < 50 then whole string is shown along line with l subdivisions 
+		 *  Else line is divisied into 50 subdivisions with each subdivision's value being = to l /50
+		 */
+		 
 		 float linePosition = screenBorder;
-		 for(char currentChar: stringData.toCharArray()){
-		    	pushMatrix();
+		 if(stringData.length() <= 50){
+			 
+			 for(char currentChar: stringData.toCharArray()){
+			    	pushMatrix();
+			    	translate(linePosition, screenMidY);
+			    	linePosition += lineSubDivision;
+			    	text(currentChar,0, +30); //= 30 so that characters appear below the line
+			    	ellipse(0,-0,5,5);
+			    	popMatrix();
+			  }
+		 } else {
+			 int x = stringData.length() / 50;
+			 for(int i = 1; i < stringData.length(); i ++){
+			 	pushMatrix();
 		    	translate(linePosition, screenMidY);
 		    	linePosition += lineSubDivision;
-		    	text(currentChar,0, +30); //= 30 so that characters appear below the line
-		    	ellipse(0,-0,5,5);
-		    	popMatrix();
-		  }
+		    if(i % x == 0) {
+		    	ellipse(0,-0,3,3);
+		    }
+		    	popMatrix(); 
+			 }
+		 }
+		 
 		 /*
 		 * Render arcs https://processing.org/reference/arc_.html
 	 	 *  Arcs connect repetition regions in a string.  
@@ -309,6 +341,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	 public void mouseReleased() {
 	  slider1locked = false;
 	  slider2locked = false;
+	  textViewWindow.setVisible(true);
 	}
 	 
 	 
