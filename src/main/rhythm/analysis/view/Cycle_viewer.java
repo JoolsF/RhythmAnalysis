@@ -1,11 +1,13 @@
 package rhythm.analysis.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gicentre.utils.multisketch.EmbeddedSketch;
-import g4p_controls.*;
 
 
-import controlP5.ControlP5;
-import controlP5.Textarea;
+
+
 import processing.core.PVector;
 
 
@@ -26,28 +28,24 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	private static final long serialVersionUID = 1L;
 	
 	//TO DO - move to constructor
-	private int numPulses = 20;
+	private int numPulses = 8;
 	private PVector[] points = new PVector[numPulses];
 	private PVector[] charPoints = new PVector[numPulses];
-	private float radius = 100;
+	private float radius = 70;
 	
-		
-	//Test data
-	private int[] onsets = new int[]{};
+	Arc_viewer arcViewerParent;
 	
-	GTextArea txaSample;
 	
-	public Cycle_viewer(){	
+	public Cycle_viewer(Arc_viewer arcViewerParent){
+		this.arcViewerParent = arcViewerParent;
 	}
 	
 
 	 
 	public void setup() {
-		//TEST LINE
-		setOnsets(new int[]{1,10,15});
-		//TEST LINE
 		
-		size( 800, 800 );
+		
+		size( 500, 300 );
 	    textSize(15);
 	    float angle = TWO_PI / numPulses;
 	     
@@ -61,7 +59,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	        float y = sin( angle * i ) * (radius + 20);
 	        charPoints[i] = new PVector( x, y );
 	   } 
-	    createLineCoordinates(new int[]{1,5,10,20});
+	    //createLineCoordinates(new int[]{1,5,10,20});
 	    
 	  
 	    
@@ -69,23 +67,30 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	}
 	 
 	public void draw(){	
+		int[] onsets = new int[2];
 		background(128);
 	    smooth();
 	    fill(0);
-		renderCircle(width/4, height /4);
-		renderCircle((width/4) * 3, height /4);
+	    Integer[] testData = new Integer[]{1,5,10,11};
+
+	    
+	    
+	    for(int next :getOnsets(9)){
+	     println(next);	
+	    }
+	    println("----------------------");
+	    //println(getOnsets(this.arcViewerParent.getSlider1()));
+	    renderCircle(width/4, height /2, getOnsets(0));
+		renderCircle((width/4) * 3, height /2,  getOnsets(9));
 	}
 	
 	
-	public void renderCircle(int xTranslate, int yTranslate){
+	public void renderCircle(int xTranslate, int yTranslate, Integer[] onsets){
 		pushStyle();
 		pushMatrix();
 		fill(255);
 		translate(xTranslate, yTranslate);
 	    ellipse(0,0, radius * 2, radius * 2); //draws circle
-	    
-	  
-	    
 	    
 	    //rect(-150, 200, radius*3, 300);
 	    popStyle();
@@ -121,7 +126,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
      * 
      * 
      */
-	private int[][] createLineCoordinates(int[] nodes){
+	private int[][] createLineCoordinates(Integer[] nodes){
 		int[][] lineCoords = new int[nodes.length][2];
 		for(int i = 0; i < nodes.length; i++){
 			lineCoords[i][0] = nodes[i];
@@ -134,21 +139,30 @@ public class Cycle_viewer extends EmbeddedSketch  {
 		return lineCoords;
 	}
 	
-	public void testMethod(){
-		//println("hi");
-		fill(0);
+	
+	//TO DO - add period length to main viewer which will be required by this method
+	//note only applicable to binary data
+	private Integer[] getOnsets(int index){ //slider index
+		//TO DO - remove temporary var period
+		
+		int beginIndex = index;
+		if(index > numPulses ) beginIndex = index - (index % numPulses);
+		
+		char[] chars = this.arcViewerParent.getString().substring(beginIndex, beginIndex + numPulses).toCharArray();
+		List<Integer> result = new ArrayList<Integer>();
+		
+		for(char next: chars){
+			if(next =='1'){
+				result.add(beginIndex);
+			}
+			beginIndex += 1;
+		}
+		return result.toArray(new Integer[result.size()]);
 		
 	}
 	
-	public void setOnsets(int[] onsets){
-		this.onsets = onsets;
-	}
+
 	
-	public void handleButtonEvents(GButton button, GEvent event){
-		if (event == GEvent.CLICKED) {
-			txaSample.setSelectedTextStyle(G4P.POSTURE, G4P.POSTURE_OBLIQUE);;
-		}
-	}
 
 }
 	

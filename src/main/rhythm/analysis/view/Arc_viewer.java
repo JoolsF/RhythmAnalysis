@@ -27,8 +27,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	private static final long serialVersionUID = 1L;	
 
 	//The data being analysed
-	private String stringData = "1001010101011111111110100010001000101010100001101000001100101";
-	
+	private String stringData = "0001010111111110101001000101011111111"; 
 	//Screen size variables - Immutable
 	private final int screenWidth = 900;
 	private final int screenHeight = 600;
@@ -66,10 +65,21 @@ public class Arc_viewer extends EmbeddedSketch {
 	Textarea myTextarea;
 	
 	//Nested window
-	private PopupWindow textViewWindow = null;
+	private PopupWindow textViewWindow;
 	private Text_viewer textViewer;
+	private PopupWindow cycleViewWindow;
+	private Cycle_viewer cycleViewer;
+	
 	
 	//TO DO - insert constructor here
+	
+	
+	public Arc_viewer(){
+		textViewer = new Text_viewer(this);
+	    textViewWindow = new PopupWindow(this, textViewer); 
+	    cycleViewer = new Cycle_viewer(this);
+	    cycleViewWindow = new PopupWindow(this, cycleViewer);		
+	}
 		
 	/*-----------------------------------------------------------------------------------------
 	 * Getters and setters
@@ -80,6 +90,10 @@ public class Arc_viewer extends EmbeddedSketch {
 	
 	public char[] getStringAsArray(){
 		return this.stringData.toCharArray();
+	}
+	
+	public String getString(){
+		return this.stringData;
 	}
 	
 	public void setSlider1(int pixels){
@@ -128,12 +142,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	    	    .setLineHeight(20)
 	    	    .setColor(color(00));	
 	    popStyle();
-	    
-	    //setup text viewer window
-	    textViewer = new Text_viewer(this);
-	    textViewWindow = new PopupWindow(this, textViewer); 
-	    
-	    
+	      
 	 }
 	 
 	
@@ -143,6 +152,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	 public  void draw()  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
+		drawXaxis();
 		drawArcDiagram();
 	    drawSliders();
 	    this.myTextarea.setText("Slider 1: " +  slider1 +
@@ -164,50 +174,7 @@ public class Arc_viewer extends EmbeddedSketch {
 		 //Test data (should be from model, currently loaded from here)
 		 int[][] nodePairs = loadTestData();
 
-		 /*
-		  * Draw line and place string characters evenly along line
-		 	 * Steps
-		 	 * 1. Draw line.  
-		 	 *	Y position = middle of screen i.e. (height / 2)
-		 	 *	X position.  Line start  at (width + 100) and ends at (width - 100).  100 represents the border value.
-		 	 * 2.Render characters and corresponding character markers onto the line
-		 	 *	i)  Calculate line subdivision e.g for string s "12341566" 
-		 	 *	ii) Given that first character of string will be rendered at start of line the line should be 
-		 	 *  	divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
-		 	 *		therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
-		 */		 
-		 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
-
-		/*
-		 *  Render characters along line
-		 *  If stringdata length l < 50 then whole string is shown along line with l subdivisions 
-		 *  Else line is divisied into 50 subdivisions with each subdivision's value being = to l /50
-		 */
-		 
-		 float linePosition = screenBorder;
-		 if(stringData.length() <= 50){
-			 
-			 for(char currentChar: stringData.toCharArray()){
-			    	pushMatrix();
-			    	translate(linePosition, screenMidY);
-			    	linePosition += lineSubDivision;
-			    	text(currentChar,0, +30); //= 30 so that characters appear below the line
-			    	ellipse(0,-0,5,5);
-			    	popMatrix();
-			  }
-		 } else {
-			 int x = stringData.length() / 50;
-			 for(int i = 1; i < stringData.length(); i ++){
-			 	pushMatrix();
-		    	translate(linePosition, screenMidY);
-		    	linePosition += lineSubDivision;
-		    if(i % x == 0) {
-		    	ellipse(0,-0,3,3);
-		    }
-		    	popMatrix(); 
-			 }
-		 }
-		 
+		
 		 /*
 		 * Render arcs https://processing.org/reference/arc_.html
 	 	 *  Arcs connect repetition regions in a string.  
@@ -254,7 +221,67 @@ public class Arc_viewer extends EmbeddedSketch {
 		 return (x + y) / 2;
 	 }
 	
+	
+	 
+	 
+	 
+	 
+	 /*-----------------------------------------------------------------------------------------
+	  * X axis diagram methods
+	  *----------------------------------------------------------------------------------------*/	
+	 private void drawXaxis(){
+	 /*
+	  * Draw line and place string characters evenly along line
+	 	 * Steps
+	 	 * 1. Draw line.  
+	 	 *	Y position = middle of screen i.e. (height / 2)
+	 	 *	X position.  Line start  at (width + 100) and ends at (width - 100).  100 represents the border value.
+	 	 * 2.Render characters and corresponding character markers onto the line
+	 	 *	i)  Calculate line subdivision e.g for string s "12341566" 
+	 	 *	ii) Given that first character of string will be rendered at start of line the line should be 
+	 	 *  	divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
+	 	 *		therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
+	 */		 
+	 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
+
+	/*
+	 *  Render characters along line
+	 *  If stringdata length l < 50 then whole string is shown along line with l subdivisions 
+	 *  Else line is divisied into 50 subdivisions with each subdivision's value being = to l /50
+	 */
+	 
+	 float linePosition = screenBorder;
+	 if(stringData.length() <= 50){
 		 
+		 for(char currentChar: stringData.toCharArray()){
+		    	pushMatrix();
+		    	translate(linePosition, screenMidY);
+		    	linePosition += lineSubDivision;
+		    	text(currentChar,0, +30); //= 30 so that characters appear below the line
+		    	ellipse(0,-0,5,5);
+		    	popMatrix();
+		  }
+	 } else {
+		 int x = stringData.length() / 25;
+		 for(int i = 1; i < stringData.length(); i ++){
+		 	pushMatrix();
+	    	translate(linePosition, screenMidY);
+	    	linePosition += lineSubDivision;
+	    if(i % x == 0) {
+	    	pushMatrix();
+	    	rotate(-HALF_PI);
+	    	//TO DO - make second variable b in text(a,b,c,d) below proportional to string length so that very large strings don't overlap x axis
+	    	text(i,-20, 0);
+	    	ellipse(0,-0,3,3);
+	    	popMatrix();
+	    }
+	    	popMatrix(); 
+		 }
+	 }
+}
+	 
+	 
+	 
 
 	/*-----------------------------------------------------------------------------------------
 	 * Slider methods
@@ -341,7 +368,9 @@ public class Arc_viewer extends EmbeddedSketch {
 	 public void mouseReleased() {
 	  slider1locked = false;
 	  slider2locked = false;
+	  //TO DO - make sure these are not repeatedly "setVisible"
 	  textViewWindow.setVisible(true);
+	  cycleViewWindow.setVisible(true);
 	}
 	 
 	 
@@ -355,8 +384,8 @@ public class Arc_viewer extends EmbeddedSketch {
 		 int[][] nodePairs = new int[5][4]; // [number or pairs][nodes per pair]
 		 nodePairs[0][0] = 0;
 		 nodePairs[0][1] = 1;
-		 nodePairs[0][2] = 2;
-		 nodePairs[0][3] = 3;
+		 nodePairs[0][2] = 150;
+		 nodePairs[0][3] = 151;
 		 
 		 nodePairs[1][0] = 4;
 		 nodePairs[1][1] = 6;

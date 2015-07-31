@@ -5,27 +5,26 @@ import java.util.Map;
 import java.util.Random;
 
 import org.gicentre.utils.multisketch.EmbeddedSketch;
+import org.gicentre.utils.multisketch.PopupWindow;
 
 import processing.core.PFont;
 
 public class Text_viewer  extends EmbeddedSketch{
 
 	private static final long serialVersionUID = 1L;
-	private final int screenWidth = 900;
-	private final int screenHeight = 600;
+	private final int screenWidth = 500;
+	private final int screenHeight = 500;
 	private final int screenBorder = 50;
 	
 	private PFont f;
-	private int fontSize = 20;
+	private int fontSize = 15;
 	private int lineHeight = fontSize;
 	private int characterSpacing = 15;
 	Random rand = new Random();
 	
+	private Map<Integer, Integer> colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.  
 	private Arc_viewer arcViewerParent = null;
-	
-	Map<Integer, Integer> colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.  
-	
-	
+	 
 	public Text_viewer(Arc_viewer arcViewerParent){
 		this.arcViewerParent = arcViewerParent;	
 	}
@@ -61,7 +60,7 @@ public class Text_viewer  extends EmbeddedSketch{
 			}
 			
 			currentChar += characterSpacing;
-			if((i != 0) && (i % 50 == 0)) {
+			if((i != 0) && (i % 30 == 0)) {
 				currentline += lineHeight;
 				currentChar = 20;
 			}
