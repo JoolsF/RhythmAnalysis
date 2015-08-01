@@ -21,7 +21,7 @@ public class Text_viewer  extends EmbeddedSketch{
 	private int fontSize = 15;
 	private int lineHeight = fontSize;
 	private int characterSpacing = 15;
-	Random rand = new Random();
+	private Random rand = new Random();
 	
 	private Map<Integer, Integer> colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.  
 	private Arc_viewer arcViewerParent;
@@ -49,10 +49,10 @@ public class Text_viewer  extends EmbeddedSketch{
 		int currentChar = 20;
 		int currentline = lineHeight;
 		char[] charArray = this.controller.getModelString().toCharArray();
-		int from = arcViewerParent.getSlider1();
-		int to = arcViewerParent.getSlider2();
+		int left = arcViewerParent.getleftSlider();
+		int right = arcViewerParent.getRightSlider();
 		
-		for(int i = from; i < to ;i ++){	
+		for(int i = left; i < right ;i ++){	
 			if(colourMap.get(i) != null){
 				pushStyle();
 				fill(colourMap.get(i),255,255);
@@ -71,6 +71,9 @@ public class Text_viewer  extends EmbeddedSketch{
 		
 	}
 	
+	private int getRandomNumber(int upperLimit){
+		return rand.nextInt(upperLimit) + 1;
+	}
 	
 	/**
 	 * Takes a 2d array representing pairs of matching words
@@ -107,8 +110,6 @@ public class Text_viewer  extends EmbeddedSketch{
 	}
 
 	
-	private int getRandomNumber(int upperLimit){
-		return rand.nextInt(upperLimit) + 1;
-	}
+	
 	
 }

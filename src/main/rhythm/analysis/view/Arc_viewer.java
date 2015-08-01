@@ -26,22 +26,18 @@ public class Arc_viewer extends EmbeddedSketch {
 	 * Arc viewer fields
 	 *----------------------------------------------------------------------------------------*/
 	private Rhythm_controller controller = null;
-	
-	//The data being analysed
-	//private String stringData = "00"; 
-	
+		
 	//Screen size variables - Immutable
-	private final int screenWidth, screenHeight, screenBorder,screenMidY ;
-	private final float lineLength;
+	public final int screenWidth, screenHeight, screenBorder,screenMidY,screenMidX ;
+	public final float lineLength;
 	
-	//Basic arc / line variables - mutable
+	//Arc / line variables - Mutable
 	private float lineSubDivision;
 	private int arcMinimum;
 	
-	//Processing font
-	private PFont f;
-	
+	//Processing
 	private ControlP5 cp5;
+	private PFont f;	
 	private Textarea myTextarea;
 	
 	//Nested windows
@@ -50,19 +46,10 @@ public class Arc_viewer extends EmbeddedSketch {
 	private Text_viewer textViewer;
 	private Cycle_viewer cycleViewer;
 	
-//TO REFACTOR - START
-//	ArcSlider arcSlider1  = new ArcSlider(this, 15, screenBorder);
-//	ArcSlider arcSlider2 = new ArcSlider(this, 15, screenWidth - screenBorder);
-	//Fields for all  sliders
-	private int sliderWidth,sliderRadius,
-				slider1xPixels,slider2xPixels,
-				slider1, slider2;
-	private float slider1offset, slider2offset;
-	private boolean overSlider1, overSlider2, 
-					slider1locked, slider2locked;
-//TO REFACTOR - END
-
-		
+	//Arc sliders
+	private ArcSlider leftSlider;
+	private ArcSlider rightSlider;
+			
 	public Arc_viewer(Rhythm_controller controller){		
 		//Initialise controller
 		this.controller = controller;
@@ -72,40 +59,21 @@ public class Arc_viewer extends EmbeddedSketch {
 		this.screenHeight = 800;
 		this.screenBorder = 50;
 		this.screenMidY = screenHeight / 2;
+		this.screenMidX = screenWidth / 2;
 		this.lineLength = screenWidth - (screenBorder * 2);
-		
-		this.lineSubDivision = lineLength / (getData().length() -1);
+		setLineSubDivision();
 		this.arcMinimum = 1; //minimum arc size given starting value of 1
-			
-		
-//		//Initialise windows
+				
+		//Initialise windows
 		this.windowsOpen = false;
 		this.textViewer = new Text_viewer(this, controller);
 		this.textViewWindow = new PopupWindow(this, textViewer); 
 		this.cycleViewer = new Cycle_viewer(this, controller);
 		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
 		
-		
-//TO REFACTOR - START
-//		ArcSlider arcSlider1  = new ArcSlider(this, 15, screenBorder);
-//		ArcSlider arcSlider2 = new ArcSlider(this, 15, screenWidth - screenBorder);
-		//Fields for all  sliders
-		this.sliderWidth = 15;
-		this.sliderRadius = sliderWidth / 2;
-		//Slider 1
-		this.slider1xPixels = screenBorder;
-		this.slider2xPixels = screenWidth - screenBorder;
-		this.slider1 = 0;
-		this.slider2 = 0;
-		this.slider1offset = (float) 0.0;
-		this.slider2offset = (float) 0.0;
-		this.overSlider1 = false;
-		this.overSlider2 = false;
-		this.slider1locked= false;
-		this.slider2locked= false;
-//TO REFACTOR - END
-	    
-
+		//Initialise sliders
+		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
+		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
 	}
 	
 	
@@ -129,20 +97,27 @@ public class Arc_viewer extends EmbeddedSketch {
 		return this.getData();
 	}
 	
+	public int getleftSlider(){
+		 return this.leftSlider.getSlider();
+	 }
+		
+	 public int getRightSlider(){
+		 return this.rightSlider.getSlider();
+	 }
 	
-	public int getScreenBorder(){
-		return this.screenBorder;
+	/**
+	 *  Given that first character of string will be rendered at start of line the line should be 
+	 *  divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
+	 *	therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
+	 */
+	private void setLineSubDivision(){
+		this.lineSubDivision  = lineLength / (getData().length() -1);	
 	}
 	
-	public float getLineSubvision(){
+	public float getLineSubdivision(){
 		return this.lineSubDivision;
 	}
 	
-	
-	public void redrawText(){
-		this.textViewer.redraw();
-		
-	}
 	
 	
 	/*-----------------------------------------------------------------------------------------
@@ -153,18 +128,14 @@ public class Arc_viewer extends EmbeddedSketch {
 	  */
 	 public void setup() {
 		size(screenWidth, screenHeight);
-				
-		setSlider1(slider1xPixels);
-		setSlider2(slider2xPixels);
+		cp5 = new ControlP5(this);
 		
-		//Font settings
 		f = createFont("Georgia",15,true);
 	    textFont(f);
-	    fill(0); //set colour black
-	    textAlign(CENTER); // The text must be centred
-	   
-	    cp5 = new ControlP5(this);
-	    	    
+	    fill(0);
+	    textAlign(CENTER);
+	    
+	    //Text area
 	    pushStyle();
 	    myTextarea = cp5.addTextarea("txt")
 	    	    .setPosition(20,25)
@@ -178,55 +149,43 @@ public class Arc_viewer extends EmbeddedSketch {
 	 
 	
 	 /**
-	   * Draw method run in a loop - redraws the screen
+	   * Processing draw method run in a loop - redraws the screen
 	   */
 	 public  void draw()  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
-		this.lineSubDivision = lineLength / (getData().length() -1);
-		drawXaxis();
+		setLineSubDivision();
+		drawArcXaxis();
 		drawArcDiagram();
 	    drawSliders();
-	    setText();  
+	    updateText();  
 	 }
 	 
-	 
-	 public void setText(){
-		 this.myTextarea.setText("Slider 1: " +  slider1 +
-					"\n" +
-                 "Slider 1: " + slider2 + 
-                 "\nSubdiv: " + lineSubDivision);
-	 }
-	 
-	 
+	  
 	 /*-----------------------------------------------------------------------------------------
 	  * Arc diagram draw methods
 	  *----------------------------------------------------------------------------------------*/	
 	 /**
 	  * Draw arc diagram on the screen
+	  * Render arcs https://processing.org/reference/arc_.html
+	  * Arcs connect repetition regions in a string.  
+ 	  * The width of the arc is the width of one of the repetition regions (they are the same)
+ 	  * Each arc has four args (int regionAstart, int regionAend, int regionBstart, int regionBend)   
+	  * These represent the two repetition regions A and B to be joined.
+	  * 
+	  * In processing an arc is defined as follows 
+      * arc(x, y, width, height, start, stop);
+	  *	x represents the middle of the 'ellipse' which will be nodeTo - ((nodeTo position - nodeFrom position) / 2)
+	  * As we need to take into account the width of the arc using strokeWeight(), we will need to calculate the
+	  *	nodeFrom and nodeTo position as being midway between regionAstart -> regionAend and regionBstart -> regionBstend respectively
+	  * The width will simply be nodeTo position - nodeFrom position
+      *	The strokeWeight will be the distance regionAstart -> regionAend 
+      *Height can be any value for now 
 	  */
-	 public void drawArcDiagram(){ 
-		 //this.lineSubDivision = lineLength / (getData().length() -1);
+	 private void drawArcDiagram(){ 
 		 //Test data (should be from model, currently loaded from here)
-		 int[][] nodePairs = controller.getMatchingStrings();
-
-		
-		 /*
-		 * Render arcs https://processing.org/reference/arc_.html
-	 	 *  Arcs connect repetition regions in a string.  
-	 	 * 	The width of the arc is the width of one of the repetition regions (they are the same)
-	 	 * 	Each arc has four args (int regionAstart, int regionAend, int regionBstart, int regionBend)   
-	 	 * 	These represent the two repetition regions A and B to be joined.
-	 	 *  
-	 	 *  In processing an arc is defined as follows 
-	 	 *  	arc(x, y, width, height, start, stop);
-		 *		x represents the middle of the 'ellipse' which will be nodeTo - ((nodeTo position - nodeFrom position) / 2)
-		 *		As we need to take into account the width of the arc using strokeWeight(), we will need to calculate the
-		 *		nodeFrom and nodeTo position as being midway between regionAstart -> regionAend and regionBstart -> regionBstend respectively
-		 *		The width will simply be nodeTo position - nodeFrom position
-		 *		The strokeWeight will be the distance regionAstart -> regionAend 
-		 *		Height can be any value for now       
-	 	 */                                                       
+		 int[][] nodePairs = controller.getMatchingStrings();	               
+		 
 		 for(int[] next: nodePairs){	 
 			int nodeDistance = next[1]-next[0];
 			 		 
@@ -255,183 +214,103 @@ public class Arc_viewer extends EmbeddedSketch {
 	 private float getMidPoint(float x, float y){
 		 return (x + y) / 2;
 	 }
-	
-	public void resetSliders(){
-		setSlider1(slider1xPixels);
-		setSlider2(slider2xPixels);	
-		setSlider1(screenBorder);
-		setSlider2(screenWidth - screenBorder);
-		setText();
-	}
-	 
-	 /*-----------------------------------------------------------------------------------------
-	  * X axis draw methods
-	  *----------------------------------------------------------------------------------------*/	
-	 private void drawXaxis(){
-	 /*
-	  * Draw line and place string characters evenly along line
-	 	 * Steps
-	 	 * 1. Draw line.  
-	 	 *	Y position = middle of screen i.e. (height / 2)
-	 	 *	X position.  Line start  at (width + 100) and ends at (width - 100).  100 represents the border value.
-	 	 * 2.Render characters and corresponding character markers onto the line
-	 	 *	i)  Calculate line subdivision e.g for string s "12341566" 
-	 	 *	ii) Given that first character of string will be rendered at start of line the line should be 
-	 	 *  	divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
-	 	 *		therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
-	 */		 
-	 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
-
-	/*
-	 *  Render characters along line
-	 *  If stringdata length l < 50 then whole string is shown along line with l subdivisions 
-	 *  Else line is divisied into 50 subdivisions with each subdivision's value being = to l /50
-	 */
-	 
-	 float linePosition = screenBorder;
-	 if(getData().length() <= 50){
 		 
-		 for(char currentChar: getData().toCharArray()){
-		    	pushMatrix();
+	
+	 /*-----------------------------------------------------------------------------------------
+	  * Line axis draw methods
+	  *----------------------------------------------------------------------------------------*/	
+	 private void drawArcXaxis(){	 
+		 /*
+		  * Draw line.  
+	 	  *	Y position = middle of screen i.e. (height / 2)
+	 	  *	X position.  Line start  at (width + 100) and ends at (width - 100).  100 represents the border value.
+		  */
+		 line(screenBorder,screenMidY, screenWidth - screenBorder,screenMidY);
+	
+		/*
+		 *  Render characters along line
+		 *  If string length < 50 then whole string is shown along line
+		 *  If string length > 50, line is divided into 50 subdivisions with each subdivision's value being = to l /50
+		 */
+		 float linePosition = screenBorder;
+		 if(getData().length() <= 50){
+			 for(char currentChar: getData().toCharArray()){
+			    	pushMatrix();
+			    	translate(linePosition, screenMidY);
+			    	linePosition += lineSubDivision;
+			    	text(currentChar,0, +30); //= 30 so that characters appear below the line
+			    	ellipse(0,-0,5,5);
+			    	popMatrix();
+			  }
+		 } else {
+			 int x = getData().length() / 25;
+			 for(int i = 1; i < getData().length(); i ++){
+			 	pushMatrix();
 		    	translate(linePosition, screenMidY);
 		    	linePosition += lineSubDivision;
-		    	text(currentChar,0, +30); //= 30 so that characters appear below the line
-		    	ellipse(0,-0,5,5);
-		    	popMatrix();
-		  }
-	 } else {
-		 int x = getData().length() / 25;
-		 for(int i = 1; i < getData().length(); i ++){
-		 	pushMatrix();
-	    	translate(linePosition, screenMidY);
-	    	linePosition += lineSubDivision;
-	    if(i % x == 0) {
-	    	pushMatrix();
-	    	rotate(-HALF_PI);
-	    	//TO DO - make second variable b in text(a,b,c,d) below proportional to string length so that very large strings don't overlap x axis
-	    	text(i,-20, 0);
-	    	ellipse(0,-0,3,3);
-	    	popMatrix();
-	    }
-	    	popMatrix(); 
+			    if(i % x == 0) {
+			    	pushMatrix();
+			    	rotate(-HALF_PI);
+			    	//TO DO - make second variable b in text(a,b,c,d) below proportional to string length so that very large strings don't overlap x axis
+			    	text(i,-20, 0);
+			    	ellipse(0,-0,3,3);
+			    	popMatrix();
+			    }
+		    	popMatrix(); 
+			 }
 		 }
 	 }
-}
 	 
-	 	 
-
-	/*-----------------------------------------------------------------------------------------
-	 * Draw slider methods
-	 *----------------------------------------------------------------------------------------*/
 	 /**
 	  * Helper method for draw() that draws sliders and checks if mouse is over any sliders
 	  */
 	 private void drawSliders(){
 		 pushStyle();
 		 noFill();
-		 ellipse(slider1xPixels, screenMidY, sliderWidth, sliderWidth);
-		 ellipse(slider2xPixels, screenMidY, sliderWidth, sliderWidth);
-		 if(overSlider((int)slider1xPixels, sliderRadius)){
-			 overSlider1 = true;
-			 slider1locked = true;
-		 } else if(overSlider((int)slider2xPixels, sliderRadius)) {
-			 overSlider2 = true;
-			 slider2locked = true;
-		 } else {
-			 overSlider1 = false;
-			 overSlider2 = false;
-			
-		 }
+		 ellipse(leftSlider.getXPixels(), screenMidY, leftSlider.getWidth(), leftSlider.getWidth());
+		 ellipse(rightSlider.getXPixels(), screenMidY, rightSlider.getWidth(), rightSlider.getWidth());
+		 leftSlider.checkSetOverSlider(mouseX, mouseY);
+		 rightSlider.checkSetOverSlider(mouseX, mouseY);
 		 popStyle();
 		 
-	 }
+	 } 
+
+	/*-----------------------------------------------------------------------------------------
+	 * Other draw methods
+	 *----------------------------------------------------------------------------------------*/
 	
-	 //Helper methods
-	 private int getXPosition(int xPixels){
-		 return (int) ((xPixels - screenBorder) / lineSubDivision);		 
+	 
+	 private void updateText(){
+		 this.myTextarea.setText("Left slider: " +  this.leftSlider.getSlider() +
+					"\n" +
+                 "Right slider: " + this.rightSlider.getSlider() + 
+                 "\nSubdiv: " + lineSubDivision);
 	 }
+
 	 
 	 /*-----------------------------------------------------------------------------------------
-	  * Event handler methods
+	  * Mouse event handlers
 	  *----------------------------------------------------------------------------------------*/
-	 private boolean overSlider(int xPosition, int offset){
-		 if(mouseY >= screenMidY - offset  && 
-			mouseY <= screenMidY + offset  && 
-		    mouseX >=  xPosition - offset  && 
-			mouseX <=  xPosition + offset){
-			 return true;
-			} else {
-				return false;
-			}
-	 }
-	 	
 	 
 	 public void mousePressed() {
-		  if(overSlider1) { 
-		    slider1locked = true; 
-		    slider1offset = mouseX - slider2xPixels;  
-		  } else if (overSlider2) {
-			 slider2locked = true; 
-			 slider2offset = mouseX - slider2xPixels;   
-		  } else {
-			  slider1locked = false;
-			  slider2locked = false;  
-		  }
-		}
+		 leftSlider.setOffsetIfLocked(mouseX);
+		 rightSlider.setOffsetIfLocked(mouseX);
+	 }
 	
-		public void mouseDragged() {
-			  if(slider1locked) {
-				  if(mouseX >= screenWidth /2){
-					  slider1xPixels = (screenWidth / 2) - (sliderRadius + 1);  
-				  } else if (mouseX <= screenBorder){
-					  slider1xPixels = screenBorder ;  
-				  } else {
-					  slider1xPixels = mouseX;  
-				  }   
-			    
-			  } else if(slider2locked){
-				  if(mouseX <= screenWidth /2){
-					  slider2xPixels = (screenWidth / 2) + (sliderRadius + 1);
-				  } else if (mouseX >= screenWidth - screenBorder){
-					  slider2xPixels =screenWidth - screenBorder ;  
-				  } else {
-					  slider2xPixels = mouseX;  
-				  }     
-			  }
-			  setSlider1(slider1xPixels);
-			  setSlider2(slider2xPixels);	  
-		}	 
+	 public void mouseDragged() {
+		 leftSlider.setSliderPixels(mouseX);
+		 rightSlider.setSliderPixels(mouseX);
+	 }	 
 		
-		 public void mouseReleased() {
-		  slider1locked = false;
-		  slider2locked = false;
-		  //TO DO - make sure these are not repeatedly "setVisible"
-		  //Add button
-		  if(this.windowsOpen == false) {
-			  this.windowsOpen = true;
-			  textViewWindow.setVisible(true);
-			  cycleViewWindow.setVisible(true);  
-		  } 
-		}
-	 
-	 
-	//Slider methods to refactor
-		
-		 
-		 public void setSlider1(int pixels){
-			this.slider1 = getXPosition(slider1xPixels);
-		}
-		
-		public void setSlider2(int pixels){
-			this.slider2 = getXPosition(slider2xPixels);
-		}
-		
-		public int getSlider1(){
-			return this.slider1;
-		}
-		
-		public int getSlider2(){
-			return this.slider2;
-		}
+	 public void mouseReleased() {
+	  leftSlider.lockSlider();
+	  rightSlider.lockSlider();
+	  //Add button for this
+	  if(this.windowsOpen == false) {
+		  this.windowsOpen = true;
+		  textViewWindow.setVisible(true);
+		  cycleViewWindow.setVisible(true);  
+	  } 
+	}	 
 	 
 }

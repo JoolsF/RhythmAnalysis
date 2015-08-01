@@ -48,7 +48,6 @@ public class Main_viewer extends PApplet{
 	 */
 	public void setup() {  
 		size(350,600);	  
-		//ControlP5 setup code starts here
 		//Fontsetup
 		PFont font = createFont("arial",20);
 		textFont(font);
@@ -79,7 +78,7 @@ public class Main_viewer extends PApplet{
 		.setSize(200,19)
 		.setBroadcast(true);	
 		
-		// add a vertical slider
+		// Slider
 		cp5.addSlider("slider")
 		.setBroadcast(false)
 		.setPosition(20,225)
@@ -89,10 +88,8 @@ public class Main_viewer extends PApplet{
 		.setValue(1)
 		.setBroadcast(true);
 	     
-	  // use Slider.FIX or Slider.FLEXIBLE to change the slider handle
-	  // by default it is Slider.FIX
 	    
-		//text area
+		//Text area
 		myTextarea = cp5.addTextarea("txt")
 	    .setPosition(20,300)
 	    .setSize(275,275)
@@ -104,16 +101,10 @@ public class Main_viewer extends PApplet{
 	}
 		
 
-	/**
-	 * draw() called second
-	 */
 	public void draw() {
 		background(0);
 		fill(255);
 	}
-
-	
-
 	
 	//ControlP5 code starts here
 	
@@ -139,21 +130,19 @@ public class Main_viewer extends PApplet{
 		}
 
 	/**
-	 * 
+	 * Automatically receives results from controller input
 	 * @param theText
 	 */
 	public void input(String theText) {
-		// automatically receives results from controller input
+		// 
 		println("a textfield event for controller 'input' : "+theText);
 		this.controller.updateTree(theText);
 		this.myTextarea.setText(controller.getTreeAsList().toString());
-		arcView.resetSliders();
 		arcView.redraw();
 		
 	}
 	
 	//BUTTONS
-	//Takes input from print_tree button and prints some text to screen
 	public void clear_data(){
 		this.myTextarea.setText("Data cleared");
 		this.controller.resetModel();

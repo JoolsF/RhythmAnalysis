@@ -32,7 +32,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	private PVector[] charPoints;
 	private float radius;
 	
-	Arc_viewer arcViewerParent;
+	private Arc_viewer arcViewerParent;
 	private Rhythm_controller controller;
 	
 	
@@ -47,8 +47,6 @@ public class Cycle_viewer extends EmbeddedSketch  {
 
 	 
 	public void setup() {
-		
-		
 		size( 500, 300 );
 	    textSize(15);
 	    float angle = TWO_PI / this.controller.getNumPulses();
@@ -63,11 +61,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	        float y = sin( angle * i ) * (radius + 20);
 	        charPoints[i] = new PVector( x, y );
 	   } 
-	    //createLineCoordinates(new int[]{1,5,10,20});
-	    
-	  
-	    
-	    //noLoop();     
+	   
 	}
 	 
 	public void draw(){	
@@ -144,14 +138,4 @@ public class Cycle_viewer extends EmbeddedSketch  {
 		return lineCoords;
 	}
 	
-	
-	
-	
-
-	
-
 }
-	
-	
-
-
