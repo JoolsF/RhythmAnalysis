@@ -20,80 +20,113 @@ http://www.gicentre.net/utils/zoom
 Processing Mouse Functions demo used for custom slider
 */
 public class Arc_viewer extends EmbeddedSketch {
-	
+	private static final long serialVersionUID = 1L;	
 
 	/*-----------------------------------------------------------------------------------------
 	 * Arc viewer fields
 	 *----------------------------------------------------------------------------------------*/
-	private static final long serialVersionUID = 1L;	
-
-	
 	private Rhythm_controller controller = null;
 	
 	//The data being analysed
+	//private String stringData = "00"; 
 	
-	private String stringData = "00010101111111101010010001010111111110101011101"; 
 	//Screen size variables - Immutable
-	private final int screenWidth = 900;
-	private final int screenHeight = 600;
-	private final int screenBorder = 100;
-	private final int screenMidY = screenHeight / 2;
-	private final float lineLength = screenWidth - (screenBorder * 2);
+	private final int screenWidth, screenHeight, screenBorder,screenMidY ;
+	private final float lineLength;
 	
 	//Basic arc / line variables - mutable
-	private float lineSubDivision = lineLength / (stringData.length() -1);
-	private int arcMinimum = 1; //minimum arc size given starting value of 1
+	private float lineSubDivision;
+	private int arcMinimum;
 	
 	//Processing font
 	private PFont f;
 	
-	ControlP5 cp5;
-	Textarea myTextarea;
+	private ControlP5 cp5;
+	private Textarea myTextarea;
 	
-	//Nested window
-	private PopupWindow textViewWindow;
+	//Nested windows
+	private boolean windowsOpen;
+	private PopupWindow textViewWindow, cycleViewWindow;
 	private Text_viewer textViewer;
-	private PopupWindow cycleViewWindow;
 	private Cycle_viewer cycleViewer;
 	
 //TO REFACTOR - START
 //	ArcSlider arcSlider1  = new ArcSlider(this, 15, screenBorder);
 //	ArcSlider arcSlider2 = new ArcSlider(this, 15, screenWidth - screenBorder);
 	//Fields for all  sliders
-	private int sliderWidth = 15;
-	private int sliderRadius = sliderWidth / 2;
-	//Slider 1
-	private int slider1xPixels = 0 + screenBorder;
-	private int slider2xPixels = screenWidth - screenBorder;
-	private int slider1, slider2 = 0;
-	private float slider1offset, slider2offset = (float) 0.0;
-	private boolean overSlider1, overSlider2 = false;
-	private boolean slider1locked, slider2locked = false;
+	private int sliderWidth,sliderRadius,
+				slider1xPixels,slider2xPixels,
+				slider1, slider2;
+	private float slider1offset, slider2offset;
+	private boolean overSlider1, overSlider2, 
+					slider1locked, slider2locked;
 //TO REFACTOR - END
 
 		
 	public Arc_viewer(Rhythm_controller controller){		
+		//Initialise controller
 		this.controller = controller;
-		textViewer = new Text_viewer(this);
-	    textViewWindow = new PopupWindow(this, textViewer); 
-	    cycleViewer = new Cycle_viewer(this);
-	    cycleViewWindow = new PopupWindow(this, cycleViewer);	
+		
+		//Initialise screen dimensions
+		this.screenWidth = 1000;
+		this.screenHeight = 800;
+		this.screenBorder = 50;
+		this.screenMidY = screenHeight / 2;
+		this.lineLength = screenWidth - (screenBorder * 2);
+		
+		this.lineSubDivision = lineLength / (getData().length() -1);
+		this.arcMinimum = 1; //minimum arc size given starting value of 1
+			
+		
+//		//Initialise windows
+		this.windowsOpen = false;
+		this.textViewer = new Text_viewer(this, controller);
+		this.textViewWindow = new PopupWindow(this, textViewer); 
+		this.cycleViewer = new Cycle_viewer(this, controller);
+		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
+		
+		
+//TO REFACTOR - START
+//		ArcSlider arcSlider1  = new ArcSlider(this, 15, screenBorder);
+//		ArcSlider arcSlider2 = new ArcSlider(this, 15, screenWidth - screenBorder);
+		//Fields for all  sliders
+		this.sliderWidth = 15;
+		this.sliderRadius = sliderWidth / 2;
+		//Slider 1
+		this.slider1xPixels = screenBorder;
+		this.slider2xPixels = screenWidth - screenBorder;
+		this.slider1 = 0;
+		this.slider2 = 0;
+		this.slider1offset = (float) 0.0;
+		this.slider2offset = (float) 0.0;
+		this.overSlider1 = false;
+		this.overSlider2 = false;
+		this.slider1locked= false;
+		this.slider2locked= false;
+//TO REFACTOR - END
+	    
 
 	}
-		
+	
+	
 	/*-----------------------------------------------------------------------------------------
 	 * Getters and setters
 	 *----------------------------------------------------------------------------------------*/
+	
+	public String getData(){
+		return this.controller.getModelString();
+	}
+	
 	public void setArcMinimum(int min){
 		 this.arcMinimum = min;
 	 }
 	
 	public char[] getStringAsArray(){
-		return this.stringData.toCharArray();
+		return this.getData().toCharArray();
 	}
 	
 	public String getString(){
-		return this.stringData;
+		return this.getData();
 	}
 	
 	
@@ -103,6 +136,12 @@ public class Arc_viewer extends EmbeddedSketch {
 	
 	public float getLineSubvision(){
 		return this.lineSubDivision;
+	}
+	
+	
+	public void redrawText(){
+		this.textViewer.redraw();
+		
 	}
 	
 	
@@ -144,16 +183,20 @@ public class Arc_viewer extends EmbeddedSketch {
 	 public  void draw()  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
+		this.lineSubDivision = lineLength / (getData().length() -1);
 		drawXaxis();
 		drawArcDiagram();
 	    drawSliders();
-	    this.myTextarea.setText("Slider 1: " +  slider1 +
-	    						"\n" +
-	                            "Slider 1: " + slider2 + 
-	                            "\nSubdiv: " + lineSubDivision);
+	    setText();  
 	 }
-	
-	 	 
+	 
+	 
+	 public void setText(){
+		 this.myTextarea.setText("Slider 1: " +  slider1 +
+					"\n" +
+                 "Slider 1: " + slider2 + 
+                 "\nSubdiv: " + lineSubDivision);
+	 }
 	 
 	 
 	 /*-----------------------------------------------------------------------------------------
@@ -163,6 +206,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	  * Draw arc diagram on the screen
 	  */
 	 public void drawArcDiagram(){ 
+		 //this.lineSubDivision = lineLength / (getData().length() -1);
 		 //Test data (should be from model, currently loaded from here)
 		 int[][] nodePairs = controller.getMatchingStrings();
 
@@ -203,8 +247,7 @@ public class Arc_viewer extends EmbeddedSketch {
 				 strokeWeight(nodeLength);
 				 strokeCap(SQUARE); // Makes ends of arc square			 
 				 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0);
-				 popStyle(); 
-				 
+				 popStyle(); 		 
 			}
 		 }	 
 	 }
@@ -213,10 +256,13 @@ public class Arc_viewer extends EmbeddedSketch {
 		 return (x + y) / 2;
 	 }
 	
-	
-	 
-	 
-	 
+	public void resetSliders(){
+		setSlider1(slider1xPixels);
+		setSlider2(slider2xPixels);	
+		setSlider1(screenBorder);
+		setSlider2(screenWidth - screenBorder);
+		setText();
+	}
 	 
 	 /*-----------------------------------------------------------------------------------------
 	  * X axis draw methods
@@ -243,9 +289,9 @@ public class Arc_viewer extends EmbeddedSketch {
 	 */
 	 
 	 float linePosition = screenBorder;
-	 if(stringData.length() <= 50){
+	 if(getData().length() <= 50){
 		 
-		 for(char currentChar: stringData.toCharArray()){
+		 for(char currentChar: getData().toCharArray()){
 		    	pushMatrix();
 		    	translate(linePosition, screenMidY);
 		    	linePosition += lineSubDivision;
@@ -254,8 +300,8 @@ public class Arc_viewer extends EmbeddedSketch {
 		    	popMatrix();
 		  }
 	 } else {
-		 int x = stringData.length() / 25;
-		 for(int i = 1; i < stringData.length(); i ++){
+		 int x = getData().length() / 25;
+		 for(int i = 1; i < getData().length(); i ++){
 		 	pushMatrix();
 	    	translate(linePosition, screenMidY);
 	    	linePosition += lineSubDivision;
@@ -272,11 +318,10 @@ public class Arc_viewer extends EmbeddedSketch {
 	 }
 }
 	 
-	 
-	 
+	 	 
 
 	/*-----------------------------------------------------------------------------------------
-	 * Slider methods
+	 * Draw slider methods
 	 *----------------------------------------------------------------------------------------*/
 	 /**
 	  * Helper method for draw() that draws sliders and checks if mouse is over any sliders
@@ -300,10 +345,15 @@ public class Arc_viewer extends EmbeddedSketch {
 		 popStyle();
 		 
 	 }
-	 //Helper method
+	
+	 //Helper methods
 	 private int getXPosition(int xPixels){
 		 return (int) ((xPixels - screenBorder) / lineSubDivision);		 
 	 }
+	 
+	 /*-----------------------------------------------------------------------------------------
+	  * Event handler methods
+	  *----------------------------------------------------------------------------------------*/
 	 private boolean overSlider(int xPosition, int offset){
 		 if(mouseY >= screenMidY - offset  && 
 			mouseY <= screenMidY + offset  && 
@@ -315,6 +365,7 @@ public class Arc_viewer extends EmbeddedSketch {
 			}
 	 }
 	 	
+	 
 	 public void mousePressed() {
 		  if(overSlider1) { 
 		    slider1locked = true; 
@@ -328,11 +379,46 @@ public class Arc_viewer extends EmbeddedSketch {
 		  }
 		}
 	
+		public void mouseDragged() {
+			  if(slider1locked) {
+				  if(mouseX >= screenWidth /2){
+					  slider1xPixels = (screenWidth / 2) - (sliderRadius + 1);  
+				  } else if (mouseX <= screenBorder){
+					  slider1xPixels = screenBorder ;  
+				  } else {
+					  slider1xPixels = mouseX;  
+				  }   
+			    
+			  } else if(slider2locked){
+				  if(mouseX <= screenWidth /2){
+					  slider2xPixels = (screenWidth / 2) + (sliderRadius + 1);
+				  } else if (mouseX >= screenWidth - screenBorder){
+					  slider2xPixels =screenWidth - screenBorder ;  
+				  } else {
+					  slider2xPixels = mouseX;  
+				  }     
+			  }
+			  setSlider1(slider1xPixels);
+			  setSlider2(slider2xPixels);	  
+		}	 
+		
+		 public void mouseReleased() {
+		  slider1locked = false;
+		  slider2locked = false;
+		  //TO DO - make sure these are not repeatedly "setVisible"
+		  //Add button
+		  if(this.windowsOpen == false) {
+			  this.windowsOpen = true;
+			  textViewWindow.setVisible(true);
+			  cycleViewWindow.setVisible(true);  
+		  } 
+		}
+	 
+	 
 	//Slider methods to refactor
-	 
-	 
-	 
-	 public void setSlider1(int pixels){
+		
+		 
+		 public void setSlider1(int pixels){
 			this.slider1 = getXPosition(slider1xPixels);
 		}
 		
@@ -347,40 +433,5 @@ public class Arc_viewer extends EmbeddedSketch {
 		public int getSlider2(){
 			return this.slider2;
 		}
-	 
-	
-	public void mouseDragged() {
-		  if(slider1locked) {
-			  if(mouseX >= screenWidth /2){
-				  slider1xPixels = (screenWidth / 2) - (sliderRadius + 1);
-				  
-			  } else if (mouseX <= screenBorder){
-				  slider1xPixels = screenBorder ;  
-			  } else {
-				  slider1xPixels = mouseX;  
-			  }   
-		    
-		  } else if(slider2locked){
-			  if(mouseX <= screenWidth /2){
-				  slider2xPixels = (screenWidth / 2) + (sliderRadius + 1);
-			  } else if (mouseX >= screenWidth - screenBorder){
-				  slider2xPixels =screenWidth - screenBorder ;  
-			  } else {
-				  slider2xPixels = mouseX;  
-			  }     
-		  }
-		  setSlider1(slider1xPixels);
-		  setSlider2(slider2xPixels);
-	}	 
-	
-	 public void mouseReleased() {
-	  slider1locked = false;
-	  slider2locked = false;
-	  //TO DO - make sure these are not repeatedly "setVisible"
-	  textViewWindow.setVisible(true);
-	  cycleViewWindow.setVisible(true);
-	}
-	 
-	 
 	 
 }

@@ -26,30 +26,24 @@ import java.util.Map.Entry;
 
 public class Rhythm_model {
 	
-	private String string = "";
-	
 	private Node root;
-	
-	private Rhythm_controller controller = null;
-	
-	
+	private String string;
+	//TO DO, set from ui
+	private int numPulses = 8; 
+	private Rhythm_controller controller;
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Constructors
 	 *----------------------------------------------------------------------------------------*/
-	public Rhythm_model() {
+	public Rhythm_model(Rhythm_controller controller) {
+		this.string = "";
+		this.controller = controller;
 		this.root = new NodeRoot();
 	}
-	
-	public Rhythm_model(String str){
-		this();
-		addString(str);
-	}
-	
-	
+		
 	
 	public void reset(){
-		this.string = "";
+		this.string = "1010";
 		this.root = null; //nullifying current object.  Will be garbage collected
 		this.root = new NodeRoot();
 	}
@@ -84,7 +78,10 @@ public class Rhythm_model {
 		this.controller = rhythm_controller;
 		
 	}
-
+	
+	public int getNumPulses(){
+		return numPulses;
+	}
 	
 	
 //	public static void main(String[] args){

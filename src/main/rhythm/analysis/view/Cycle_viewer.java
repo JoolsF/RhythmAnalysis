@@ -8,7 +8,9 @@ import org.gicentre.utils.multisketch.EmbeddedSketch;
 
 
 
+
 import processing.core.PVector;
+import rhythm.analysis.control.Rhythm_controller;
 
 
 /**
@@ -26,18 +28,20 @@ import processing.core.PVector;
 //TO DO - Need to rotate circle -90 so that 0 is at 0 degrees.
 public class Cycle_viewer extends EmbeddedSketch  {
 	private static final long serialVersionUID = 1L;
-	
-	//TO DO - move to constructor
-	private int numPulses = 8;
-	private PVector[] points = new PVector[numPulses];
-	private PVector[] charPoints = new PVector[numPulses];
-	private float radius = 70;
+	private PVector[] points;
+	private PVector[] charPoints;
+	private float radius;
 	
 	Arc_viewer arcViewerParent;
+	private Rhythm_controller controller;
 	
 	
-	public Cycle_viewer(Arc_viewer arcViewerParent){
+	public Cycle_viewer(Arc_viewer arcViewerParent,Rhythm_controller controller ){
 		this.arcViewerParent = arcViewerParent;
+		this.controller = controller;
+		points = new PVector[this.controller.getNumPulses()];
+		charPoints = new PVector[this.controller.getNumPulses()];
+		radius = 70;
 	}
 	
 
@@ -47,14 +51,14 @@ public class Cycle_viewer extends EmbeddedSketch  {
 		
 		size( 500, 300 );
 	    textSize(15);
-	    float angle = TWO_PI / numPulses;
+	    float angle = TWO_PI / this.controller.getNumPulses();
 	     
-	    for (int i = 0; i < numPulses; i++) {
+	    for (int i = 0; i < this.controller.getNumPulses(); i++) {
 	        float x = cos( angle * i ) * radius;
 	        float y = sin( angle * i ) * radius;
 	        points[i] = new PVector( x, y );
 	   }
-	    for (int i = 0; i < numPulses; i++) {
+	    for (int i = 0; i < this.controller.getNumPulses(); i++) {
 	        float x = cos( angle * i ) * (radius + 20);
 	        float y = sin( angle * i ) * (radius + 20);
 	        charPoints[i] = new PVector( x, y );
@@ -97,8 +101,8 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	    popStyle();
 	    
 	    //TO DO - refactor so less nested and more readable
-	    for (int i = 0; i < numPulses; i++) {
-	        for (int j = 0; j < numPulses; j++) {  	
+	    for (int i = 0; i < this.controller.getNumPulses(); i++) {
+	        for (int j = 0; j < this.controller.getNumPulses(); j++) {  	
 	        	pushStyle();
 	        	//noFill();
 	        	ellipse(points[i].x, points[i].y, 5, 5); //draws an circle at each point
@@ -141,26 +145,7 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	}
 	
 	
-	//TO DO - add period length to main viewer which will be required by this method
-	//note only applicable to binary data
-	private Integer[] getOnsets(int index){ //slider index
-		//TO DO - remove temporary var period
-		
-		int beginIndex = index;
-		if(index > numPulses ) beginIndex = index - (index % numPulses);
-		
-		char[] chars = this.arcViewerParent.getString().substring(beginIndex, beginIndex + numPulses).toCharArray();
-		List<Integer> result = new ArrayList<Integer>();
-		
-		for(char next: chars){
-			if(next =='1'){
-				result.add(beginIndex);
-			}
-			beginIndex += 1;
-		}
-		return result.toArray(new Integer[result.size()]);
-		
-	}
+	
 	
 
 	

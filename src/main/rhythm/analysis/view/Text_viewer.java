@@ -8,6 +8,7 @@ import org.gicentre.utils.multisketch.EmbeddedSketch;
 import org.gicentre.utils.multisketch.PopupWindow;
 
 import processing.core.PFont;
+import rhythm.analysis.control.Rhythm_controller;
 
 public class Text_viewer  extends EmbeddedSketch{
 
@@ -23,10 +24,12 @@ public class Text_viewer  extends EmbeddedSketch{
 	Random rand = new Random();
 	
 	private Map<Integer, Integer> colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.  
-	private Arc_viewer arcViewerParent = null;
+	private Arc_viewer arcViewerParent;
+	private Rhythm_controller controller;
 	 
-	public Text_viewer(Arc_viewer arcViewerParent){
+	public Text_viewer(Arc_viewer arcViewerParent, Rhythm_controller controller){
 		this.arcViewerParent = arcViewerParent;	
+		this.controller = controller;
 	}
 	
 	
@@ -45,7 +48,7 @@ public class Text_viewer  extends EmbeddedSketch{
 	
 		int currentChar = 20;
 		int currentline = lineHeight;
-		char[] charArray = arcViewerParent.getStringAsArray();
+		char[] charArray = this.controller.getModelString().toCharArray();
 		int from = arcViewerParent.getSlider1();
 		int to = arcViewerParent.getSlider2();
 		

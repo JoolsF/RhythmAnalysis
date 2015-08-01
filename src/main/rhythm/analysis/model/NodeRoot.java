@@ -12,9 +12,12 @@ import java.util.List;
 //shouldn't have getParent and addchild, rethink
 public class NodeRoot implements Node {
 
-	//to do change to private
+	
+	
+	// To do change to private
 	public List<InnerNode> children;
-		
+	// To do, connect to UI
+
 		public NodeRoot(){
 			this.children = new ArrayList<InnerNode>();
 		}
@@ -97,6 +100,8 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 		}
 		return childValues;	
 	}
+	
+	
 
 	@Override
 	public void setString(String str) {

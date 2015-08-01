@@ -30,32 +30,24 @@ public class Main_viewer extends PApplet{
 	
 	private Rhythm_controller controller = null;
 	
-	
 	private PopupWindow arcViewWindow = null;
 	private Arc_viewer arcView = null;	
 	
 	Textfield textfield;
-	
-	
+		
 	public Main_viewer(){
 		//MVC system started here
-		controller = new Rhythm_controller();
-		controller.initAll(this);
-		
+		controller = new Rhythm_controller(this);	
 		//Start second windows
 		arcView = new Arc_viewer(controller);
 		arcViewWindow = new PopupWindow(this, arcView); 
-	}
-	
-	
-	
-	
+	}	
 	
 	/**
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(600,600);	  
+		size(350,600);	  
 		//ControlP5 setup code starts here
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -90,7 +82,7 @@ public class Main_viewer extends PApplet{
 		// add a vertical slider
 		cp5.addSlider("slider")
 		.setBroadcast(false)
-		.setPosition(20,265)
+		.setPosition(20,225)
 		.setSize(200,20)
 		.setRange(1,10)
 		.setNumberOfTickMarks(10)
@@ -102,7 +94,7 @@ public class Main_viewer extends PApplet{
 	    
 		//text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(275,50)
+	    .setPosition(20,300)
 	    .setSize(275,275)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
@@ -155,6 +147,9 @@ public class Main_viewer extends PApplet{
 		println("a textfield event for controller 'input' : "+theText);
 		this.controller.updateTree(theText);
 		this.myTextarea.setText(controller.getTreeAsList().toString());
+		arcView.resetSliders();
+		arcView.redraw();
+		
 	}
 	
 	//BUTTONS
