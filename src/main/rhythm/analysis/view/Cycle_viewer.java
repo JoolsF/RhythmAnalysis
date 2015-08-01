@@ -75,13 +75,14 @@ public class Cycle_viewer extends EmbeddedSketch  {
 
 	    
 	    
-	    for(int next :getOnsets(9)){
-	     println(next);	
-	    }
-	    println("----------------------");
-	    //println(getOnsets(this.arcViewerParent.getSlider1()));
-	    renderCircle(width/4, height /2, getOnsets(0));
-		renderCircle((width/4) * 3, height /2,  getOnsets(9));
+//	    for(int next :getOnsets(9)){
+//	     println(next);	
+//	    }
+//	    println("----------------------");
+//println("1: " + getOnsets(this.arcViewerParent.getSlider1()));
+//println("2: " + getOnsets(this.arcViewerParent.getSlider2()));
+//	    renderCircle(width/4, height /2, getOnsets(0));
+//		renderCircle((width/4) * 3, height /2,  getOnsets(9));
 	}
 	
 	

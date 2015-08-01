@@ -25,44 +25,37 @@ import rhythm.analysis.model.Rhythm_model;
 public class Main_viewer extends PApplet{
 	private static final long serialVersionUID = 1L;
 	
-	private String textValue = " ";
 	private ControlP5 cp5;
 	private Textarea myTextarea;
 	
 	private Rhythm_controller controller = null;
-	private Rhythm_model model = null;
+	
 	
 	private PopupWindow arcViewWindow = null;
 	private Arc_viewer arcView = null;	
 	
 	Textfield textfield;
 	
-	//getters and setters
-	public String getTextValue(){
-		return this.textValue;
-	}
 	
-	
-	
-	
-	/**
-	 * setup() called first
-	 */
-	public void setup() {  
-		//The size of UI screen
-		size(600,600);
-		
+	public Main_viewer(){
 		//MVC system started here
 		controller = new Rhythm_controller();
 		controller.initAll(this);
 		
 		//Start second windows
-		arcView = new Arc_viewer();
+		arcView = new Arc_viewer(controller);
 		arcViewWindow = new PopupWindow(this, arcView); 
-		
-		
-		//Start cycle viewer window
-	  
+	}
+	
+	
+	
+	
+	
+	/**
+	 * setup() called immediately after constructor
+	 */
+	public void setup() {  
+		size(600,600);	  
 		//ControlP5 setup code starts here
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -78,8 +71,8 @@ public class Main_viewer extends PApplet{
 		 	.setColor(color(255,0,0)
 		 	);
 		
-		//button
-		cp5.addButton("print_tree")
+		//Button
+		cp5.addButton("clear_data")
 			.setBroadcast(false)	
 			.setValue(100)
 			.setPosition(20,125)
@@ -125,13 +118,9 @@ public class Main_viewer extends PApplet{
 	public void draw() {
 		background(0);
 		fill(255);
-		//text(cp5.get(Textfield.class,"input").getText(), 360,130);
-		//text(textValue, 360,180);
 	}
 
-	public void setModel(Rhythm_model m) {
-		this.model = m;
-	}
+	
 
 	
 	//ControlP5 code starts here
@@ -164,20 +153,21 @@ public class Main_viewer extends PApplet{
 	public void input(String theText) {
 		// automatically receives results from controller input
 		println("a textfield event for controller 'input' : "+theText);
-		this.controller.createNewTree(theText);
+		this.controller.updateTree(theText);
+		this.myTextarea.setText(controller.getTreeAsList().toString());
 	}
 	
 	//BUTTONS
 	//Takes input from print_tree button and prints some text to screen
-	public void print_tree(){
-		this.myTextarea.setText(controller.getTreeAsList().toString());
+	public void clear_data(){
+		this.myTextarea.setText("Data cleared");
+		this.controller.resetModel();
 	}
 	
 	public void showArcTree(){
 		arcViewWindow.setVisible(true);
 	}
 	
-
 	
 	public void slider(int arcMinimum) {
 		println("a slider event. setting min arc to " + arcMinimum);

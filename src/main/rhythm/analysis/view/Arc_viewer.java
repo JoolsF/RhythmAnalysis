@@ -1,5 +1,6 @@
 package rhythm.analysis.view;
 import processing.core.*;
+import rhythm.analysis.control.Rhythm_controller;
 
 import org.gicentre.utils.multisketch.*;
 import org.gicentre.utils.move.*;
@@ -26,8 +27,12 @@ public class Arc_viewer extends EmbeddedSketch {
 	 *----------------------------------------------------------------------------------------*/
 	private static final long serialVersionUID = 1L;	
 
+	
+	private Rhythm_controller controller = null;
+	
 	//The data being analysed
-	private String stringData = "0001010111111110101001000101011111111"; 
+	
+	private String stringData = "00010101111111101010010001010111111110101011101"; 
 	//Screen size variables - Immutable
 	private final int screenWidth = 900;
 	private final int screenHeight = 600;
@@ -38,25 +43,6 @@ public class Arc_viewer extends EmbeddedSketch {
 	//Basic arc / line variables - mutable
 	private float lineSubDivision = lineLength / (stringData.length() -1);
 	private int arcMinimum = 1; //minimum arc size given starting value of 1
-		
-	//Fields for all  sliders
-	//TO DO - Refactor to seperate class
-	private int sliderWidth = 15;
-	private int sliderRadius = sliderWidth / 2;
-	
-	//Slider 1
-	private int slider1xPixels = 0 + screenBorder;
-	private int slider1 = 0;
-	private float slider1offset = (float) 0.0;
-	private boolean overSlider1 = false;
-	private boolean slider1locked = false;
-	//Slider 2
-	private int slider2xPixels = screenWidth - screenBorder;
-	
-	private int slider2 = 0;
-	private float slider2offset = (float) 0.0;
-	private boolean overSlider2 = false;
-	private boolean slider2locked = false;
 	
 	//Processing font
 	private PFont f;
@@ -70,15 +56,29 @@ public class Arc_viewer extends EmbeddedSketch {
 	private PopupWindow cycleViewWindow;
 	private Cycle_viewer cycleViewer;
 	
-	
-	//TO DO - insert constructor here
-	
-	
-	public Arc_viewer(){
+//TO REFACTOR - START
+//	ArcSlider arcSlider1  = new ArcSlider(this, 15, screenBorder);
+//	ArcSlider arcSlider2 = new ArcSlider(this, 15, screenWidth - screenBorder);
+	//Fields for all  sliders
+	private int sliderWidth = 15;
+	private int sliderRadius = sliderWidth / 2;
+	//Slider 1
+	private int slider1xPixels = 0 + screenBorder;
+	private int slider2xPixels = screenWidth - screenBorder;
+	private int slider1, slider2 = 0;
+	private float slider1offset, slider2offset = (float) 0.0;
+	private boolean overSlider1, overSlider2 = false;
+	private boolean slider1locked, slider2locked = false;
+//TO REFACTOR - END
+
+		
+	public Arc_viewer(Rhythm_controller controller){		
+		this.controller = controller;
 		textViewer = new Text_viewer(this);
 	    textViewWindow = new PopupWindow(this, textViewer); 
 	    cycleViewer = new Cycle_viewer(this);
-	    cycleViewWindow = new PopupWindow(this, cycleViewer);		
+	    cycleViewWindow = new PopupWindow(this, cycleViewer);	
+
 	}
 		
 	/*-----------------------------------------------------------------------------------------
@@ -96,22 +96,14 @@ public class Arc_viewer extends EmbeddedSketch {
 		return this.stringData;
 	}
 	
-	public void setSlider1(int pixels){
-		this.slider1 = getXPosition(slider1xPixels);
+	
+	public int getScreenBorder(){
+		return this.screenBorder;
 	}
 	
-	public void setSlider2(int pixels){
-		this.slider2 = getXPosition(slider2xPixels);
+	public float getLineSubvision(){
+		return this.lineSubDivision;
 	}
-	
-	public int getSlider1(){
-		return this.slider1;
-	}
-	
-	public int getSlider2(){
-		return this.slider2;
-	}
-	
 	
 	
 	/*-----------------------------------------------------------------------------------------
@@ -165,14 +157,14 @@ public class Arc_viewer extends EmbeddedSketch {
 	 
 	 
 	 /*-----------------------------------------------------------------------------------------
-	  * Arc diagram methods
+	  * Arc diagram draw methods
 	  *----------------------------------------------------------------------------------------*/	
 	 /**
 	  * Draw arc diagram on the screen
 	  */
 	 public void drawArcDiagram(){ 
 		 //Test data (should be from model, currently loaded from here)
-		 int[][] nodePairs = loadTestData();
+		 int[][] nodePairs = controller.getMatchingStrings();
 
 		
 		 /*
@@ -227,7 +219,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	 
 	 
 	 /*-----------------------------------------------------------------------------------------
-	  * X axis diagram methods
+	  * X axis draw methods
 	  *----------------------------------------------------------------------------------------*/	
 	 private void drawXaxis(){
 	 /*
@@ -336,12 +328,28 @@ public class Arc_viewer extends EmbeddedSketch {
 		  }
 		}
 	
-	 //TO DO - needs refactoring and simplifying
+	//Slider methods to refactor
 	 
-	 public void mouseClicked(){
-		 
-	 }
-	 public void mouseDragged() {
+	 
+	 
+	 public void setSlider1(int pixels){
+			this.slider1 = getXPosition(slider1xPixels);
+		}
+		
+		public void setSlider2(int pixels){
+			this.slider2 = getXPosition(slider2xPixels);
+		}
+		
+		public int getSlider1(){
+			return this.slider1;
+		}
+		
+		public int getSlider2(){
+			return this.slider2;
+		}
+	 
+	
+	public void mouseDragged() {
 		  if(slider1locked) {
 			  if(mouseX >= screenWidth /2){
 				  slider1xPixels = (screenWidth / 2) - (sliderRadius + 1);
@@ -375,40 +383,4 @@ public class Arc_viewer extends EmbeddedSketch {
 	 
 	 
 	 
-	 
-	 
-	 /*-----------------------------------------------------------------------------------------
-	  * Test data - TO DELETE 
-	  *----------------------------------------------------------------------------------------*/
-	 private int[][] loadTestData() {
-		 int[][] nodePairs = new int[5][4]; // [number or pairs][nodes per pair]
-		 nodePairs[0][0] = 0;
-		 nodePairs[0][1] = 1;
-		 nodePairs[0][2] = 150;
-		 nodePairs[0][3] = 151;
-		 
-		 nodePairs[1][0] = 4;
-		 nodePairs[1][1] = 6;
-		 nodePairs[1][2] = 8;
-		 nodePairs[1][3] = 10;
-		 
-		 nodePairs[2][0] = 15;
-		 nodePairs[2][1] = 18;
-		 nodePairs[2][2] = 20;
-		 nodePairs[2][3] = 23;
-		 
-		 nodePairs[3][0] = 2;
-		 nodePairs[3][1] = 3;
-		 nodePairs[3][2] = 4;
-		 nodePairs[3][3] = 5;
-		 
-		 nodePairs[4][0] = 0;
-		 nodePairs[4][1] = 6;
-		 nodePairs[4][2] = 10;
-		 nodePairs[4][3] = 16;
-		 
-		 return nodePairs;
-		 
-	}
-
 }

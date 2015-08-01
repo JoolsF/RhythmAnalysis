@@ -26,13 +26,19 @@ import java.util.Map.Entry;
 
 public class Rhythm_model {
 	
+	private String string = "";
+	
 	private Node root;
+	
 	private Rhythm_controller controller = null;
-	private Main_viewer viewer = null;
 	
 	
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Constructors
+	 *----------------------------------------------------------------------------------------*/
 	public Rhythm_model() {
-		root = new NodeRoot();
+		this.root = new NodeRoot();
 	}
 	
 	public Rhythm_model(String str){
@@ -41,8 +47,15 @@ public class Rhythm_model {
 	}
 	
 	
-
+	
+	public void reset(){
+		this.string = "";
+		this.root = null; //nullifying current object.  Will be garbage collected
+		this.root = new NodeRoot();
+	}
+	
 	public void addString(String str){		
+		this.string = str;
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
 				System.out.println("NODE TO ADD: " + str.substring(index, i+1) + "(" +index+")");
@@ -57,19 +70,22 @@ public class Rhythm_model {
 		}	
 	}
 	
+	/*-----------------------------------------------------------------------------------------
+	 * Getters and setters
+	 *----------------------------------------------------------------------------------------*/
 	public Node getTree(){
 		return this.root;
 	}
 
+	public String getString(){
+		return this.string;
+	}
 	public void setController(Rhythm_controller rhythm_controller) {
 		this.controller = rhythm_controller;
 		
 	}
 
-	public void setViewer(Main_viewer viewer) {
-		this.viewer = viewer;
-		
-	}
+	
 	
 //	public static void main(String[] args){
 //	//1100101 <- class cast error

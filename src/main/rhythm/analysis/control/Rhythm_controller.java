@@ -1,14 +1,14 @@
 package rhythm.analysis.control;
 
-//controller
-
 import java.util.List;
-
 import rhythm.analysis.model.Rhythm_model;
 import rhythm.analysis.view.Main_viewer;
 
-
-
+/**
+ * Controller
+ * @author Julian Fenner
+ *
+ */
 
 public class Rhythm_controller {
 	
@@ -22,19 +22,68 @@ public class Rhythm_controller {
 	public Rhythm_controller(){
 	}
 	
-	public void initAll(Main_viewer v){
+	/*-----------------------------------------------------------------------------------------
+	 * Getters and setters
+	 *----------------------------------------------------------------------------------------*/
+	public String getModelString(){
+		return model.getString();
+	}
+	
+	public List<String> getTreeAsList(){
+		System.out.println(this.model.getTree().nodesToList());
+		return this.model.getTree().nodesToList();
+	}
+	
+	public int[][] getMatchingStrings(){
+		//TEST DATA
+		int[][] nodePairs = new int[5][4]; // [number or pairs][nodes per pair]
+		 nodePairs[0][0] = 0;
+		 nodePairs[0][1] = 1;
+		 nodePairs[0][2] = 150;
+		 nodePairs[0][3] = 151;
+		 
+		 nodePairs[1][0] = 4;
+		 nodePairs[1][1] = 6;
+		 nodePairs[1][2] = 8;
+		 nodePairs[1][3] = 10;
+		 
+		 nodePairs[2][0] = 15;
+		 nodePairs[2][1] = 18;
+		 nodePairs[2][2] = 20;
+		 nodePairs[2][3] = 23;
+		 
+		 nodePairs[3][0] = 2;
+		 nodePairs[3][1] = 3;
+		 nodePairs[3][2] = 4;
+		 nodePairs[3][3] = 5;
+		 
+		 nodePairs[4][0] = 0;
+		 nodePairs[4][1] = 6;
+		 nodePairs[4][2] = 10;
+		 nodePairs[4][3] = 16;
+		 
+		 return nodePairs;
+		 	
+	}
+	
+	
+	public void initAll(Main_viewer viewer){
 		//init viewer
-		viewer = v;
-		
+		this.viewer = viewer;		
 		//create the model
-		model = new Rhythm_model();
-		
+		model = new Rhythm_model();	
 		//create references between MVC components
 		model.setController(this);
-		viewer.setModel(model);
-		model.setViewer(viewer);
 	}
 		
+	
+	public void updateTree(String str){
+		this.model.addString(str);
+	}
+	
+	public void resetModel() {
+		model.reset();
+	}
 	
 	public void createNewTree(String str){
 		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3. 
@@ -47,7 +96,7 @@ public class Rhythm_controller {
 		// NOT WORKING WORKING 11001111
 		// NOT WORKING 110011110 
 		
-		model = new Rhythm_model("AB11001"); //trace construction debug output carefully
+		//model = new Rhythm_model(); //trace construction debug output carefully
 		//suffixTree.getTree().printTree();
 		
 		
@@ -75,10 +124,9 @@ public class Rhythm_controller {
 //		System.out.println(leafOther.okToSplitNode('0'));
 		
 	}
-	public List<String> getTreeAsList(){
-		System.out.println(this.model.getTree().nodesToList());
-		return this.model.getTree().nodesToList();
-	}
+
+	
+	
 	
 	
 
