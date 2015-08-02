@@ -152,7 +152,11 @@ public class Main_viewer extends PApplet implements Observer{
 	}
 	
 	public void showArcTree(){
-		arcViewWindow.setVisible(true);
+		//if(arcViewWindow.isVisible()){
+			//arcViewWindow.setVisible(false);	
+		//} else{
+			arcViewWindow.setVisible(true);
+		//}	
 	}
 	
 	

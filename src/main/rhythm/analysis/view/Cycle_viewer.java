@@ -73,11 +73,15 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	    fill(0);
 	    Integer[] testData = new Integer[]{1,5,10,11};
 
-
+	    
+	    if(this.controller.getModelString().length() > 0){
+	    	
+	    
 //	    println("1: " + getOnsets(this.arcViewerParent.getleftSlider()));
 //	    println("2: " + getOnsets(this.arcViewerParent.getRightSlider()));
 //	    renderCircle(width/4, height /2, getOnsets(this.arcViewerParent.getleftSlider()));
 //		renderCircle((width/4) * 3, height /2,  getOnsets(this.arcViewerParent.getRightSlider()));
+	    }
 	}
 	
 	

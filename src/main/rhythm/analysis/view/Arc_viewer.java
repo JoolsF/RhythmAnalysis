@@ -81,6 +81,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		this.arcMinimum = 1; //minimum arc size given starting value of 1
 				
 		//Initialise sliders
+		//ArcSlider(Arc_viewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
 		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
 		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
 	}
@@ -120,7 +121,12 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 *	therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
 	 */
 	private void setLineSubDivision(){
-		this.lineSubDivision  = lineLength / (getData().length() -1);	
+		// TO DO - handle case better where model data is empty string
+		if(getData().length() == 0){
+			this.lineSubDivision  = lineLength / 2;	
+		} else {
+			this.lineSubDivision  = lineLength / (getData().length() -1);
+		}
 	}
 	
 	public float getLineSubdivision(){
@@ -208,14 +214,14 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 float nodeTo = getMidPoint(regionBstart, regionBend);		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
 			 float arcWidth = nodeTo - nodeFrom; 		 			 
-			 // TO DO - Refactor so that not calculating previous variables		 
-				 pushStyle(); 
-				 noFill();
-				 stroke(100,127); // 2nd arg is alpha value
-				 strokeWeight(nodeLength);
-				 strokeCap(SQUARE); // Makes ends of arc square			 
-				 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0);
-				 popStyle(); 		 
+				 
+			 pushStyle(); 
+			 noFill();
+			 stroke(100,127); // 2nd arg is alpha value
+			 strokeWeight(nodeLength);
+			 strokeCap(SQUARE); // Makes ends of arc square			 
+			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0);
+			 popStyle(); 		 
 			}
 		 }	 
 	 }
@@ -280,13 +286,20 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		 ellipse(leftSlider.getXPixels(), screenMidY, leftSlider.getWidth(), leftSlider.getWidth());
 		 leftSlider.setSlider();
 		 leftSlider.checkSetOverSlider(mouseX, mouseY);
-		 
 		 ellipse(rightSlider.getXPixels(), screenMidY, rightSlider.getWidth(), rightSlider.getWidth());
 		 rightSlider.setSlider();
 		 rightSlider.checkSetOverSlider(mouseX, mouseY);
+		 //updateSliders();
 		 popStyle();
 		 
 	 } 
+	 
+	 
+	 /**
+	  * Ensures sliders don't overlap
+	  * TO DO - Refactor and encapsulate into container class for ArcSlider
+	  */
+	
 
 	/*-----------------------------------------------------------------------------------------
 	 * Other draw methods
@@ -311,8 +324,9 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 }
 	
 	 public void mouseDragged() {
-		 leftSlider.setSliderPixels(mouseX);
-		 rightSlider.setSliderPixels(mouseX);
+		 //arguments ensure that sliders do not overlap
+		 leftSlider.setSliderPixels(mouseX, leftSlider.getLeftMin(), rightSlider.getXPixels());
+		 rightSlider.setSliderPixels(mouseX, leftSlider.getXPixels(), rightSlider.getRightMax());
 	 }	 
 		
 	 public void mouseReleased() {
@@ -329,6 +343,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 
 	@Override
 	public void update() {
+		
 		this.redraw();	
 	}	 
 	 

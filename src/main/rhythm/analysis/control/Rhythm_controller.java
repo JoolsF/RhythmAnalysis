@@ -28,7 +28,7 @@ public class Rhythm_controller {
 		//create the model
 		model = new Rhythm_model(this);	
 //		//TO DO remove dummy data
-		model.setString("1010");
+		//model.setString("1010");
 	}
 	
 	public void notifyAllObservers(){

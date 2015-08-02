@@ -45,10 +45,14 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	}
 	
 	public void draw(){
-		println("hi");
 		background(128);
 		smooth();
+		// TO DO - handle this case better where string length == 0
+		if(this.controller.getModelString().length() != 0)  drawText();
+	}
 	
+	
+	public void drawText(){
 		int currentChar = 20;
 		int currentline = lineHeight;
 		char[] charArray = this.controller.getModelString().toCharArray();
@@ -73,6 +77,7 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 		}
 		
 	}
+	
 	
 	private int getRandomNumber(int upperLimit){
 		return rand.nextInt(upperLimit) + 1;

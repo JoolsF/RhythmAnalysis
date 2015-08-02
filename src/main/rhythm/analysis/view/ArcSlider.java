@@ -4,8 +4,8 @@ public class ArcSlider {
 	private Arc_viewer arcViewer;
 	
 	private int slider;// = 0;
-	private final int leftMin;
-	private final int rightMax;
+	private int leftMin;
+	private  int rightMax;
 	
 	private int sliderxPixels;
 	private int sliderWidth;
@@ -56,12 +56,12 @@ public class ArcSlider {
 		 }
 	 }
 	 
-	 public void setSliderPixels(int mouseX){
+	 public void setSliderPixels(int mouseX, int leftMin, int rightMax){
 		 if(sliderlocked) {
-			 if(mouseX >= this.rightMax){
-				 sliderxPixels = this.rightMax;
-			 } else if(mouseX <= this.leftMin){
-				 sliderxPixels = this.leftMin;
+			 if(mouseX >= rightMax){
+				 sliderxPixels = rightMax - sliderWidth;
+			 } else if(mouseX <= leftMin){
+				 sliderxPixels = leftMin + sliderWidth;
 			 } else {
 				 sliderxPixels = mouseX;
 			 }
@@ -93,5 +93,13 @@ public class ArcSlider {
 		 this.sliderlocked = false;
 	 }
 	 
+	  
+	 public int getLeftMin(){
+		 return this.leftMin;
+	 }
+	 
+	 public int getRightMax(){
+		 return this.rightMax;
+	 }
 
 }
