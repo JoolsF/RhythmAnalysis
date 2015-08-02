@@ -26,7 +26,7 @@ import rhythm.analysis.control.Rhythm_controller;
  */
 
 //TO DO - Need to rotate circle -90 so that 0 is at 0 degrees.
-public class Cycle_viewer extends EmbeddedSketch  {
+public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	private static final long serialVersionUID = 1L;
 	private PVector[] points;
 	private PVector[] charPoints;
@@ -156,6 +156,13 @@ public class Cycle_viewer extends EmbeddedSketch  {
 			if(charArray[i] == '1') result.add(i);
 		}	
 		return result.toArray(new Integer[result.size()]);
+	}
+
+
+
+	@Override
+	public void update() {
+		this.redraw();
 	}
 	
 }

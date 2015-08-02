@@ -22,7 +22,7 @@ import controlP5.Textfield;
 import rhythm.analysis.control.Rhythm_controller;
 import rhythm.analysis.model.Rhythm_model;
 
-public class Main_viewer extends PApplet{
+public class Main_viewer extends PApplet implements Observer{
 	private static final long serialVersionUID = 1L;
 	
 	private ControlP5 cp5;
@@ -37,9 +37,11 @@ public class Main_viewer extends PApplet{
 		
 	public Main_viewer(){
 		//MVC system started here
-		controller = new Rhythm_controller(this);	
+		controller = new Rhythm_controller();
+		controller.attach(this);
 		//Start second windows
 		arcView = new Arc_viewer(controller);
+		controller.attach(arcView);
 		arcViewWindow = new PopupWindow(this, arcView); 
 	}	
 	
@@ -144,8 +146,9 @@ public class Main_viewer extends PApplet{
 	
 	//BUTTONS
 	public void clear_data(){
-		this.myTextarea.setText("Data cleared");
-		this.controller.resetModel();
+//T DO needs debugging - ensure model reset correctly
+//		this.myTextarea.setText("Data cleared");
+//		this.controller.resetModel();
 	}
 	
 	public void showArcTree(){
@@ -157,6 +160,12 @@ public class Main_viewer extends PApplet{
 		println("a slider event. setting min arc to " + arcMinimum);
 		arcView.setArcMinimum(arcMinimum);
 		arcView.redraw();
+	}
+
+	@Override
+	public void update() {
+		this.redraw();
+		
 	}
 	
 }

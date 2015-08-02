@@ -19,7 +19,7 @@ http://www.gicentre.net/utils/zoom
 
 Processing Mouse Functions demo used for custom slider
 */
-public class Arc_viewer extends EmbeddedSketch {
+public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	private static final long serialVersionUID = 1L;	
 
 	/*-----------------------------------------------------------------------------------------
@@ -58,6 +58,17 @@ public class Arc_viewer extends EmbeddedSketch {
 	public Arc_viewer(Rhythm_controller controller){		
 		//Initialise controller
 		this.controller = controller;
+		//Initialise windows
+		
+		this.textViewer = new Text_viewer(this, controller);
+		controller.attach(textViewer);
+		this.textViewWindow = new PopupWindow(this, textViewer); 
+		
+		this.cycleViewer = new Cycle_viewer(this, controller);
+		controller.attach(cycleViewer);
+		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
+		
+		this.windowsOpen = false;
 		
 		//Initialise screen dimensions
 		this.screenWidth = 1000;
@@ -69,13 +80,6 @@ public class Arc_viewer extends EmbeddedSketch {
 		setLineSubDivision();
 		this.arcMinimum = 1; //minimum arc size given starting value of 1
 				
-		//Initialise windows
-		this.windowsOpen = false;
-		this.textViewer = new Text_viewer(this, controller);
-		this.textViewWindow = new PopupWindow(this, textViewer); 
-		this.cycleViewer = new Cycle_viewer(this, controller);
-		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
-		
 		//Initialise sliders
 		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
 		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
@@ -320,6 +324,12 @@ public class Arc_viewer extends EmbeddedSketch {
 		  textViewWindow.setVisible(true);
 		  cycleViewWindow.setVisible(true);  
 	  } 
+	}
+
+
+	@Override
+	public void update() {
+		this.redraw();	
 	}	 
 	 
 }

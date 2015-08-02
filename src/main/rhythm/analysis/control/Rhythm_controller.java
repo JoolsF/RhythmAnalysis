@@ -5,6 +5,7 @@ import java.util.List;
 
 import rhythm.analysis.model.Rhythm_model;
 import rhythm.analysis.view.Main_viewer;
+import rhythm.analysis.view.Observer;
 
 /**
  * Controller
@@ -14,21 +15,31 @@ import rhythm.analysis.view.Main_viewer;
 
 public class Rhythm_controller {
 	
-	private Main_viewer viewer;
+	//private Main_viewer viewer;
 	private Rhythm_model model;
+	private List<Observer> observers = new ArrayList<Observer>();
+	
+	
 	
 	/**
 	 * constructor
 	 */
-	public Rhythm_controller(Main_viewer viewer){
-		this.viewer = viewer;		
+	public Rhythm_controller(){	
 		//create the model
 		model = new Rhythm_model(this);	
-		
 //		//TO DO remove dummy data
 		model.setString("1010");
-		
 	}
+	
+	public void notifyAllObservers(){
+	      for (Observer observer : observers) {
+	         observer.update();
+	   }
+	}
+	
+	public void attach(Observer observer){
+	      observers.add(observer);		
+	   }
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Getters and setters
@@ -104,13 +115,16 @@ public class Rhythm_controller {
 	
 	public void updateTree(String str){
 		this.model.addString(str);
+		notifyAllObservers();
 	}
 	
 	public void resetModel() {
 		model.reset();
+		notifyAllObservers();
 	}
 	
 	public void createNewTree(String str){
+		notifyAllObservers();
 		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3. 
 		
 		// WORKING UP TO AB11AA

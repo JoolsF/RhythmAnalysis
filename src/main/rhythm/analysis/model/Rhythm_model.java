@@ -29,7 +29,7 @@ public class Rhythm_model {
 	private Node root;
 	private String string;
 	//TO DO, set from ui
-	private int numPulses = 4; 
+	private int numPulses = 8; 
 	private Rhythm_controller controller;
 	
 	
@@ -56,7 +56,7 @@ public class Rhythm_model {
 	}
 	
 	public void addString(String str){		
-		this.string = str;
+		this.string += str;
 		for(int i = 0; i < str.length(); i++){			
 			for(int index = 0; index <= i; index++){
 				System.out.println("NODE TO ADD: " + str.substring(index, i+1) + "(" +index+")");

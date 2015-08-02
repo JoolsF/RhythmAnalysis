@@ -12,7 +12,7 @@ import controlP5.Textarea;
 import processing.core.PFont;
 import rhythm.analysis.control.Rhythm_controller;
 
-public class Text_viewer  extends EmbeddedSketch{
+public class Text_viewer  extends EmbeddedSketch implements Observer{
 
 	private static final long serialVersionUID = 1L;
 	private final int screenWidth = 500;
@@ -45,6 +45,7 @@ public class Text_viewer  extends EmbeddedSketch{
 	}
 	
 	public void draw(){
+		println("hi");
 		background(128);
 		smooth();
 	
@@ -110,10 +111,11 @@ public class Text_viewer  extends EmbeddedSketch{
 		//TEST DATA END
 		
 	}
-	
-	
 
-	
-	
+
+	@Override
+	public void update() {
+		this.redraw();	
+	}	
 	
 }
