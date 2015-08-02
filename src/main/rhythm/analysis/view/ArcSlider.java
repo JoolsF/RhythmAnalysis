@@ -24,7 +24,7 @@ public class ArcSlider {
 		this.sliderWidth = sliderWidth;
 		this.sliderRadius = sliderWidth / 2;
 		this.sliderxPixels = startX;
-		this.slider = 0;
+		setSlider();
 		this.slider1offset = (float) 0.0;
 		overSlider = false;
 		sliderlocked = false;
@@ -65,8 +65,12 @@ public class ArcSlider {
 			 } else {
 				 sliderxPixels = mouseX;
 			 }
-			 this.slider = getXPosition(sliderxPixels);
+			 setSlider();
 		 } 
+	 }
+	 
+	 public void setSlider(){
+		 this.slider = getXPosition(sliderxPixels); 
 	 }
 	 
 	 private int getXPosition(int xPixels){

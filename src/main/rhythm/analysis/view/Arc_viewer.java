@@ -267,9 +267,13 @@ public class Arc_viewer extends EmbeddedSketch {
 	 private void drawSliders(){
 		 pushStyle();
 		 noFill();
+		 
 		 ellipse(leftSlider.getXPixels(), screenMidY, leftSlider.getWidth(), leftSlider.getWidth());
-		 ellipse(rightSlider.getXPixels(), screenMidY, rightSlider.getWidth(), rightSlider.getWidth());
+		 leftSlider.setSlider();
 		 leftSlider.checkSetOverSlider(mouseX, mouseY);
+		 
+		 ellipse(rightSlider.getXPixels(), screenMidY, rightSlider.getWidth(), rightSlider.getWidth());
+		 rightSlider.setSlider();
 		 rightSlider.checkSetOverSlider(mouseX, mouseY);
 		 popStyle();
 		 
