@@ -63,7 +63,9 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	   } 
 	   
 	}
-	 
+
+	
+	//TO DO - Needs further debugging and integrating with data model.  Render circle commented out therefore
 	public void draw(){	
 		int[] onsets = new int[2];
 		background(128);
@@ -71,16 +73,11 @@ public class Cycle_viewer extends EmbeddedSketch  {
 	    fill(0);
 	    Integer[] testData = new Integer[]{1,5,10,11};
 
-	    
-	    
-//	    for(int next :getOnsets(9)){
-//	     println(next);	
-//	    }
-//	    println("----------------------");
-//println("1: " + getOnsets(this.arcViewerParent.getSlider1()));
-//println("2: " + getOnsets(this.arcViewerParent.getSlider2()));
-//	    renderCircle(width/4, height /2, getOnsets(0));
-//		renderCircle((width/4) * 3, height /2,  getOnsets(9));
+
+//	    println("1: " + getOnsets(this.arcViewerParent.getleftSlider()));
+//	    println("2: " + getOnsets(this.arcViewerParent.getRightSlider()));
+//	    renderCircle(width/4, height /2, getOnsets(this.arcViewerParent.getleftSlider()));
+//		renderCircle((width/4) * 3, height /2,  getOnsets(this.arcViewerParent.getRightSlider()));
 	}
 	
 	
@@ -136,6 +133,29 @@ public class Cycle_viewer extends EmbeddedSketch  {
 			}
 		}
 		return lineCoords;
+	}
+	
+	/***
+	 * Take string index as argument and returns the index of the 'onsets' within the period
+	 * For example if period is 4 and string is "10011101" and arg is 5 then it will return
+	 * the position of the onsets at 1101 which are 4 5 and 7
+	 * 
+	 * @param index
+	 * @return
+	 */
+	private Integer[] getOnsets(int sliderIndex){ //slider index
+		//TO DO - add exception handling here to deal with case when index is at end of string and period isn't "complete"
+		int periodStart = sliderIndex - (sliderIndex %  controller.getNumPulses());
+		println(periodStart);
+		char[] charArray = this.controller.getModelString().toCharArray();
+		
+		List<Integer> result = new ArrayList<Integer>();
+		
+		for(int i = periodStart; i < periodStart + controller.getNumPulses(); i++){
+			println(i);
+			if(charArray[i] == '1') result.add(i);
+		}	
+		return result.toArray(new Integer[result.size()]);
 	}
 	
 }

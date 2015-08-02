@@ -29,8 +29,15 @@ public class Rhythm_model {
 	private Node root;
 	private String string;
 	//TO DO, set from ui
-	private int numPulses = 8; 
+	private int numPulses = 4; 
 	private Rhythm_controller controller;
+	
+	
+	//TO DO - Remove.  For testing purposes only
+	public void setString(String string){
+		this.string = string;
+	}
+	
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Constructors
@@ -43,7 +50,7 @@ public class Rhythm_model {
 		
 	
 	public void reset(){
-		this.string = "1010";
+		this.string = "";
 		this.root = null; //nullifying current object.  Will be garbage collected
 		this.root = new NodeRoot();
 	}

@@ -11,9 +11,9 @@ public class ArcSlider {
 	private int sliderWidth;
 	private int sliderRadius;
 	
-	private float slider1offset;// = (float) 0.0;
-	private boolean overSlider;// = false;
-	private boolean sliderlocked;// = false;
+	private float slider1offset;
+	private boolean overSlider;
+	private boolean sliderlocked;
 	
 	public ArcSlider(Arc_viewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
 		this.arcViewer = arcViewer;

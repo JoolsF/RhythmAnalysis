@@ -16,9 +16,6 @@ public class Rhythm_controller {
 	
 	private Main_viewer viewer;
 	private Rhythm_model model;
-	private int stringStart;
-	private int stringEnd;
-	
 	
 	/**
 	 * constructor
@@ -28,8 +25,8 @@ public class Rhythm_controller {
 		//create the model
 		model = new Rhythm_model(this);	
 		
-		//TO DO remove dummy data
-		model.addString("1010");
+//		//TO DO remove dummy data
+		model.setString("1010");
 		
 	}
 	

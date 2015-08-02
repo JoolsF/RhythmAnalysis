@@ -23,7 +23,7 @@ public class Arc_viewer extends EmbeddedSketch {
 	private static final long serialVersionUID = 1L;	
 
 	/*-----------------------------------------------------------------------------------------
-	 * Arc viewer fields
+	 * Fields
 	 *----------------------------------------------------------------------------------------*/
 	private Rhythm_controller controller = null;
 		
@@ -49,6 +49,11 @@ public class Arc_viewer extends EmbeddedSketch {
 	//Arc sliders
 	private ArcSlider leftSlider;
 	private ArcSlider rightSlider;
+	
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Constructor
+	 *----------------------------------------------------------------------------------------*/
 			
 	public Arc_viewer(Rhythm_controller controller){		
 		//Initialise controller
@@ -56,7 +61,7 @@ public class Arc_viewer extends EmbeddedSketch {
 		
 		//Initialise screen dimensions
 		this.screenWidth = 1000;
-		this.screenHeight = 800;
+		this.screenHeight = 700;
 		this.screenBorder = 50;
 		this.screenMidY = screenHeight / 2;
 		this.screenMidX = screenWidth / 2;
