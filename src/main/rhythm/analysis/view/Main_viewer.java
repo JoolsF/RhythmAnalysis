@@ -56,13 +56,13 @@ public class Main_viewer extends PApplet implements Observer{
 		cp5 = new ControlP5(this);
 		
 		//Input textfield 1
-		cp5.addTextfield("input")
-			.setPosition(40,50)
-		 	.setSize(200,40)
-		 	.setFont(font)
-		 	.setFocus(true)
-		 	.setColor(color(255,0,0)
-		 	);
+		textfield = cp5.addTextfield("input")
+					   .setPosition(40,50)
+		 	           .setSize(200,40)
+		 	           .setFont(font)
+		 	           .setFocus(true)
+		 	           .setColor(color(255,0,0));
+		textfield.setAutoClear(false);
 		
 		//Button
 		cp5.addButton("clear_data")
@@ -136,12 +136,27 @@ public class Main_viewer extends PApplet implements Observer{
 	 * @param theText
 	 */
 	public void input(String theText) {
-		// 
 		println("a textfield event for controller 'input' : "+theText);
-		this.controller.updateTree(theText);
-		this.myTextarea.setText(controller.getTreeAsList().toString());
-		arcView.redraw();
-		
+		if(inputValid(theText)){
+			this.controller.updateTree(theText);
+			this.myTextarea.setText(controller.getTreeAsList().toString());
+			textfield.clear();
+			arcView.redraw();
+		} else {
+			this.myTextarea.setText("Error, input must be multiple of " + this.controller.getNumPulses());
+		}
+	}
+	/**
+	 * 
+	 * @param theText
+	 * @return
+	 */
+	private boolean inputValid(String theText){
+		if(theText.length() % this.controller.getNumPulses() == 0){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	//BUTTONS

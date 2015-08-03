@@ -295,12 +295,6 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 } 
 	 
 	 
-	 /**
-	  * Ensures sliders don't overlap
-	  * TO DO - Refactor and encapsulate into container class for ArcSlider
-	  */
-	
-
 	/*-----------------------------------------------------------------------------------------
 	 * Other draw methods
 	 *----------------------------------------------------------------------------------------*/

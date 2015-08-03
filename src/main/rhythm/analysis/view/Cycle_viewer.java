@@ -74,13 +74,9 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	    Integer[] testData = new Integer[]{1,5,10,11};
 
 	    
-	    if(this.controller.getModelString().length() > 0){
-	    	
-	    
-//	    println("1: " + getOnsets(this.arcViewerParent.getleftSlider()));
-//	    println("2: " + getOnsets(this.arcViewerParent.getRightSlider()));
-//	    renderCircle(width/4, height /2, getOnsets(this.arcViewerParent.getleftSlider()));
-//		renderCircle((width/4) * 3, height /2,  getOnsets(this.arcViewerParent.getRightSlider()));
+	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){
+	    	renderCircle(width/4, height /2, getOnsets(this.arcViewerParent.getleftSlider())); //left slider
+	    	renderCircle((width/4) * 3, height /2,  getOnsets(this.arcViewerParent.getRightSlider())); //right slider
 	    }
 	}
 	
@@ -149,19 +145,21 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	 */
 	private Integer[] getOnsets(int sliderIndex){ //slider index
 		//TO DO - add exception handling here to deal with case when index is at end of string and period isn't "complete"
+		
 		int periodStart = sliderIndex - (sliderIndex %  controller.getNumPulses());
-		println(periodStart);
+		
 		char[] charArray = this.controller.getModelString().toCharArray();
 		
 		List<Integer> result = new ArrayList<Integer>();
 		
 		for(int i = periodStart; i < periodStart + controller.getNumPulses(); i++){
-			println(i);
-			if(charArray[i] == '1') result.add(i);
+			//println(i);
+			if(charArray[i] == '1') result.add(i % this.controller.getNumPulses()); //modulo num pulses because pulse must always be 0 to numpulses
 		}	
 		return result.toArray(new Integer[result.size()]);
-	}
-
+		}
+	
+	
 
 
 	@Override
