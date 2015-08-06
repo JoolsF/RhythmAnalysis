@@ -3,22 +3,26 @@ package rhythm.analysis.model;
 import java.util.List;
 
 
-
-
-//contains implementations of methods common to NodeLead and NodeNonLead
+// Contains implementations of methods common to NodeLeaf and NodeNonLeaf
 public interface InnerNode extends Node {
 	
-	//TO IMPLEMENT
+	/*-----------------------------------------------------------------------------------------
+	 * Abstract
+	 *----------------------------------------------------------------------------------------*/
 	public String getString();
 	public int getStringIndex();
 	public List<InnerNode> getChildren();
-	
 	public void setStringIndex(int index);
 	public void setSubString(int start);
 	public void setParent(Node parent);
 	public Node getParent();
 	
-	//DEFAULT METHODS
+	
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Default - Node check methods
+	 *----------------------------------------------------------------------------------------*/
+	
 	public default boolean nodeIsAPrefixOf(String string) {
 		if(string.startsWith(this.getString()) && string.length() > this.getString().length()){
 			return true;
@@ -35,12 +39,26 @@ public interface InnerNode extends Node {
 	    }
 	}
 	
+	// returns true if the child has a non "$" sibling
+	public default boolean needToSplitNode(){
+		if ((getLastSiblingValue().equals("$") && this.getSiblings().size() > 2) ||
+		 (! getLastSiblingValue().equals("$") && this.getSiblings().size() > 1) || 
+		// TO DO - Rethink this line.  This deals with case where node's parent is root
+		// Could use instanceOf but needs proper OO solution		 
+		 this.getParent().getString().equals("ROOT")){
+			return true;
+		}else {
+			return false;
+		}				
+	}
+
 	
-	/**
-	 * i.e if getString() returns a and arg is abab the return is bab
-	 * @param string
-	 * @return
-	 */
+	/*-----------------------------------------------------------------------------------------
+	 * Default - Node creational / modification methods
+	 *----------------------------------------------------------------------------------------*/
+	
+	
+	//i.e if getString() returns a and arg is abab the return is bab
 	public default String removeNodeFromArg(String string){
 		return string.substring(getString().length());
 	}
@@ -51,6 +69,7 @@ public interface InnerNode extends Node {
 	}
 	
 	
+	
 	public default String getCommonPrefix(String string){
 		if(this.getString().length() > string.length()){
 			return this.getString().substring(0, string.length());
@@ -59,8 +78,19 @@ public interface InnerNode extends Node {
 		}
 	}	
 	
+	public default void movePrefixUp(String str){	
+		//TO DO - fix this, have to cast.  What about if parent is Root etc
+		//class cast exception causing bug here
+		InnerNode parent = (InnerNode) this.getParent();
+		parent.setString(parent.getString() + this.getCommonPrefix(str));
+		this.setSubString(str.length());	
+	}
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Default - Child methods
+	 *----------------------------------------------------------------------------------------*/
+	
 	public default boolean hasChildWithSameFirstLetter(String str){
-		
 		char charToCheck[] = str.toCharArray();
 		for(InnerNode next: this.getChildren()){
 			if(next.getString().toCharArray()[0] == charToCheck[0]
@@ -69,8 +99,7 @@ public interface InnerNode extends Node {
 				return true;
 			}
 		}
-		return false;
-		
+		return false;	
 	}
 	
 	public default String getChildValues(){
@@ -101,32 +130,23 @@ public interface InnerNode extends Node {
 		return this.getParent().getChildren();
 	}
 	
-	// returns true if the child has a non "$" sibling
-	public default boolean needToSplitNode(){
-		System.out.println("THIS VALUE " + this.getString());
-		System.out.println("PARENT VALUE " + this.getString());
-		if ((getLastSiblingValue().equals("$") && this.getSiblings().size() > 2) ||
-		 (! getLastSiblingValue().equals("$") && this.getSiblings().size() > 1) || 
-// TO DO - Rethink this line.  This deal with case where node's parent is root
-// Could use instanceOf but needs proper OO solution		 
-		 this.getParent().getString().equals("ROOT")){
-			return true;
-		}else {
-			return false;
+	
+
+	/**
+	 * Removes any % children from parent (if parent not root)
+	 */
+	public default void remove$Children(){
+		if(this.getLastSiblingValue().equals("$")){
+			this.getParent().removeChild(getLastSibling());
+			}
 		}
-					
-	}
 	
-	public default void movePrefixUp(String str){	
-		//TO DO - fix this, have to cast.  What about if parent is Root etc
-		//CLASS CAST EXCEPTION CAUSING BUG HERE 
-		InnerNode parent = (InnerNode) this.getParent();
-		parent.setString(parent.getString() + this.getCommonPrefix(str));
-		this.setSubString(str.length());	
-	}
 	
-	public default void debugTrace(String location, String str, int index){
-		
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Default - Debug method
+	 *----------------------------------------------------------------------------------------*/
+	public default void debugTrace(String location, String str, int index){		
 		System.out.println("	*******************");
 		System.out.println("	Location: " + location + " " + this.getString() + "(" +this.getStringIndex() + ")");
 		System.out.println("	Child values: " + getChildValues() );
@@ -135,18 +155,4 @@ public interface InnerNode extends Node {
 		System.out.println();
 		System.out.println();
 	}
-	
-	public default void remove$Children(){
-		//REMOVE ANY $ CHILDREN FROM PARENT (IF PARENT NOT ROOT)
-		
-			if(this.getLastSiblingValue().equals("$")){
-				
-				this.getParent().removeChild(getLastSibling());
-			}
-				
-			
-		}
-	
-	
-	
 }

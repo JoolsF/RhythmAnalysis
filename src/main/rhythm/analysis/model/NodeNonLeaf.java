@@ -13,7 +13,6 @@ public class NodeNonLeaf implements InnerNode {
 	
 	
 	public NodeNonLeaf(String string, int stringIndex, Node parent){
-		
 		this.string = string;
 		this.stringIndex = stringIndex;
 		this.parent = parent;
@@ -27,11 +26,8 @@ public class NodeNonLeaf implements InnerNode {
 	
 	@Override
 	public boolean addString(String str, int index) {
-		
-		
+				
 		if(this.nodeHasAPrefixOf(str)){
-
-
 			debugTrace("Node has a a prefix of: ", str, index);
 			//BASE CASE
 			//TO DO check case if parent is root.
@@ -47,9 +43,7 @@ public class NodeNonLeaf implements InnerNode {
 			
 		} else if(this.string.equals(str)){
 			//BASE CASE
-//BUG AREA START
 			if(! this.needToSplitNode()  && ! (this.parent instanceof NodeRoot)){ // TO DO - refactor this.  Avoid checking class
-				System.out.println("IN BUG AREA");
 				//i.e the current node matches str 100%
 				//do we also need to check if current node has no $ children??	
 				//move the prefix to the parent and remove this node				
@@ -57,9 +51,7 @@ public class NodeNonLeaf implements InnerNode {
 				this.getParent().addChildren(this.children);
 				this.getParent().removeChild(this);
 				return true;
-//BUG AREA END
 			} else {
-				
 				debugTrace("Node string, = str", str, index);
 				//IF HAS A $ SIBLING THIS NEEDS TO BE REMOVED
 				//IGNORE IF PARENT IS ROOT THOUGH
@@ -83,8 +75,7 @@ public class NodeNonLeaf implements InnerNode {
 					return true;
 				}
 			}
-			return false;
-			
+			return false;	
 		} else if(this.string.equals("$")){
 			//BASE CASE
 			//MEANS WE ARE AT LAST CHILD BECAUSE $ WHERE IT EXISTS WILL ALWAYS BE AT THE END
@@ -105,9 +96,7 @@ public class NodeNonLeaf implements InnerNode {
 	 * Private helper method for addString
 	 */
 	private void splitThisNode(String str, int index){
-//POTENTIAL BUG
 		remove$Children();
-//POTENTIAL BUG
 		String prefix = this.getCommonPrefix(str);  
 		String suffix = this.removeArgFromNode(str);  
 		List<InnerNode> newNodeChildren = new ArrayList<InnerNode>();
@@ -222,10 +211,8 @@ public class NodeNonLeaf implements InnerNode {
 				this.children.add(this.children.size(),next);	
 			} else {
 				this.children.add(0,next);
-			}	
-			
-		}
-		
+			}		
+		}		
 	}
 	
 	

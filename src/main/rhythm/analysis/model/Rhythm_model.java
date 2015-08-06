@@ -1,13 +1,6 @@
 package rhythm.analysis.model;
 
 import rhythm.analysis.control.Rhythm_controller;
-import rhythm.analysis.view.Main_viewer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 
 
@@ -19,9 +12,13 @@ import java.util.Map.Entry;
  * http://www.geeksforgeeks.org/ukkonens-suffix-tree-construction-part-1/
  */
 /*
- * TO REFACTOR
- * CHANGE OVER CHILD NODES FOR HASHMAPS 
+ * TO REFACTOR - Whole package....
+ *  1 Convert child nodes arraylists into hashmaps 
  * 	Means order of nodes won't matter i.e $ last and no need to iterate through children
+ * 
+ *  2 Replace all printline methods with logging
+ *  
+ *  3. Add exception handling
  */
 
 public class Rhythm_model {
@@ -31,12 +28,6 @@ public class Rhythm_model {
 	//TO DO, set from ui
 	private int numPulses = 8; 
 	private Rhythm_controller controller;
-	
-	
-	//TO DO - Remove.  For testing purposes only
-	public void setString(String string){
-		this.string = string;
-	}
 	
 	
 	/*-----------------------------------------------------------------------------------------
@@ -52,13 +43,12 @@ public class Rhythm_model {
 	public Rhythm_model(Rhythm_controller controller) {
 		this();
 		this.controller = controller;
-		
 	}
 		
 	
 	public void reset(){
 		this.string = "";
-		this.root = null; //nullifying current object.  Will be garbage collected
+		this.root = null; //nullifying current object.
 		this.root = new NodeRoot();
 	}
 	
@@ -99,27 +89,5 @@ public class Rhythm_model {
 	public int getNumPulses(){
 		return numPulses;
 	}
-	
-	
-//	public static void main(String[] args){
-//	//1100101 <- class cast error
-//	// AB1ABA WORKING
-//	// AB1ABAB WORKING
-//	// AB1ABAB1 WORKING
-//	// AB1ABAB1A WORKING
-//	// AB1ABAB1AB WORKING
-//	
-//		
-//		Rhythm_model test = new Rhythm_model("1010010"); 
-//		test.getTree().printTree();
-//		
-//		
-//		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
-//		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-//    		System.out.println(value.getKey() + ": " + value.getValue());
-//    	}
-//
-//		
-//	}
 	
 }

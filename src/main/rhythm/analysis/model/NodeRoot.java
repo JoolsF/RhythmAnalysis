@@ -7,20 +7,19 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/*
+ * TO DO
+ * 1. Turn into singleton, can only be 1 root
+ * 2. Shouldn't have getParent and addchild. Rethink interface etc.
+ */
 
-//should be singleton
-//shouldn't have getParent and addchild, rethink
 public class NodeRoot implements Node {
-
 	
+	private List<InnerNode> children;
 	
-	// To do change to private
-	public List<InnerNode> children;
-	// To do, connect to UI
-
-		public NodeRoot(){
-			this.children = new ArrayList<InnerNode>();
-		}
+	public NodeRoot(){
+		this.children = new ArrayList<InnerNode>();
+	}
 		
 	/*CASES
 	* 1 no children create new leaf node
@@ -32,20 +31,19 @@ public class NodeRoot implements Node {
 	@Override
 	public boolean addString(String string, int index) {
 		if (this.children.isEmpty()){
-System.out.println("	Children empty.  Creating node " + string +"("+index+")");			
+			System.out.println("	Children empty.  Creating node " + string +"("+index+")");			
 			this.children.add(new NodeLeaf(string, index, this));
 			return true;
 		} else{
 			for(Node child: children){
 				//for loop correct here?
 				if(child.addString(string, index)){
-					
 					return true;
 				}
 			}
 		}
 		//i.e no matches found
-System.out.println("	No matches round at root adding: " + string +"("+index+")");		
+		System.out.println("	No matches round at root adding: " + string +"("+index+")");		
 		addChildLeaf(string, index);
 		return true;
 		
@@ -89,7 +87,7 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 	}
 	
 	
-	//TO DO - refactor this is in InnerNode interface too
+	//TO DO, refactor - This is in InnerNode interface too
 	private String getChildValues(){
 		String childValues = "";
 		//guard condition needed for LeafNode
@@ -101,20 +99,6 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 		return childValues;	
 	}
 	
-	
-
-	@Override
-	public void setString(String str) {
-		//HAS NO STRING NEED TO RETHINK THE INTERFACE DESIGN
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getString() {
-		//TO DO - Refactor
-		return "ROOT";
-	}
 
 	@Override
 	public void addChild(InnerNode child) {
@@ -146,5 +130,21 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 			
 		}
 		
+	}
+	
+
+	// TO DO - Incorporate this into rhythm controller method add string.  String should be stored in root not controller.
+	@Override
+	public void setString(String str) {
+		//
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getString() {
+		//TO DO - This should return whole string
+		// Currently being used to check type of string to avoid class cast exception in InnerNode interface.  Code smell, bad OO design.  Rethink.
+		return "ROOT";
 	}
 }

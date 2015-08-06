@@ -4,7 +4,6 @@ package rhythm.analysis.model;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class NodeLeaf implements InnerNode {
 
 	private String string;
@@ -21,12 +20,7 @@ public class NodeLeaf implements InnerNode {
 	@Override
 	public boolean addString(String string, int index) {
 		if (this.nodeHasAPrefixOf(string)){
-			//BASE CASE
-			//HAS A PREFIX CASES ARE SPLIT / NEW NODE CASES
-			//convert leaf to node
-			// NEEDS TO GO BACK TO PARENT, GET DELETED AND HAVE A NONLEAF NODE PUT IN ITS PLACE
-			System.out.println("----> " + this.parent.getString().equals("ROOT"));
-			System.out.println("----> " + this.parent.getClass());
+			//BASE CASE - two sub cases 
 			debugTrace("Node has a prefix, child has a prefix", string, index);
 			if(this.needToSplitNode()){
 				debugTrace("Splitting Node ", string, index);	
@@ -48,17 +42,16 @@ public class NodeLeaf implements InnerNode {
 		}  else if(this.string.equals("$")){
 			debugTrace("This string = $", string, index);
 			//BASE CASE 
-			//i.e. this is a leaf node without any value then you are at correct place and just need to update the field
+			//i.e. This is a leaf node without any value then you are at correct place and just need to update the field
 			//children will be sorted so that "$" for any given list of children will always be at the end.
 			this.string = string;
 			this.stringIndex = index;
 			return true;
 		} else if (this.string.equals(string)){
-			//SEE NODENONLEAF
 			debugTrace("this string = sting arg.  **DOING NOTHING CURRENTLY**", string, index);			
 			// DOES THIS CASE OCCUR??
 		} 
-		//IF IT GETS TO THIS POINT NO STRING HAS BEEN ADDED AND THE METHOD RETURNS FALSE TO CONFIRM
+		//if it gets to this point no string has been added and the method return false to confirm
 		debugTrace("No matches and node returning false " + this.string + "(" + this.stringIndex +")", string, index);
 		return false;
 	}
@@ -70,9 +63,7 @@ public class NodeLeaf implements InnerNode {
 	
 	//TO DO - reassess having public method here not in Node interface
 	public void prepNodeSwap(String str, int index){		
-//POTENTIAL BUG
 		remove$Children();
-//POTENTIAL BUG
 		String prefix =  this.string.substring(0, str.length());
 		String suffix = this.string.substring(str.length(), this.string.length());
 		List<InnerNode> children = new ArrayList<InnerNode>();	
@@ -82,8 +73,7 @@ public class NodeLeaf implements InnerNode {
 		InnerNode leaf2 = new NodeLeaf("$",index, replacementNode); 				
 		//important that node containing "$" added second
 		children.add(leaf1);
-		children.add(leaf2);		
-		 		
+		children.add(leaf2);		 		
 		swapNode(this, replacementNode);	
 	}
 	
@@ -97,16 +87,13 @@ public class NodeLeaf implements InnerNode {
 
 	@Override
 	public void setSubString(int start) {
-
 		this.string = this.string.substring(start);
 	}
 
 	@Override
-	public void printTree() {
-		
+	public void printTree() {	
 //		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
-//				+ "\n  Type: " + this.getClass().toString()+"\n");
-		
+//				+ "\n  Type: " + this.getClass().toString()+"\n");	
 	}
 
 	@Override
@@ -143,27 +130,17 @@ public class NodeLeaf implements InnerNode {
 	//THESE TWO METHODS SHOULDN'T BE HERE - Rethink interface.
 	@Override
 	public void addChild(InnerNode child) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void removeChild(InnerNode child) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void addChildren(List<InnerNode> children) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-
-	
-
-	
-
-	
-
 
 }
