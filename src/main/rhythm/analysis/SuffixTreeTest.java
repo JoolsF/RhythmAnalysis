@@ -27,14 +27,24 @@ public class SuffixTreeTest {
 
 		
 		Rhythm_model test = new Rhythm_model(); //trace construction debug output carefully
-		test.addString("11001111");
+		String str0 = "1";
+		String str1 = "111"; 
+		String str2 = "110011110";
+		
+//		test.addString(str1 + str1);
+//		test.addString(str2);
+//		test.addString(str2);
+//		test.addString(str2);
+//		test.addString(str2);
+		test.addString("1001");
+		test.addString("1001");
 		test.getTree().printTree();
 		
 		
-//		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
-//		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-//    		System.out.println(value.getKey() + ": " + value.getValue());
-//    	}
+		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
+		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
+    		System.out.println(value.getKey() + ": " + value.getValue());
+    	}
 		
 		
 	

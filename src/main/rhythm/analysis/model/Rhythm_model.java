@@ -62,15 +62,18 @@ public class Rhythm_model {
 		this.root = new NodeRoot();
 	}
 	
-	public void addString(String str){		
-		this.string += str;
-		for(int i = 0; i < str.length(); i++){			
+	public void addString(String str1){		
+		//allows for updating of string
+		int startFrom = this.string.length(); 
+		String newString = this.string + str1;
+		this.string = newString;	
+		
+		for(int i = startFrom; i < newString.length(); i++){			
 			for(int index = 0; index <= i; index++){
-				System.out.println("NODE TO ADD: " + str.substring(index, i+1) + "(" +index+")");
-				root.addString(str.substring(index, i+1), index);
+				System.out.println("NODE TO ADD: " + newString.substring(index, i+1) + "(" +index+")");
+				root.addString(newString.substring(index, i+1), index);
 				
 			}	
-			//$ added at the end of each substring iteration
 			root.addString("$", i+1);
 			System.out.println("$ " + (i+1));
 			System.out.println("%% END OF SUBSTRING %%");
