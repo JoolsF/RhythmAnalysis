@@ -106,8 +106,10 @@ public interface InnerNode extends Node {
 		System.out.println("THIS VALUE " + this.getString());
 		System.out.println("PARENT VALUE " + this.getString());
 		if ((getLastSiblingValue().equals("$") && this.getSiblings().size() > 2) ||
-		 (! getLastSiblingValue().equals("$") && this.getSiblings().size() > 1)) {
-				
+		 (! getLastSiblingValue().equals("$") && this.getSiblings().size() > 1) || 
+// TO DO - Rethink this line.  This deal with case where node's parent is root
+// Could use instanceOf but needs proper OO solution		 
+		 this.getParent().getString().equals("ROOT")){
 			return true;
 		}else {
 			return false;
@@ -117,6 +119,7 @@ public interface InnerNode extends Node {
 	
 	public default void movePrefixUp(String str){	
 		//TO DO - fix this, have to cast.  What about if parent is Root etc
+		//CLASS CAST EXCEPTION CAUSING BUG HERE 
 		InnerNode parent = (InnerNode) this.getParent();
 		parent.setString(parent.getString() + this.getCommonPrefix(str));
 		this.setSubString(str.length());	

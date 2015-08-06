@@ -25,6 +25,8 @@ public class NodeLeaf implements InnerNode {
 			//HAS A PREFIX CASES ARE SPLIT / NEW NODE CASES
 			//convert leaf to node
 			// NEEDS TO GO BACK TO PARENT, GET DELETED AND HAVE A NONLEAF NODE PUT IN ITS PLACE
+			System.out.println("----> " + this.parent.getString().equals("ROOT"));
+			System.out.println("----> " + this.parent.getClass());
 			debugTrace("Node has a prefix, child has a prefix", string, index);
 			if(this.needToSplitNode()){
 				debugTrace("Splitting Node ", string, index);	

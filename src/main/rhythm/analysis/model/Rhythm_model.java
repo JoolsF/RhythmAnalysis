@@ -42,10 +42,17 @@ public class Rhythm_model {
 	/*-----------------------------------------------------------------------------------------
 	 * Constructors
 	 *----------------------------------------------------------------------------------------*/
-	public Rhythm_model(Rhythm_controller controller) {
+	
+	public Rhythm_model(){
 		this.string = "";
-		this.controller = controller;
 		this.root = new NodeRoot();
+	}
+	
+	
+	public Rhythm_model(Rhythm_controller controller) {
+		this();
+		this.controller = controller;
+		
 	}
 		
 	

@@ -112,8 +112,8 @@ System.out.println("	No matches round at root adding: " + string +"("+index+")")
 
 	@Override
 	public String getString() {
-		// TODO Auto-generated method stub
-		return null;
+		//TO DO - Refactor
+		return "ROOT";
 	}
 
 	@Override
