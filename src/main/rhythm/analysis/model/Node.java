@@ -16,15 +16,19 @@ public interface Node {
 	public boolean addString(String str, int index); //returns true if string added successfully
 	public String getString();
 	public void setString(String str);
+	public int getStringIndex();
+	public void setSubString(int start); 
+	public void setStringIndex(int index);
 	
-	public List<InnerNode> getChildren();
 	public void addChild(InnerNode child);
 	public void addChildren(List<InnerNode> children);
+	public List<InnerNode> getChildren();
 	public void removeChild(InnerNode child);
 	
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
-	
 	public void printTree();
+	
+	
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Default - Output methods

@@ -8,15 +8,9 @@ public interface InnerNode extends Node {
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Abstract
-	 *----------------------------------------------------------------------------------------*/
-	public String getString();
-	public int getStringIndex();
-	public List<InnerNode> getChildren();
-	public void setStringIndex(int index);
-	public void setSubString(int start);
+	 *----------------------------------------------------------------------------------------*/	
 	public void setParent(Node parent);
 	public Node getParent();
-	
 	
 	
 	/*-----------------------------------------------------------------------------------------

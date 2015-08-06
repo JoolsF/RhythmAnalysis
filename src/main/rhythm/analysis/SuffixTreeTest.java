@@ -28,7 +28,7 @@ public class SuffixTreeTest {
 		
 		Rhythm_model test = new Rhythm_model(); //trace construction debug output carefully
 		String str0 = "1";
-		String str1 = "111"; 
+		String str1 = "11001101"; 
 		String str2 = "110011110";
 		
 //		test.addString(str1 + str1);
@@ -36,8 +36,8 @@ public class SuffixTreeTest {
 //		test.addString(str2);
 //		test.addString(str2);
 //		test.addString(str2);
-		test.addString("1001");
-		test.addString("1001");
+		test.addString(str1);
+		//test.addString(str1);
 		test.getTree().printTree();
 		
 		

@@ -19,6 +19,8 @@ import rhythm.analysis.control.Rhythm_controller;
  *  2 Replace all printline methods with logging
  *  
  *  3. Add exception handling
+ *  
+ *  4. Use findbugs
  */
 
 public class Rhythm_model {

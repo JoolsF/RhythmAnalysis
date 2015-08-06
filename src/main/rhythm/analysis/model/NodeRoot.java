@@ -64,8 +64,7 @@ public class NodeRoot implements Node {
 		InnerNode child = new NodeLeaf(string, index, this);
 		if(string.equals("$")){
 			this.children.add(this.children.size(),child);	
-		} else {
-			
+		} else {	
 			this.children.add(0,child);
 		}		
 	}
@@ -126,10 +125,8 @@ public class NodeRoot implements Node {
 				this.children.add(this.children.size(),next);	
 			} else {
 				this.children.add(0,next);
-			}	
-			
+			}				
 		}
-		
 	}
 	
 
@@ -146,5 +143,23 @@ public class NodeRoot implements Node {
 		//TO DO - This should return whole string
 		// Currently being used to check type of string to avoid class cast exception in InnerNode interface.  Code smell, bad OO design.  Rethink.
 		return "ROOT";
+	}
+
+	@Override
+	public int getStringIndex() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setSubString(int start) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setStringIndex(int index) {
+		// TODO Auto-generated method stub
+		
 	}
 }
