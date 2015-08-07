@@ -28,7 +28,12 @@ public interface Node {
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
 	public void printTree();
 	
-	public void analyseTree();
+	/**
+	 * 
+	 * @param str - the string value of the node
+	 * @return the combined childIndices
+	 */
+	public List<Integer> analyseTree(String str); //start with empty string
 	
 	
 	/*-----------------------------------------------------------------------------------------

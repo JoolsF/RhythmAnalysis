@@ -8,6 +8,10 @@ public class NodeLeaf implements InnerNode {
 
 	private String string;
 	private int stringIndex;
+	
+	private String parentPrefix;
+	
+	
 	private Node parent;
 	
 	/*-----------------------------------------------------------------------------------------
@@ -17,6 +21,7 @@ public class NodeLeaf implements InnerNode {
 		this.string = string;
 		this.stringIndex = stringIndex;
 		this.parent = parent;
+		this.parentPrefix = "";
 	}
 	
 	/*-----------------------------------------------------------------------------------------
@@ -64,9 +69,11 @@ public class NodeLeaf implements InnerNode {
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
 	@Override
-	public void analyseTree() {
-		// TODO Auto-generated method stub
-		
+	public List<Integer> analyseTree(String str) {
+		this.parentPrefix = str;
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(this.stringIndex);
+		return list;
 	}
 	@Override
 	public void printTree() {	

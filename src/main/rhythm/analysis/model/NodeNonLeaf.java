@@ -8,6 +8,10 @@ public class NodeNonLeaf implements InnerNode {
 	
 	private String string;
 	private int stringIndex;
+	
+	private String parentPrefix;
+	private List<Integer> indices;
+	
 	private Node parent;
 	private List<InnerNode> children;
 	
@@ -20,6 +24,8 @@ public class NodeNonLeaf implements InnerNode {
 		this.stringIndex = stringIndex;
 		this.parent = parent;
 		this.children = new ArrayList<InnerNode>();
+		this.parentPrefix = "";
+		this.indices = new ArrayList<Integer>();
 	}
 	
 	public NodeNonLeaf(String string, int StringIndex, Node parent, List<InnerNode> children){
@@ -117,10 +123,21 @@ public class NodeNonLeaf implements InnerNode {
 	/*-----------------------------------------------------------------------------------------
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
+	
+	/*
+	 * 
+	 * pass string value "down" 
+	 * add accumulated indices at the end
+	 */
 	@Override
-	public void analyseTree() {
-		// TODO Auto-generated method stub
-		
+	public List<Integer> analyseTree(String str) {
+		this.parentPrefix = str;
+		Iterator<InnerNode> itr = children.iterator();
+		while(itr.hasNext()){
+			Node element = itr.next();
+			this.indices.addAll(element.analyseTree(this.parentPrefix + this.string));
+		}
+		return this.indices;
 	}
 	
 	@Override
@@ -130,13 +147,16 @@ public class NodeNonLeaf implements InnerNode {
 			Node element = itr.next();
 			element.printTree();
 		}
-		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ") " 
-							+ "\n" + "  Type: " + this.getClass().toString() 
-							+ "\n  Children: " + this.getChildValues() +"\n");
+		System.out.println("\n--------------------------------------------"
+							+ "\n NODE: " + this.string + " (" + this.stringIndex + ") "
+							+ "\n Type: " + this.getClass().toString()			
+							+ "\n Children: " + this.getChildValues() +"\n"
+							+ "\n Whole string " + this.parentPrefix + this.string
+							+ "\n Indices: " + this.indices.toString()
+							); 
+							
 	}
-	
-	
-	
+		
 	/*-----------------------------------------------------------------------------------------
 	 * Children methods
 	 *----------------------------------------------------------------------------------------*/

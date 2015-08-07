@@ -16,9 +16,11 @@ import java.util.List;
 public class NodeRoot implements Node {
 	
 	private List<InnerNode> children;
+	private List<Integer> indices;
 	
 	public NodeRoot(){
 		this.children = new ArrayList<InnerNode>();
+		indices = new ArrayList<Integer>();
 	}
 		
 	/*CASES
@@ -46,14 +48,19 @@ public class NodeRoot implements Node {
 		return true;
 	}
 
+	/*-----------------------------------------------------------------------------------------
+	 * Tree analysis and post-processing methods
+	 *----------------------------------------------------------------------------------------*/
 	
 	@Override
-	public void analyseTree() {
+	public List<Integer> analyseTree(String str) {
 		Iterator<InnerNode> itr = children.iterator();
 		while(itr.hasNext()){
 			InnerNode element = itr.next();
-			element.analyseTree();
+			indices.addAll(element.analyseTree(str));
 		}		
+		//CHANGE RETURN
+		return this.indices;
 	}
 
 	
