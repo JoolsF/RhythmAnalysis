@@ -22,11 +22,10 @@ public class NodeRoot implements Node {
 	}
 		
 	/*CASES
-	* 1 no children create new leaf node
-	* 2 children
-	*	a  str is not a "prefix / doesnt match" any children
-	*		last child has $ value then str value give to to this child
-	*	b still no matches then create new leaf node (only going to happen to $ after first iteration
+	* 1 No children - create new leaf node
+	* 2 Has children
+	*	a  str is not a prefix of any children and last child has $ value. $ child takes value of string
+	*	b  else create new leaf node.
 	*/		
 	@Override
 	public boolean addString(String string, int index) {
@@ -36,7 +35,6 @@ public class NodeRoot implements Node {
 			return true;
 		} else{
 			for(Node child: children){
-				//for loop correct here?
 				if(child.addString(string, index)){
 					return true;
 				}
@@ -46,9 +44,37 @@ public class NodeRoot implements Node {
 		System.out.println("	No matches round at root adding: " + string +"("+index+")");		
 		addChildLeaf(string, index);
 		return true;
-		
 	}
 
+	
+	@Override
+	public void analyseTree() {
+		Iterator<InnerNode> itr = children.iterator();
+		while(itr.hasNext()){
+			InnerNode element = itr.next();
+			element.analyseTree();
+		}		
+	}
+
+	
+	
+
+	@Override
+	public void printTree() {
+		Iterator<InnerNode> itr = children.iterator();
+		System.out.println("ROOT:  \n  Children: " + this.getChildValues()+"\n");
+		while(itr.hasNext()){
+			InnerNode element = itr.next();
+			element.printTree();
+		}	
+	}
+	
+	
+
+	/*-----------------------------------------------------------------------------------------
+	 * Child methods
+	 *----------------------------------------------------------------------------------------*/
+	
 	@Override
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
 		this.children.remove(nodeToDelete);
@@ -59,7 +85,6 @@ public class NodeRoot implements Node {
 		}	
 	}
 	
-
 	private void addChildLeaf(String string, int index) {
 		InnerNode child = new NodeLeaf(string, index, this);
 		if(string.equals("$")){
@@ -67,55 +92,23 @@ public class NodeRoot implements Node {
 		} else {	
 			this.children.add(0,child);
 		}		
-	}
-
-	@Override
-	public void printTree() {
-		Iterator<InnerNode> itr = children.iterator();
-		System.out.println("ROOT:  \n  Children: " + this.getChildValues()+"\n");
-		while(itr.hasNext()){
-			InnerNode element = itr.next();
-			element.printTree();
-		}
-		
-	}
-
-	@Override
-	public List<InnerNode> getChildren() {
-		return this.children;
-	}
-	
-	
-	//TO DO, refactor - This is in InnerNode interface too
-	private String getChildValues(){
-		String childValues = "";
-		//guard condition needed for LeafNode
-		if(this.getChildren() != null) {
-			for(InnerNode next: this.getChildren()){
-				childValues += next.getString() + "(" +next.getStringIndex()+")  - ";
-				}
-		}
-		return childValues;	
-	}
-	
+	}		
 
 	@Override
 	public void addChild(InnerNode child) {
 		if(child.getString().equals("$")){
 			this.children.add(this.children.size(),child);	
-		} else {
-			
+		} else {	
 			this.children.add(0,child);
-		}	
-		
+		}			
 	}
 
 	@Override
 	public void removeChild(InnerNode child) {
-		this.children.remove(child);
-		
+		this.children.remove(child);	
 	}
-
+	
+	
 	@Override
 	public void addChildren(List<InnerNode> children) {
 		for(InnerNode next: children){
@@ -129,7 +122,21 @@ public class NodeRoot implements Node {
 		}
 	}
 	
+	private String getChildValues(){
+		String childValues = "";
+		//guard condition needed for LeafNode
+		if(this.getChildren() != null) {
+			for(InnerNode next: this.getChildren()){
+				childValues += next.getString() + "(" +next.getStringIndex()+")  - ";
+				}
+		}
+		return childValues;	
+	}
 
+	/*-----------------------------------------------------------------------------------------
+	 * Getters and setters
+	 *----------------------------------------------------------------------------------------*/
+	
 	// TO DO - Incorporate this into rhythm controller method add string.  String should be stored in root not controller.
 	@Override
 	public void setString(String str) {
@@ -162,4 +169,10 @@ public class NodeRoot implements Node {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public List<InnerNode> getChildren() {
+		return this.children;
+	}
+	
 }

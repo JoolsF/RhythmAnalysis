@@ -28,6 +28,7 @@ public interface Node {
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
 	public void printTree();
 	
+	public void analyseTree();
 	
 	
 	/*-----------------------------------------------------------------------------------------
@@ -52,6 +53,8 @@ public interface Node {
 		}
 			return accMap;		
 	}
+	
+	
 	
 	
 	public default List<String> nodesToList(){

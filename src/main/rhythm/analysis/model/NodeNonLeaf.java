@@ -11,6 +11,9 @@ public class NodeNonLeaf implements InnerNode {
 	private Node parent;
 	private List<InnerNode> children;
 	
+	/*-----------------------------------------------------------------------------------------
+	 * Constructors
+	 *----------------------------------------------------------------------------------------*/
 	
 	public NodeNonLeaf(String string, int stringIndex, Node parent){
 		this.string = string;
@@ -24,6 +27,10 @@ public class NodeNonLeaf implements InnerNode {
 		this.children = children;
 	}
 	
+	/*-----------------------------------------------------------------------------------------
+	 * Add string
+	 *----------------------------------------------------------------------------------------*/
+	
 	@Override
 	public boolean addString(String str, int index) {
 				
@@ -35,8 +42,8 @@ public class NodeNonLeaf implements InnerNode {
 				splitThisNode(str, index);
 				return true;
 			} else {
-				System.out.println("  MOVE PREFIX ONTO PARENT AND REMOVE FROM THIS");
 				//Move prefix onto parent and remove from this.
+				debugTrace("Move prefix onto parent and remove from this: ", str, index);
 				movePrefixUp(str);				
 				return true;	
 			}
@@ -88,10 +95,7 @@ public class NodeNonLeaf implements InnerNode {
 			return false;
 		}
 		
-	}
-	
-
-		
+	}	
 	/**
 	 * Private helper method for addString
 	 */
@@ -109,13 +113,33 @@ public class NodeNonLeaf implements InnerNode {
 		newNode.parent.addChild(newNode);
 	}
 	
+
+	/*-----------------------------------------------------------------------------------------
+	 * Tree analysis and post-processing methods
+	 *----------------------------------------------------------------------------------------*/
+	@Override
+	public void analyseTree() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	@Override
-	public String getString() {
-		return this.string;
+	public void printTree() {
+		Iterator<InnerNode> itr = children.iterator();
+		while(itr.hasNext()){
+			Node element = itr.next();
+			element.printTree();
+		}
+		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ") " 
+							+ "\n" + "  Type: " + this.getClass().toString() 
+							+ "\n  Children: " + this.getChildValues() +"\n");
 	}
-
 	
+	
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Children methods
+	 *----------------------------------------------------------------------------------------*/
 
 
 	@Override
@@ -128,47 +152,14 @@ public class NodeNonLeaf implements InnerNode {
 		}	
 		
 	}
-
-
+	
+	
 	@Override
-	public void setSubString(int start) {
-		this.string = this.string.substring(start);
-	}
-
-	@Override
-	public void printTree() {
-		Iterator<InnerNode> itr = children.iterator();
-		while(itr.hasNext()){
-			Node element = itr.next();
-			element.printTree();
-		}
-		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ") " 
-							+ "\n" + "  Type: " + this.getClass().toString() 
-							+ "\n  Children: " + this.getChildValues() +"\n");
-	}
-
-	@Override
-	public int getStringIndex() {
-		return this.stringIndex;
-	}
-
-	@Override
-	public List<InnerNode> getChildren() {
-		return this.children;
-	}
-
-	@Override
-	public void setString(String str) {
-			this.string = str;
-	}
-
-	@Override
-	public void setStringIndex(int index) {
-		this.stringIndex = index;
+	public void addChild(InnerNode child) {
+		this.children.add(child);
 		
 	}
 
-	
 	private void addChildLeaf(String string, int index) {
 		InnerNode child = new NodeLeaf(string, index, this);
 		if(string.equals("$")){
@@ -184,17 +175,17 @@ public class NodeNonLeaf implements InnerNode {
 		this.parent = parent;
 		
 	}
-
+	
+	@Override
+	public List<InnerNode> getChildren() {
+		return this.children;
+	}
 	@Override
 	public Node getParent() {
 		return this.parent;
 	}
 
-	@Override
-	public void addChild(InnerNode child) {
-		this.children.add(child);
-		
-	}
+	
 
 	@Override
 	public void removeChild(InnerNode child) {
@@ -214,6 +205,38 @@ public class NodeNonLeaf implements InnerNode {
 			}		
 		}		
 	}
+
+	/*-----------------------------------------------------------------------------------------
+	 * String getters and setters
+	 *----------------------------------------------------------------------------------------*/
 	
+	@Override
+	public String getString() {
+		return this.string;
+	}
+
+
+	@Override
+	public void setSubString(int start) {
+		this.string = this.string.substring(start);
+	}
+
+	
+
+	@Override
+	public int getStringIndex() {
+		return this.stringIndex;
+	}
+
+	@Override
+	public void setString(String str) {
+			this.string = str;
+	}
+
+	@Override
+	public void setStringIndex(int index) {
+		this.stringIndex = index;
+		
+	}
 	
 }

@@ -10,13 +10,19 @@ public class NodeLeaf implements InnerNode {
 	private int stringIndex;
 	private Node parent;
 	
-	
+	/*-----------------------------------------------------------------------------------------
+	 * Constructor
+	 *----------------------------------------------------------------------------------------*/
 	public NodeLeaf(String string, int stringIndex, Node parent){	
 		this.string = string;
 		this.stringIndex = stringIndex;
 		this.parent = parent;
 	}
-
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Add string
+	 *----------------------------------------------------------------------------------------*/
+	
 	@Override
 	public boolean addString(String string, int index) {
 		if (this.nodeHasAPrefixOf(string)){
@@ -31,8 +37,6 @@ public class NodeLeaf implements InnerNode {
 				debugTrace("Moving prefix up ", string, index);
 				return true;
 			}
-			
-		
 		} else if (this.nodeIsAPrefixOf(string)){
 			debugTrace("Node is a prefix ", string, index);
 			//BASE CASE			
@@ -55,11 +59,24 @@ public class NodeLeaf implements InnerNode {
 		debugTrace("No matches and node returning false " + this.string + "(" + this.stringIndex +")", string, index);
 		return false;
 	}
-
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Tree analysis and post-processing methods
+	 *----------------------------------------------------------------------------------------*/
 	@Override
-	public String getString() {
-		return this.string;
+	public void analyseTree() {
+		// TODO Auto-generated method stub
+		
 	}
+	@Override
+	public void printTree() {	
+//		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
+//				+ "\n  Type: " + this.getClass().toString()+"\n");	
+	}
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Children methods
+	 *----------------------------------------------------------------------------------------*/
 	
 	//TO DO - reassess having public method here not in Node interface
 	public void prepNodeSwap(String str, int index){		
@@ -83,39 +100,7 @@ public class NodeLeaf implements InnerNode {
 		parent.swapNode(nodeToDelete, replacementNode);	
 	}
 
-	
-
-	@Override
-	public void setSubString(int start) {
-		this.string = this.string.substring(start);
-	}
-
-	@Override
-	public void printTree() {	
-//		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
-//				+ "\n  Type: " + this.getClass().toString()+"\n");	
-	}
-
-	@Override
-	public int getStringIndex() {
-		return this.stringIndex;
-	}
-
-	@Override
-	public List<InnerNode> getChildren() {
-		return new ArrayList<InnerNode>();
-	}
-
-	@Override
-	public void setString(String str) {
-		this.string = str;
-	}
-
-	@Override
-	public void setStringIndex(int index) {
-		this.stringIndex = index;
-	}
-
+		
 	@Override
 	public void setParent(Node parent) {
 		this.parent = parent;
@@ -127,20 +112,54 @@ public class NodeLeaf implements InnerNode {
 		return this.parent;
 	}
 
-	//THESE TWO METHODS SHOULDN'T BE HERE - Rethink interface.
+	//Method not needed - Rethink interface.
 	@Override
 	public void addChild(InnerNode child) {
 		// TODO Auto-generated method stub	
 	}
-
+	//Method not needed - Rethink interface.
 	@Override
 	public void removeChild(InnerNode child) {
 		// TODO Auto-generated method stub	
 	}
-
+	//Method not needed - Rethink interface.
 	@Override
 	public void addChildren(List<InnerNode> children) {
 		// TODO Auto-generated method stub	
 	}
+	///Method not needed - Rethink interface.
+	@Override
+	public List<InnerNode> getChildren() {
+		return new ArrayList<InnerNode>();
+	}
+	
+
+	/*-----------------------------------------------------------------------------------------
+	 * String getters and setters
+	 *----------------------------------------------------------------------------------------*/
+	
+	@Override
+	public void setString(String str) {
+		this.string = str;
+	}
+
+	@Override
+	public void setStringIndex(int index) {
+		this.stringIndex = index;
+	}
+
+	@Override
+	public int getStringIndex() {
+		return this.stringIndex;
+	}
+	@Override
+	public void setSubString(int start) {
+		this.string = this.string.substring(start);
+	}
+	@Override
+	public String getString() {
+		return this.string;
+	}
+	
 
 }
