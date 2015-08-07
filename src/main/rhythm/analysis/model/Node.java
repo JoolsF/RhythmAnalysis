@@ -14,9 +14,11 @@ public interface Node {
 	 * Abstract
 	 *----------------------------------------------------------------------------------------*/
 	public boolean addString(String str, int index); //returns true if string added successfully
+	
 	public String getString();
-	public void setString(String str);
 	public int getStringIndex();
+	public void setString(String str);
+		
 	public void setSubString(int start); 
 	public void setStringIndex(int index);
 	
@@ -33,7 +35,8 @@ public interface Node {
 	 * @param str - the string value of the node
 	 * @return the combined childIndices
 	 */
-	public List<Integer> analyseTree(String str); //start with empty string
+	public List<Integer> processTree(String str); //start with empty string
+
 	
 	
 	/*-----------------------------------------------------------------------------------------
@@ -46,14 +49,18 @@ public interface Node {
 		Iterator<InnerNode> itr = getChildren().iterator();
 		while(itr.hasNext()){			 	
 			InnerNode currentNode = itr.next();
-			String key = currentNode.getString();
-			int value = currentNode.getStringIndex();
+			String key = currentNode.getfullString();
+			List<Integer> value = currentNode.getIndices();
 			
-			if(accMap.get(key) == null) {
-				accMap.put(key, new ArrayList<Integer>());	
+			//Ensures that only substrings appearing more than once are returned
+			if(value.size() > 1){ 
+				//If substring not already present in map then create new key val pair
+				if(accMap.get(key) == null){ 
+					accMap.put(key, new ArrayList<Integer>());		
+				}
+				accMap.get(key).addAll(value);
 			}
-			
-			accMap.get(key).add(value);
+			//Recursive call
 			currentNode.nodesToMap(accMap);
 		}
 			return accMap;		

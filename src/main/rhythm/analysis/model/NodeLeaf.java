@@ -69,11 +69,9 @@ public class NodeLeaf implements InnerNode {
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
 	@Override
-	public List<Integer> analyseTree(String str) {
+	public List<Integer> processTree(String str) {
 		this.parentPrefix = str;
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(this.stringIndex);
-		return list;
+		return getIndices();
 	}
 	@Override
 	public void printTree() {	
@@ -166,6 +164,18 @@ public class NodeLeaf implements InnerNode {
 	@Override
 	public String getString() {
 		return this.string;
+	}
+
+	@Override
+	public String getfullString() {
+		return this.parentPrefix + this.string;
+	}
+
+	@Override
+	public List<Integer> getIndices() {
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(this.stringIndex);
+		return list;
 	}
 	
 

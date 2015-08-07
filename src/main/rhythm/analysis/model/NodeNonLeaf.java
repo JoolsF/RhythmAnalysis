@@ -130,15 +130,19 @@ public class NodeNonLeaf implements InnerNode {
 	 * add accumulated indices at the end
 	 */
 	@Override
-	public List<Integer> analyseTree(String str) {
+	public List<Integer> processTree(String str) {
 		this.parentPrefix = str;
+		this.indices.clear();
 		Iterator<InnerNode> itr = children.iterator();
 		while(itr.hasNext()){
 			Node element = itr.next();
-			this.indices.addAll(element.analyseTree(this.parentPrefix + this.string));
+			this.indices.addAll(element.processTree(this.parentPrefix + this.string));
 		}
 		return this.indices;
 	}
+	
+	
+	
 	
 	@Override
 	public void printTree() {
@@ -257,6 +261,16 @@ public class NodeNonLeaf implements InnerNode {
 	public void setStringIndex(int index) {
 		this.stringIndex = index;
 		
+	}
+
+	@Override
+	public String getfullString() {
+		return this.parentPrefix + this.string;
+	}
+
+	@Override
+	public List<Integer> getIndices() {
+		return this.indices;
 	}
 	
 }

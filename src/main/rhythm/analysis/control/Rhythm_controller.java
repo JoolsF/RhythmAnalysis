@@ -3,7 +3,7 @@ package rhythm.analysis.control;
 import java.util.ArrayList;
 import java.util.List;
 
-import rhythm.analysis.model.Rhythm_model;
+import rhythm.analysis.model.SuffixTree_model;
 import rhythm.analysis.view.Main_viewer;
 import rhythm.analysis.view.Observer;
 
@@ -16,7 +16,7 @@ import rhythm.analysis.view.Observer;
 public class Rhythm_controller {
 	
 	//private Main_viewer viewer;
-	private Rhythm_model model;
+	private SuffixTree_model model;
 	private List<Observer> observers = new ArrayList<Observer>();
 	
 	
@@ -26,7 +26,7 @@ public class Rhythm_controller {
 	 */
 	public Rhythm_controller(){	
 		//create the model
-		model = new Rhythm_model(this);	
+		model = new SuffixTree_model(this);	
 	}
 	
 	public void notifyAllObservers(){
@@ -47,8 +47,8 @@ public class Rhythm_controller {
 	}
 	
 	public List<String> getTreeAsList(){
-		System.out.println(this.model.getTree().nodesToList());
-		return this.model.getTree().nodesToList();
+		//System.out.println(this.model.getTree().nodesToList());
+		return this.model.getStringIndices();
 	}
 	
 	public int getNumPulses(){

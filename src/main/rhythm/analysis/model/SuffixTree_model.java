@@ -1,5 +1,7 @@
 package rhythm.analysis.model;
 
+import java.util.List;
+
 import rhythm.analysis.control.Rhythm_controller;
 
 
@@ -23,7 +25,7 @@ import rhythm.analysis.control.Rhythm_controller;
  *  4. Use findbugs
  */
 
-public class Rhythm_model {
+public class SuffixTree_model {
 	
 	private Node root;
 	private String string;
@@ -36,13 +38,13 @@ public class Rhythm_model {
 	 * Constructors
 	 *----------------------------------------------------------------------------------------*/
 	
-	public Rhythm_model(){
+	public SuffixTree_model(){
 		this.string = "";
 		this.root = new NodeRoot();
 	}
 	
 	
-	public Rhythm_model(Rhythm_controller controller) {
+	public SuffixTree_model(Rhythm_controller controller) {
 		this();
 		this.controller = controller;
 	}
@@ -76,9 +78,6 @@ public class Rhythm_model {
 	/*-----------------------------------------------------------------------------------------
 	 * Getters and setters
 	 *----------------------------------------------------------------------------------------*/
-	public Node getTree(){
-		return this.root;
-	}
 
 	public String getString(){
 		return this.string;
@@ -92,4 +91,7 @@ public class Rhythm_model {
 		return numPulses;
 	}
 	
+	public List<String> getStringIndices(){
+		return this.root.nodesToList();
+	}
 }
