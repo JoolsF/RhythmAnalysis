@@ -60,6 +60,8 @@ public interface Node {
 		
 			currentNode.nodesToMap(accMap);
 		}		
+		//removes all $ values
+		accMap.remove("$");
 		return accMap;					
 	}
 	

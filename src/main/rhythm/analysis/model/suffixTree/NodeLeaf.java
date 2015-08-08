@@ -168,7 +168,11 @@ public class NodeLeaf implements InnerNode {
 
 	@Override
 	public String getfullString() {
-		return this.parentPrefix + this.string;
+		if(this.string == "$"){
+			return this.string;
+		} else {
+			return this.parentPrefix + this.string;
+		}
 	}
 
 	@Override
