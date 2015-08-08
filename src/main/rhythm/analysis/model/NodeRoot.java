@@ -53,19 +53,18 @@ public class NodeRoot implements Node {
 	 *----------------------------------------------------------------------------------------*/
 	
 	@Override
-	public List<Integer> analyseTree(String str) {
+	public List<Integer> processTree(String str) {
 		Iterator<InnerNode> itr = children.iterator();
 		while(itr.hasNext()){
 			InnerNode element = itr.next();
-			indices.addAll(element.analyseTree(str));
+			indices.addAll(element.processTree(str));
 		}		
-		//CHANGE RETURN
+		this.processTree("");
 		return this.indices;
 	}
 
 	
 	
-
 	@Override
 	public void printTree() {
 		Iterator<InnerNode> itr = children.iterator();

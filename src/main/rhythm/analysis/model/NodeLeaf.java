@@ -69,7 +69,7 @@ public class NodeLeaf implements InnerNode {
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
 	@Override
-	public List<Integer> analyseTree(String str) {
+	public List<Integer> processTree(String str) {
 		this.parentPrefix = str;
 		return getIndices();
 	}
@@ -167,6 +167,7 @@ public class NodeLeaf implements InnerNode {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public String getFullString() {
 		if(this.string == "$") {
 			return this.parentPrefix;
@@ -174,6 +175,10 @@ public class NodeLeaf implements InnerNode {
 			return  this.parentPrefix + this.string;	
 		}
 		
+=======
+	public String getfullString() {
+		return this.parentPrefix + this.string;
+>>>>>>> branch 'master' of https://github.com/JoolsF/rhythm_analysis
 	}
 
 	@Override

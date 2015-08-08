@@ -1,12 +1,12 @@
 package rhythm.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
-import rhythm.analysis.model.Rhythm_model;
+import rhythm.analysis.model.SuffixTree_model;
+
+
+
+
 
 
 
@@ -14,9 +14,10 @@ import rhythm.analysis.model.Rhythm_model;
 
 public class SuffixTreeTest {
 
-	public static void main(String[] args){
-		// CHECK MORE DEPTH 2 TREES THEN TRY DEPTH 3. 
+	public static void main(String[] args){	
+		SuffixTree_model test = new SuffixTree_model(); 
 		
+<<<<<<< HEAD
 		// WORKING UP TO AB11AA
 		// WORKING 112233
 		//
@@ -29,37 +30,22 @@ public class SuffixTreeTest {
 		Rhythm_model test = new Rhythm_model(); //trace construction debug output carefully
 		
 		String str1 = "AB11AB11"; 
+=======
+		String str1 = "ABABABAB"; 
+			
+>>>>>>> branch 'master' of https://github.com/JoolsF/rhythm_analysis
 		test.addString(str1);
 		
+<<<<<<< HEAD
 		System.out.println(test.getTree().nodesToList().toString());
+=======
+//		test.getTree().processTree("");	
+		test.getStringIndices();
+>>>>>>> branch 'master' of https://github.com/JoolsF/rhythm_analysis
 		
 		
-//		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());
-//		for(Entry<String, List<Integer>> value: nodeMap.entrySet()){	
-//    		System.out.println(value.getKey() + ": " + value.getValue());
-//    	}
-//		
 		
 	
-		
-//		Node root = new NodeRoot();
-//		List<InnerNode> children = new ArrayList<InnerNode>();
-//		InnerNode nonLeaf = new NodeNonLeaf("a", 1, root, children);
-//		
-//		
-//		InnerNode leafOther = new NodeLeaf("001111",0,nonLeaf);
-//		InnerNode leafOther2 = new NodeLeaf("001111",0,nonLeaf);
-//		InnerNode leaf$ = new NodeLeaf("$",6,nonLeaf);
-//		children.add(leafOther);
-//		//children.add(leafOther2);
-//		children.add(leaf$);
-//		
-//		
-//		System.out.println(leafOther.okToSplitNode('0'));
-		
-		
-		
-		
 	}
 
 }

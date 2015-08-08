@@ -3,7 +3,11 @@ package rhythm.analysis.model;
 import java.util.List;
 
 
-// Contains implementations of methods common to NodeLeaf and NodeNonLeaf
+/**
+ *  Contains implementations of methods common to NodeLeaf and NodeNonLeaf
+ *  TO DO - Consider adding the default methods to abstract class.
+ *
+ */
 public interface InnerNode extends Node {
 	
 	/*-----------------------------------------------------------------------------------------
@@ -11,7 +15,11 @@ public interface InnerNode extends Node {
 	 *----------------------------------------------------------------------------------------*/	
 	public void setParent(Node parent);
 	public Node getParent();
+<<<<<<< HEAD
 	public String getFullString();
+=======
+	public String getfullString();
+>>>>>>> branch 'master' of https://github.com/JoolsF/rhythm_analysis
 	public List<Integer> getIndices();
 	
 	
@@ -82,6 +90,10 @@ public interface InnerNode extends Node {
 		this.setSubString(str.length());	
 	}
 	
+	
+	
+	
+	
 	/*-----------------------------------------------------------------------------------------
 	 * Default - Child methods
 	 *----------------------------------------------------------------------------------------*/
@@ -136,6 +148,8 @@ public interface InnerNode extends Node {
 			this.getParent().removeChild(getLastSibling());
 			}
 		}
+	
+	
 	
 	
 	

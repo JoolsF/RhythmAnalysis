@@ -20,7 +20,7 @@ import controlP5.Slider;
 import controlP5.Textarea;
 import controlP5.Textfield;
 import rhythm.analysis.control.Rhythm_controller;
-import rhythm.analysis.model.Rhythm_model;
+import rhythm.analysis.model.SuffixTree_model;
 
 public class Main_viewer extends PApplet implements Observer{
 	private static final long serialVersionUID = 1L;
