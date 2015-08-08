@@ -1,4 +1,4 @@
-package rhythm.analysis.model;
+package rhythm.analysis.model.suffixTree;
 
 
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class NodeLeaf implements InnerNode {
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
 	@Override
-	public List<Integer> analyseTree(String str) {
+	public List<Integer> processTree(String str) {
 		this.parentPrefix = str;
 		return getIndices();
 	}
@@ -167,13 +167,8 @@ public class NodeLeaf implements InnerNode {
 	}
 
 	@Override
-	public String getFullString() {
-		if(this.string == "$") {
-			return this.parentPrefix;
-		} else {
-			return  this.parentPrefix + this.string;	
-		}
-		
+	public String getfullString() {
+		return this.parentPrefix + this.string;
 	}
 
 	@Override

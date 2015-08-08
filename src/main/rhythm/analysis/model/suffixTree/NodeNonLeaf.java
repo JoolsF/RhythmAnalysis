@@ -1,4 +1,4 @@
-package rhythm.analysis.model;
+package rhythm.analysis.model.suffixTree;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -130,15 +130,19 @@ public class NodeNonLeaf implements InnerNode {
 	 * add accumulated indices at the end
 	 */
 	@Override
-	public List<Integer> analyseTree(String str) {
+	public List<Integer> processTree(String str) {
 		this.parentPrefix = str;
+		this.indices.clear();
 		Iterator<InnerNode> itr = children.iterator();
 		while(itr.hasNext()){
 			Node element = itr.next();
-			this.indices.addAll(element.analyseTree(this.parentPrefix + this.string));
+			this.indices.addAll(element.processTree(this.parentPrefix + this.string));
 		}
 		return this.indices;
 	}
+	
+	
+	
 	
 	@Override
 	public void printTree() {
@@ -260,7 +264,7 @@ public class NodeNonLeaf implements InnerNode {
 	}
 
 	@Override
-	public String getFullString() {
+	public String getfullString() {
 		return this.parentPrefix + this.string;
 	}
 

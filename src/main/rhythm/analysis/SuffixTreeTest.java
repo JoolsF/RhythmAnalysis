@@ -28,15 +28,10 @@ public class SuffixTreeTest {
 		
 		Rhythm_model test = new Rhythm_model(); //trace construction debug output carefully
 		
-		String str1 = "AAAAA"; 
-		
-		
-		
+		String str1 = "AB11AB11"; 
 		test.addString(str1);
-		List<Integer> output  = test.getTree().analyseTree("");
-		//System.out.println(output.toString());
 		
-		test.getTree().printTree();
+		System.out.println(test.getTree().nodesToList().toString());
 		
 		
 //		Map<String, List<Integer>> nodeMap = test.getTree().nodesToMap(new TreeMap<String, List<Integer>>());

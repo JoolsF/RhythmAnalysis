@@ -1,4 +1,8 @@
-package rhythm.analysis.model;
+package rhythm.analysis.model.suffixTree;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import rhythm.analysis.control.Rhythm_controller;
 
@@ -23,7 +27,7 @@ import rhythm.analysis.control.Rhythm_controller;
  *  4. Use findbugs
  */
 
-public class Rhythm_model {
+public class SuffixTree {
 	
 	private Node root;
 	private String string;
@@ -36,13 +40,13 @@ public class Rhythm_model {
 	 * Constructors
 	 *----------------------------------------------------------------------------------------*/
 	
-	public Rhythm_model(){
+	public SuffixTree(){
 		this.string = "";
 		this.root = new NodeRoot();
 	}
 	
 	
-	public Rhythm_model(Rhythm_controller controller) {
+	public SuffixTree(Rhythm_controller controller) {
 		this();
 		this.controller = controller;
 	}
@@ -70,16 +74,14 @@ public class Rhythm_model {
 			System.out.println("$ " + (i+1));
 			System.out.println("%% END OF SUBSTRING %%");
 
-		}	
-		this.getTree().analyseTree("");
+		}
+		
+		
 	}
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Getters and setters
 	 *----------------------------------------------------------------------------------------*/
-	public Node getTree(){
-		return this.root;
-	}
 
 	public String getString(){
 		return this.string;
@@ -93,4 +95,15 @@ public class Rhythm_model {
 		return numPulses;
 	}
 	
+	public List<String> getSubStringList(){
+		return this.root.nodesToList();
+	}
+	
+	public Map<String, List<Integer>> getSubStringMap(){
+		return this.root.nodesToMap(new TreeMap<String, List<Integer>>());
+	}
+	
+	public Node getTree(){
+		return this.root;
+	}
 }
