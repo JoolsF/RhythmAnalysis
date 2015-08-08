@@ -59,7 +59,6 @@ public class NodeRoot implements Node {
 			InnerNode element = itr.next();
 			indices.addAll(element.processTree(str));
 		}		
-		this.processTree("");
 		return this.indices;
 	}
 

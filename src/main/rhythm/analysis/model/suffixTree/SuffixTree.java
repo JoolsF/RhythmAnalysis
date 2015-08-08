@@ -75,7 +75,8 @@ public class SuffixTree {
 			System.out.println("%% END OF SUBSTRING %%");
 
 		}
-		
+		//Each time string is added this is called to reprocess nodeValues;
+		this.root.processTree("");
 		
 	}
 	
