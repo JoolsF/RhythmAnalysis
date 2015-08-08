@@ -1,4 +1,6 @@
 package rhythm.analysis.view;
+import java.util.List;
+
 import processing.core.*;
 import rhythm.analysis.control.Rhythm_controller;
 
@@ -199,16 +201,17 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	  */
 	 private void drawArcDiagram(){ 
 		 //Test data (should be from model, currently loaded from here)
-		 int[][] nodePairs = controller.getMatchingStrings();	               
+		 List<List<Integer>> nodePairs = controller.getMatchingStrings();	               
 		 
-		 for(int[] next: nodePairs){	 
-			int nodeDistance = next[1]-next[0];
+		 for(List<Integer> next: nodePairs){	 
+			//int nodeDistance = next[1]-next[0];
+			 int nodeDistance = next.get(1)- next.get(0);
 			 		 
 		 	if(nodeDistance >= arcMinimum){
-		 	 float regionAstart = next[0] * lineSubDivision + screenBorder;
-			 float regionAend = next[1] * lineSubDivision + screenBorder;
-			 float regionBstart = next[2] * lineSubDivision + screenBorder;
-			 float regionBend= next[3] * lineSubDivision + screenBorder;
+		 	 float regionAstart = next.get(0) * lineSubDivision + screenBorder;
+			 float regionAend = next.get(1) * lineSubDivision + screenBorder;
+			 float regionBstart = next.get(2) * lineSubDivision + screenBorder;
+			 float regionBend= next.get(3) * lineSubDivision + screenBorder;
 			 float nodeLength = regionAend - regionAstart;
 			 float nodeFrom = getMidPoint(regionAstart, regionAend);
 			 float nodeTo = getMidPoint(regionBstart, regionBend);		 
@@ -337,7 +340,6 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 
 	@Override
 	public void update() {
-		
 		this.redraw();	
 	}	 
 	 
