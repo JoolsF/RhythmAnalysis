@@ -50,6 +50,8 @@ public class ArcAnalyser {
 											  value.get(i+1),
 											  value.get(i+1) + (key.length() -1)));	
 				}
+				
+
 			}		
 		}
 		return arcData;
@@ -75,9 +77,13 @@ public class ArcAnalyser {
 	 * . Removes overlapping substrings e.g. take String ABABABAB
 	 * 	 ABAB appears at 0,2,4.  However, ABAB at 2 intersects ABAB at 0
 	 *   so it is discarded
+	 *   
+	 *   Also turns indices into pairs e.g input
+	 *   ABAB=[0, 4]
+	 *   ABAB=[0, 3, 4, 7] index to key length - 1
 	 */
 	private Map <String, List<Integer>> getConsecutiveSubStrMap(){
-		Map <String, List<Integer>> subStrMap = new TreeMap <String, List<Integer>>();
+		Map <String, List<Integer>> subStrMap = new TreeMap <String	, List<Integer>>();
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();

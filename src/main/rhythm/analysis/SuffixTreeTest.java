@@ -23,7 +23,7 @@ public class SuffixTreeTest {
 
 		
 		
-		String str1 = "AB121212AB121212"; 
+		String str1 = "ABABABAB"; 
 		//testSuffixTree.addString(str1);
 		testController.updateTree(str1);
 		testController.getMatchingStrings();
