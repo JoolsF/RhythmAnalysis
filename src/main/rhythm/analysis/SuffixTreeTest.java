@@ -2,6 +2,7 @@ package rhythm.analysis;
 
 import java.util.TreeMap;
 
+import rhythm.analysis.control.Rhythm_controller;
 import rhythm.analysis.model.suffixTree.SuffixTree;
 
 
@@ -16,16 +17,17 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
 public class SuffixTreeTest {
 
 	public static void main(String[] args){	
-		SuffixTree test = new SuffixTree(); 
+		SuffixTree testSuffixTree = new SuffixTree(); 
+		Rhythm_controller testController = new Rhythm_controller();
+		
 
 		
 		
-		String str1 = "AB11AB11"; 
-			
-		test.addString(str1);
-		
-		
-		System.out.println(test.getTree().nodesToList().toString());
+		String str1 = "AB121212AB121212"; 
+		//testSuffixTree.addString(str1);
+		testController.updateTree(str1);
+		testController.getMatchingStrings();
+		//System.out.println(test.getTree().nodesToList().toString());
 
 		
 		

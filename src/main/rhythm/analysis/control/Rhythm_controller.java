@@ -58,11 +58,8 @@ public class Rhythm_controller {
 	}
 	
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getArcCoordinates();
-		 	
+		return this.arcAnalyser.getArcCoordinates(1,1);	 	
 	}
-	
-
 	
 	
 	public void updateTree(String str){

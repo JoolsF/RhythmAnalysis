@@ -2,6 +2,7 @@ package rhythm.analysis.model.arcAnalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,6 +17,8 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
  * for returning data suitable for rendering arc diagram in view.
  *
  */
+//TO DO - Once prototype working will need improving as expensive computation involving lots of 
+// reprocessing of maps
 public class ArcAnalyser {
 	
 	private SuffixTree suffixTree;
@@ -30,14 +33,15 @@ public class ArcAnalyser {
 	 * 2. If substring is of length > 1 and has more that one index (i.e it repeats) then create
 	 *    coordinates
 	 */
-	public List<List<Integer>>  getArcCoordinates(){
+	public List<List<Integer>>  getArcCoordinates(int minSize, int minLength){
 		List<List<Integer>> arcData = new ArrayList<List<Integer>>();  
 		
-		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap().entrySet()){	
+		//for (Map.Entry<String, List<Integer>> entry : arcFilter(1,1).entrySet()){	
+		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
 
-			if(entry.getValue().size() > 1 && entry.getKey().length() > 1) {
+			if(entry.getValue().size() > minSize && entry.getKey().length() > minLength) {
 				//Guard condition to prevent repeating single characters and non-repeating
 				//substrings
 				for(int i = 0; i < value.size() -1; i++){
@@ -52,6 +56,22 @@ public class ArcAnalyser {
 	}
 	
 	/**
+	 * 
+	 * Gets a node map and processes through helper method getConsecutiveSubStrMap which removes overlaps
+	 * It then removes arcs below minimum size and minimum length and applies arc rules
+	 */
+	public Map <String, List<Integer>> arcFilter(int minSize, int minLength){
+		Map <String, List<Integer>> arcMap = new TreeMap <String, List<Integer>>();
+		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap().entrySet()){
+			
+			
+		}
+		
+		return arcMap;
+	}
+	
+	
+	/**
 	 * . Removes overlapping substrings e.g. take String ABABABAB
 	 * 	 ABAB appears at 0,2,4.  However, ABAB at 2 intersects ABAB at 0
 	 *   so it is discarded
@@ -61,6 +81,8 @@ public class ArcAnalyser {
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
+			//ensure the indices are sorted in ascending value
+			Collections.sort(value);
 			
 			//i.e the first index in any list of integers is by definition valid
 			//relies on List<Integer> being sorted in ascending order
@@ -74,9 +96,16 @@ public class ArcAnalyser {
 				} 
 			}
 		}
+		for (Map.Entry<String, List<Integer>> entry : subStrMap.entrySet()){
+			
+			System.out.println(entry);
+		}
+		
 		return subStrMap;
 		
 	}
+	
+	
 	
 		
 	}
