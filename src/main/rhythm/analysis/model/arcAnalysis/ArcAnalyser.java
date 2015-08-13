@@ -48,36 +48,64 @@ public class ArcAnalyser {
 		
 			
 		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
-			String key = entry.getKey();
+		 	String key = entry.getKey();
 			List<Integer> value = entry.getValue();
-
-			System.out.println(entry.getKey());
-			System.out.println(entry.getValue());
-			System.out.println("***************");
 			
-			
-			//Bug here
-			for(int i = 0; i < value.size() -1; i++){
+			if(value.size() > 1){ //ensures only duplicate strings processed
+	//			System.out.println(entry.getKey());
+	//			System.out.println(entry.getValue());
+	//			System.out.println("***************");
 				
-				System.out.print(value.get(i));
 				
-				List<Integer> seq = getSequenceAsList(value.get(i),key.length());
-				if(validSubString(indicesUsedSoFar, seq)){ 				//NEED TO CHECK IF PAIRS ARE VALID
-					arcData.add(Arrays.asList(value.get(i),
-											  value.get(i) + (key.length() -1),
-											  value.get(i+1),
-											  value.get(i+1) + (key.length() -1)));
-					indicesUsedSoFar.add(new ArrayList<Integer>(seq));
-				} //end if
-			}	
-			//System.out.println();
-		}		
+				//Bug here
+				for(int i = 0; i < value.size() -1; i++){
+					int thisValStart = value.get(i);
+					int thisValEnd = thisValStart + key.length() - 1;
+					int nextValStart = value.get(i + 1);
+					int nextValEnd = nextValStart + key.length() - 1;
+					
+					List<Integer> thisVal = getSequenceAsList(thisValStart, thisValEnd);
+					List<Integer> nextVal = getSequenceAsList(nextValStart, nextValEnd);
+					List<Integer> bothVal = new ArrayList<Integer>(thisVal);
+					bothVal.addAll(nextVal);
+					
+//					System.out.println(key);
+//					System.out.println(value.get(i));
+//					System.out.println("seq " + thisVal);
+//					System.out.println(value.get(i + 1));
+//					System.out.println("seq1 " + nextVal);
+					
+					
+					
+					if(validSubString(indicesUsedSoFar, bothVal))
+						{ 				//NEED TO CHECK IF PAIRS ARE VALID
+						
+						
+//						System.out.println(key);
+//						System.out.println(value.get(i));
+//						System.out.println("seq " + thisVal);
+//						System.out.println(value.get(i + 1));
+//						System.out.println("seq1 " + nextVal);
+						
+						
+						arcData.add(Arrays.asList(value.get(i),
+												  value.get(i) + (key.length() -1),
+												  value.get(i+1),
+												  value.get(i+1) + (key.length() -1)));
+						indicesUsedSoFar.add(new ArrayList<Integer>(thisVal));
+						indicesUsedSoFar.add(new ArrayList<Integer>(nextVal));
+					} //end if
+				}	
+				System.out.println();
+			}
+		} //end for		
 
-		for(Entry<String, List<Integer>> entry:  getConsecutiveSubStrMap().entrySet()){
-			System.out.println(entry.getKey());
-			System.out.println(entry.getValue());
-			System.out.println("--------");
-		}
+//		for(Entry<String, List<Integer>> entry:  getConsecutiveSubStrMap().entrySet()){
+//			System.out.println(entry.getKey());
+//			System.out.println(entry.getValue());
+//			System.out.println("--------");
+//		}
+		 
 		
 		
 		return arcData;
