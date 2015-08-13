@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import rhythm.analysis.model.suffixTree.SuffixTree;
@@ -25,6 +27,11 @@ public class ArcAnalyser {
 	
 	private SuffixTree suffixTree;
 	
+	
+	public ArcAnalyser(){
+		
+		
+	}
 	public ArcAnalyser(SuffixTree suffixTree){
 		this.suffixTree = suffixTree;
 		
@@ -39,7 +46,7 @@ public class ArcAnalyser {
 		List<List<Integer>> arcData = new ArrayList<List<Integer>>();  
 		TreeMap<String, List<Integer>> x = getConsecutiveSubStrMap();
 		
-		
+		arcFilter();
 		
 //		for(Entry<String, List<Integer>> next: getConsecutiveSubStrMap().entrySet()){
 //			System.out.println(next.getKey());
@@ -71,12 +78,41 @@ public class ArcAnalyser {
 	public Map <String, List<Integer>> arcFilter(){
 		//Removes any values < 2
 		Map <String, List<Integer>> arcMap = new TreeMap <String, List<Integer>>();
+		Set<Integer> set = new HashSet<Integer>();
+
 		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap().entrySet()){
-			
-			
+			String key = entry.getKey();
+			List<Integer> value = entry.getValue();
+					
+			if(value.size() > 1){ // so only repeating substrings kept
+				for(Integer next: value){
+					Set<Integer> subset = getSequenceAsSet(next,next + key.length());
+					
+					Set<Integer> intersection = new HashSet<Integer>(subset);
+					intersection.retainAll(set);
+					
+					Set<Integer> difference = new HashSet<Integer>(subset);
+					difference.removeAll(set);
+					
+					if(intersection.equals(subset)){ // subset if contained in set
+						arcMap.put(key, value);
+					} else if(difference.equals(subset)){ //i.e subset not contained in set.  Either the set is empty or they do not intersect
+						set.addAll(subset); //update
+						arcMap.put(key, value);
+					} else { //the sets intersect or the set is empty
+						//do nothing
+					}
+				}
+			}
 		}
-		
 		return arcMap;
+	}
+	private Set<Integer> getSequenceAsSet(int from, int to){
+		Set<Integer> seqSet = new HashSet<Integer>();
+		
+		for(int i = from; i <= to; i ++) seqSet.add(i);
+		
+		return seqSet;
 	}
 	
 	
