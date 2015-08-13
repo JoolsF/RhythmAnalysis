@@ -3,8 +3,10 @@ package rhythm.analysis.model.arcAnalysis;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import rhythm.analysis.model.suffixTree.SuffixTree;
@@ -33,11 +35,21 @@ public class ArcAnalyser {
 	 * 2. If substring is of length > 1 and has more that one index (i.e it repeats) then create
 	 *    coordinates
 	 */
-	public List<List<Integer>>  getArcCoordinates(int minSize, int minLength){
+	public List<List<Integer>>  getArcCoordinates(){
 		List<List<Integer>> arcData = new ArrayList<List<Integer>>();  
+		TreeMap<String, List<Integer>> x = getConsecutiveSubStrMap();
 		
-		//for (Map.Entry<String, List<Integer>> entry : arcFilter(1,1).entrySet()){	
-		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap(minSize,minLength).entrySet()){
+		
+		
+//		for(Entry<String, List<Integer>> next: getConsecutiveSubStrMap().entrySet()){
+//			System.out.println(next.getKey());
+//			System.out.println(next.getValue());
+//			System.out.println("--------");
+//			
+//		}
+//		
+//		for (Map.Entry<String, List<Integer>> entry : arcFilter().entrySet()){	
+		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
 
@@ -54,11 +66,12 @@ public class ArcAnalyser {
 	/**
 	 * 
 	 * Gets a node map and processes through helper method getConsecutiveSubStrMap which removes overlaps
-	 * It then removes arcs below minimum size and minimum length and applies arc rules
+	 * 
 	 */
-	public Map <String, List<Integer>> arcFilter(int minSize, int minLength){
+	public Map <String, List<Integer>> arcFilter(){
+		//Removes any values < 2
 		Map <String, List<Integer>> arcMap = new TreeMap <String, List<Integer>>();
-		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap(2,2).entrySet()){
+		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap().entrySet()){
 			
 			
 		}
@@ -75,18 +88,33 @@ public class ArcAnalyser {
 	 *   Also turns indices into pairs e.g input
 	 *   ABAB=[0, 4]
 	 *   ABAB=[0, 3, 4, 7] index to key length - 1
+	 *   
+	 *   Sorts by key length in descending order
 	 */
-	private Map <String, List<Integer>> getConsecutiveSubStrMap(int minSize, int minLength){
-		Map <String, List<Integer>> subStrMap = new TreeMap <String	, List<Integer>>();
+	private TreeMap <String, List<Integer>> getConsecutiveSubStrMap(){
+		//Code changes default TreeMap ordering to key length in descending order
+		//TO DO - Change comparator method to Java 8 style.
+		// Code taken from Stack Overflow (INSERT LINK)
+		TreeMap <String, List<Integer>> subStrMap = new TreeMap <String	, List<Integer>>(
+				new Comparator<String>(){
+					@Override
+					public int compare(String s1, String s2){
+						if(s1.length() > s2.length()){
+							return -1;
+						} else if(s1.length() < s2.length()){
+							return 1;
+						} else {
+							return s1.compareTo(s2);
+						}	
+					}
+				});
+		
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
 			//ensure the indices are sorted in ascending value
 			Collections.sort(value);
 			
-			if(value.size() >= minSize && key.length() >= minLength){
-			
-				//Guard condition to prevent repeating single characters and non-repeating
 			//substrings
 				//i.e the first index in any list of integers is by definition valid
 				//relies on List<Integer> being sorted in ascending order
@@ -99,13 +127,9 @@ public class ArcAnalyser {
 						subStrMap.get(key).add(lastValidIndex);
 					} 
 				}
-			}
 		}	
 		return subStrMap;
-		
 	}
 	
 	
-	
-		
-	}
+}

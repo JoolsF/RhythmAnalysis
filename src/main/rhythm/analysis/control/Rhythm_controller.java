@@ -58,7 +58,7 @@ public class Rhythm_controller {
 	}
 	
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getArcCoordinates(2,2);	 	
+		return this.arcAnalyser.getArcCoordinates();	 	
 	}
 	
 	
