@@ -67,11 +67,10 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	
 	//TO DO - Needs further debugging and integrating with data model.  Render circle commented out therefore
 	public void draw(){	
-		int[] onsets = new int[2];
 		background(128);
 	    smooth();
 	    fill(0);
-	    Integer[] testData = new Integer[]{1,5,10,11};
+	    //Integer[] testData = new Integer[]{1,5,10,11};
 
 	    
 	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){

@@ -1,6 +1,7 @@
 package rhythm.analysis.view;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -93,6 +94,9 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	 */
 	private void setColourMap(){ //int[][] pairs arg
 		int colour = getRandomNumber(255);
+		
+
+		
 		
 		//TEST DATA
 		colourMap.put(3, colour);

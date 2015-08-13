@@ -26,7 +26,6 @@ public class SuffixTreeTest {
 		String str1 = "ABABABAB"; 
 		//testSuffixTree.addString(str1);
 		testController.updateTree(str1);
-		testController.getMatchingStrings();
 		//System.out.println(test.getTree().nodesToList().toString());
 
 		

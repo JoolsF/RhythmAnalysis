@@ -37,21 +37,15 @@ public class ArcAnalyser {
 		List<List<Integer>> arcData = new ArrayList<List<Integer>>();  
 		
 		//for (Map.Entry<String, List<Integer>> entry : arcFilter(1,1).entrySet()){	
-		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
+		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap(minSize,minLength).entrySet()){
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
 
-			if(entry.getValue().size() > minSize && entry.getKey().length() > minLength) {
-				//Guard condition to prevent repeating single characters and non-repeating
-				//substrings
-				for(int i = 0; i < value.size() -1; i++){
-					arcData.add(Arrays.asList(value.get(i),
-											  value.get(i) + (key.length() -1),
-											  value.get(i+1),
-											  value.get(i+1) + (key.length() -1)));	
-				}
-				
-
+			for(int i = 0; i < value.size() -1; i++){
+				arcData.add(Arrays.asList(value.get(i),
+										  value.get(i) + (key.length() -1),
+										  value.get(i+1),
+										  value.get(i+1) + (key.length() -1)));	
 			}		
 		}
 		return arcData;
@@ -64,7 +58,7 @@ public class ArcAnalyser {
 	 */
 	public Map <String, List<Integer>> arcFilter(int minSize, int minLength){
 		Map <String, List<Integer>> arcMap = new TreeMap <String, List<Integer>>();
-		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap().entrySet()){
+		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap(2,2).entrySet()){
 			
 			
 		}
@@ -82,7 +76,7 @@ public class ArcAnalyser {
 	 *   ABAB=[0, 4]
 	 *   ABAB=[0, 3, 4, 7] index to key length - 1
 	 */
-	private Map <String, List<Integer>> getConsecutiveSubStrMap(){
+	private Map <String, List<Integer>> getConsecutiveSubStrMap(int minSize, int minLength){
 		Map <String, List<Integer>> subStrMap = new TreeMap <String	, List<Integer>>();
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
@@ -90,23 +84,23 @@ public class ArcAnalyser {
 			//ensure the indices are sorted in ascending value
 			Collections.sort(value);
 			
-			//i.e the first index in any list of integers is by definition valid
-			//relies on List<Integer> being sorted in ascending order
-			int lastValidIndex = value.get(0); 
-			subStrMap.put(key, new ArrayList<Integer>());
-			subStrMap.get(key).add(lastValidIndex);
-			for(int i = 1; i < value.size(); i++){ // start at 1 as first entry will be correct
-				if(entry.getValue().get(i) - lastValidIndex >= key.length()){
-					lastValidIndex = value.get(i);
-					subStrMap.get(key).add(lastValidIndex);
-				} 
-			}
-		}
-		for (Map.Entry<String, List<Integer>> entry : subStrMap.entrySet()){
+			if(value.size() >= minSize && key.length() >= minLength){
 			
-			System.out.println(entry);
-		}
-		
+				//Guard condition to prevent repeating single characters and non-repeating
+			//substrings
+				//i.e the first index in any list of integers is by definition valid
+				//relies on List<Integer> being sorted in ascending order
+				int lastValidIndex = value.get(0); 
+				subStrMap.put(key, new ArrayList<Integer>());
+				subStrMap.get(key).add(lastValidIndex);
+				for(int i = 1; i < value.size(); i++){ // start at 1 as first entry will be correct
+					if(entry.getValue().get(i) - lastValidIndex >= key.length()){
+						lastValidIndex = value.get(i);
+						subStrMap.get(key).add(lastValidIndex);
+					} 
+				}
+			}
+		}	
 		return subStrMap;
 		
 	}
