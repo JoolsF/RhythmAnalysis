@@ -1,5 +1,9 @@
 package rhythm.analysis;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 import rhythm.analysis.control.Rhythm_controller;
@@ -27,11 +31,33 @@ public class SuffixTreeTest {
 		
 		
 		String str1 = "ABABABAB"; 
-		//testSuffixTree.addString(str1);
 		testController.updateTree(str1);
-		System.out.println(testController.getMatchingStrings());
+		testController.getMatchingStrings();
 
 		
+		
+		
+//		List<Integer> set1 = new ArrayList<Integer>();
+//		
+//		List<Integer> set2 = new ArrayList<Integer>();
+//		set2.add(4);
+//		set2.add(5);
+//		set2.add(6);
+//		
+//		List<List<Integer>> listSet = new ArrayList<List<Integer>>();
+//		
+//		listSet.add(set1);
+//		listSet.add(set2);
+//		
+//		
+//		List<Integer> subset = new ArrayList<Integer>();
+//		subset.add(2);
+//		subset.add(3);
+//		
+//		
+//		
+//		
+//		System.out.println(x.validSubString(listSet, subset));
 		
 		
 	

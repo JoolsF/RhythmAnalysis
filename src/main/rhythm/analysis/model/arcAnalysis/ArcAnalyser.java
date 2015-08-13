@@ -43,76 +43,74 @@ public class ArcAnalyser {
 	 *    coordinates
 	 */
 	public List<List<Integer>>  getArcCoordinates(){
-		List<List<Integer>> arcData = new ArrayList<List<Integer>>();  
-		TreeMap<String, List<Integer>> x = getConsecutiveSubStrMap();
+		List<List<Integer>> arcData = new ArrayList<List<Integer>>(); // for return
+		List<List<Integer>> indicesUsedSoFar = new ArrayList<List<Integer>>();
 		
-		arcFilter();
-		
-//		for(Entry<String, List<Integer>> next: getConsecutiveSubStrMap().entrySet()){
-//			System.out.println(next.getKey());
-//			System.out.println(next.getValue());
-//			System.out.println("--------");
-//			
-//		}
-//		
-//		for (Map.Entry<String, List<Integer>> entry : arcFilter().entrySet()){	
+			
 		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
 
+			System.out.println(entry.getKey());
+			System.out.println(entry.getValue());
+			System.out.println("***************");
+			
+			
+			//Bug here
 			for(int i = 0; i < value.size() -1; i++){
-				arcData.add(Arrays.asList(value.get(i),
-										  value.get(i) + (key.length() -1),
-										  value.get(i+1),
-										  value.get(i+1) + (key.length() -1)));	
-			}		
+				
+				System.out.print(value.get(i));
+				
+				List<Integer> seq = getSequenceAsList(value.get(i),key.length());
+				if(validSubString(indicesUsedSoFar, seq)){ 				//NEED TO CHECK IF PAIRS ARE VALID
+					arcData.add(Arrays.asList(value.get(i),
+											  value.get(i) + (key.length() -1),
+											  value.get(i+1),
+											  value.get(i+1) + (key.length() -1)));
+					indicesUsedSoFar.add(new ArrayList<Integer>(seq));
+				} //end if
+			}	
+			//System.out.println();
+		}		
+
+		for(Entry<String, List<Integer>> entry:  getConsecutiveSubStrMap().entrySet()){
+			System.out.println(entry.getKey());
+			System.out.println(entry.getValue());
+			System.out.println("--------");
 		}
+		
+		
 		return arcData;
 	}
 	
-	/**
-	 * 
-	 * Gets a node map and processes through helper method getConsecutiveSubStrMap which removes overlaps
-	 * 
-	 */
-	public Map <String, List<Integer>> arcFilter(){
-		//Removes any values < 2
-		Map <String, List<Integer>> arcMap = new TreeMap <String, List<Integer>>();
-		Set<Integer> set = new HashSet<Integer>();
 
-		for (Map.Entry<String, List<Integer>> entry : getConsecutiveSubStrMap().entrySet()){
-			String key = entry.getKey();
-			List<Integer> value = entry.getValue();
-					
-			if(value.size() > 1){ // so only repeating substrings kept
-				for(Integer next: value){
-					Set<Integer> subset = getSequenceAsSet(next,next + key.length());
-					
-					Set<Integer> intersection = new HashSet<Integer>(subset);
-					intersection.retainAll(set);
-					
-					Set<Integer> difference = new HashSet<Integer>(subset);
-					difference.removeAll(set);
-					
-					if(intersection.equals(subset)){ // subset if contained in set
-						arcMap.put(key, value);
-					} else if(difference.equals(subset)){ //i.e subset not contained in set.  Either the set is empty or they do not intersect
-						set.addAll(subset); //update
-						arcMap.put(key, value);
-					} else { //the sets intersect or the set is empty
-						//do nothing
-					}
+
+	
+	
+	private List<Integer> getSequenceAsList(int from, int to){
+		List<Integer> sequenceList = new ArrayList<Integer>();
+		
+		for(int i = from; i <= to; i ++) sequenceList.add(i);
+		
+		return sequenceList;
+	}
+	public boolean validSubString(List<List<Integer>> listOfLists, List<Integer> list){
+		for(List<Integer> nextList: listOfLists){
+			boolean contains = false;
+			boolean doesNotContain = false;
+			
+			for(Integer nextInt: list){
+				if(nextList.contains(nextInt)){
+					contains = true;
+				} else {
+					doesNotContain = true;
 				}
 			}
+			if((contains && doesNotContain) == true){
+				return false;
+			}
 		}
-		return arcMap;
-	}
-	private Set<Integer> getSequenceAsSet(int from, int to){
-		Set<Integer> seqSet = new HashSet<Integer>();
-		
-		for(int i = from; i <= to; i ++) seqSet.add(i);
-		
-		return seqSet;
+		return true;
 	}
 	
 	
