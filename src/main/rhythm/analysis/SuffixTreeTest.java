@@ -32,7 +32,11 @@ public class SuffixTreeTest {
 		String str2 = "11111111";
 		String str3 = "12qwqw12";
 		
-		testController.updateTree(str3);
+		String str4 = "AB1212AB";
+		String str5 = "12ABAB12";
+		String str6 = "ABCDABCDCD";
+		
+		testController.updateTree(str6);
 		testController.getMatchingStrings();
 //
 //		ArcPair parent1 = new ArcPair(0,5,4);

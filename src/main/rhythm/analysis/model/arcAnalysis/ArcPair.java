@@ -36,85 +36,49 @@ public class ArcPair {
 		return sequenceList;
 	}
 	
-	// TO DO - convert to compareTo
+	
 	public boolean arcValid(ArcPair that){
 		
-		System.out.println();
-		System.out.println("******************");
-		System.out.println("This string " + this.subStr);
-		System.out.println("This span " + this.arcSpan);
-		System.out.println("This arc1 " + this.arc1);
-		System.out.println("This arc2 " + this.arc2);
-		System.out.println();
-		
-		System.out.println("That string " + that.subStr);
-		System.out.println("That span " + that.arcSpan);
-		System.out.println("That arc1 " + that.arc1);
-		System.out.println("That arc2 " + that.arc2);
-		
-		
-		
-		
-	if(that.subStrLength > this.subStrLength
-			|| this.subStr.equals(that.subStr) 
-			  ){
-		//To see why &&... needed try 1212 3412 3412 12 as input (entering in these stages) 
-			// with and without it the right && clause	
+		debugPrint("this", this);
+		debugPrint("that", that);
+		//try 1212 3412 3412 12 as input (entering in these stages) 
+		if(that.subStrLength > this.subStrLength || this.subStr.equals(that.subStr) ){	
+			// if the arc being compared is same size of greater than then true
 			System.out.println("Greater than or equal to");
-			// if the arc being compared is same size of greater than then true 
 			return true;
-		} 	else  if(noIntersection(that)) {
-		System.out.println("no intersection");
-		// the arc regions don't overlap at all
-		return true;
 	  } else if (this.isSupersetOf(that)){
-			System.out.println("valid child");
-			// if arc being compared is smaller than this then the arcpair's span and there is an intersection, that's arcSpan 
-			//must be contained within either arc1 of arc2 of this
-			return true;	
-		} else {
-			System.out.println("rejected");
-			return false;
+		  // if arc being compared is smaller than this then the arcpair's span and there is an intersection, that's arcSpan 
+		  //must be contained within either arc1 of arc2 of this
+		  System.out.println("valid child");
+		  return true;	
+//BUG HERE
+	  } else if(noIntersection(that)) {
+		  // the arc regions don't overlap at all return true;
+		  System.out.println("no intersection");
+		  return true;
+	  } else {
+		  System.out.println("rejected");
+		  return false;
 		}
 	}
 	
+	/**
+	 * Checks whether This' arc regions intersect with That's arc regions
+	 * @param that
+	 * @return
+	 */
 	public boolean noIntersection(ArcPair that){
-		Set<Integer> intersection = new HashSet<Integer>(this.arcSpan);
-		intersection.retainAll(that.arcSpan);
-		if(intersection.isEmpty()){
+		Set<Integer> intersection1 = new HashSet<Integer>(this.arc1);
+		intersection1.addAll(this.arc2);
+
+		Set<Integer> intersection2 = new HashSet<Integer>(that.arc1);
+		intersection1.addAll(that.arc2);
+		intersection1.retainAll(intersection2);		
+		if(intersection1.isEmpty()){
 			return true;
 		} else {
 			return false;
-		}
-
-		
-		
-//		//BUG 12ABAB12 AB(try adding in 2 stages
-//		Set<Integer> intersection1 = new HashSet<Integer>(this.arc1);
-//		Set<Integer> intersection2 = new HashSet<Integer>(this.arc2);
-//		Set<Integer> intersection3 = new HashSet<Integer>(this.arcgap);
-//		Set<Integer> intersection4 = new HashSet<Integer>(this.arcgap);
-//
-//		
-//		
-//		intersection1.retainAll(that.arc1);
-//		intersection2.retainAll(that.arc2);
-//		
-//		intersection3.retainAll(that.arc1);
-//		intersection4.retainAll(that.arc2);		
-//		if(intersection1.isEmpty() || intersection2.isEmpty()){
-//			//return true
-//			
-//			if(intersection3.isEmpty() && intersection4.isEmpty()){
-//				return true;
-//			} else {
-//				return false;
-//			}
-//					
-//		} else {
-//			return false;
-//		}
-		
+		}		
 	}
 	
 	public boolean isSupersetOf(ArcPair that){
@@ -128,6 +92,17 @@ public class ArcPair {
 		} else {
 			return false;
 		}
+	}
+	
+	private void debugPrint(String name, ArcPair ap){
+		System.out.println();
+		System.out.println("******************");
+		System.out.println(name);
+		System.out.println("String" + ap.subStr);
+		System.out.println("arcspan " + ap.arcSpan);
+		System.out.println("arc1 " + ap.arc1);
+		System.out.println("arc2 " + ap.arc2);
+		System.out.println();		
 	}
 	
 }
