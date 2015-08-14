@@ -33,7 +33,7 @@ public class SuffixTree {
 	private Node root;
 	private String string;
 	//TO DO, set from ui
-	private int numPulses = 8; 
+	private int numPulses = 12; 
 	private Rhythm_controller controller;
 	
 	

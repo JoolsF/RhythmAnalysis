@@ -26,16 +26,17 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
 public class ArcAnalyser {
 	
 	private SuffixTree suffixTree;
-	
+//	public Map <Integer, List<List<Integer>>> usedIndices;
 	
 	public ArcAnalyser(){
-		
+//		this.usedIndices = new TreeMap<Integer, List<List<Integer>>>();
 		
 	}
 	public ArcAnalyser(SuffixTree suffixTree){
 		this.suffixTree = suffixTree;
 		
 	}
+		
 	/**
 	 * Processes map "Substring -> Indices" and processes as follows
 	 * 1. Remove overlapping substrings 
@@ -44,70 +45,44 @@ public class ArcAnalyser {
 	 */
 	public List<List<Integer>>  getArcCoordinates(){
 		List<List<Integer>> arcData = new ArrayList<List<Integer>>(); // for return
-		List<List<Integer>> indicesUsedSoFar = new ArrayList<List<Integer>>();
+		//List<List<Integer>> indicesUsedSoFar = new ArrayList<List<Integer>>();
+		
+		
+		
 		
 			
 		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
 		 	String key = entry.getKey();
+		 	int keyLength = key.length();
 			List<Integer> value = entry.getValue();
 			
-			if(value.size() > 1){ //ensures only duplicate strings processed
-	//			System.out.println(entry.getKey());
-	//			System.out.println(entry.getValue());
-	//			System.out.println("***************");
+			if(value.size() > 0){ 
 				
-				
-				//Bug here
 				for(int i = 0; i < value.size() -1; i++){
 					int thisValStart = value.get(i);
-					int thisValEnd = thisValStart + key.length() - 1;
+					int thisValEnd = thisValStart + keyLength - 1;
 					int nextValStart = value.get(i + 1);
-					int nextValEnd = nextValStart + key.length() - 1;
+					int nextValEnd = nextValStart + keyLength - 1;
 					
 					List<Integer> thisVal = getSequenceAsList(thisValStart, thisValEnd);
 					List<Integer> nextVal = getSequenceAsList(nextValStart, nextValEnd);
 					List<Integer> bothVal = new ArrayList<Integer>(thisVal);
 					bothVal.addAll(nextVal);
-					
-//					System.out.println(key);
-//					System.out.println(value.get(i));
-//					System.out.println("seq " + thisVal);
-//					System.out.println(value.get(i + 1));
-//					System.out.println("seq1 " + nextVal);
-					
-					
-					
-					if(validSubString(indicesUsedSoFar, bothVal))
-						{ 				//NEED TO CHECK IF PAIRS ARE VALID
-						
-						
-//						System.out.println(key);
-//						System.out.println(value.get(i));
-//						System.out.println("seq " + thisVal);
-//						System.out.println(value.get(i + 1));
-//						System.out.println("seq1 " + nextVal);
+					//NEED TO CHECK IF PAIRS ARE VALID
+//					if(validSubString(indicesUsedSoFar, thisVal)) { 				
 						
 						
 						arcData.add(Arrays.asList(value.get(i),
-												  value.get(i) + (key.length() -1),
+												  value.get(i) + (keyLength -1),
 												  value.get(i+1),
-												  value.get(i+1) + (key.length() -1)));
-						indicesUsedSoFar.add(new ArrayList<Integer>(thisVal));
-						indicesUsedSoFar.add(new ArrayList<Integer>(nextVal));
-					} //end if
+												  value.get(i+1) + (keyLength -1)));
+	//					indicesUsedSoFar.add(new ArrayList<Integer>(thisVal));
+		//				indicesUsedSoFar.add(new ArrayList<Integer>(nextVal));
+			//		} //end if
 				}	
-				System.out.println();
 			}
 		} //end for		
-
-//		for(Entry<String, List<Integer>> entry:  getConsecutiveSubStrMap().entrySet()){
-//			System.out.println(entry.getKey());
-//			System.out.println(entry.getValue());
-//			System.out.println("--------");
-//		}
-		 
-		
-		
+	
 		return arcData;
 	}
 	
@@ -123,21 +98,30 @@ public class ArcAnalyser {
 		return sequenceList;
 	}
 	public boolean validSubString(List<List<Integer>> listOfLists, List<Integer> list){
+		
 		for(List<Integer> nextList: listOfLists){
-			boolean contains = false;
-			boolean doesNotContain = false;
-			
-			for(Integer nextInt: list){
-				if(nextList.contains(nextInt)){
-					contains = true;
-				} else {
-					doesNotContain = true;
+				if(list.size() < nextList.size()){
+				System.out.println("----------------");
+				System.out.println(list);
+				System.out.println(nextList);
+				
+				boolean contains = false;
+				boolean doesNotContain = false;
+				
+				for(Integer nextInt: list){
+					if(nextList.contains(nextInt)){
+						contains = true;
+					} else {
+						doesNotContain = true;
+					}
 				}
-			}
-			if((contains && doesNotContain) == true){
-				return false;
-			}
+				
+				if((contains && doesNotContain) == true){
+					return false;
+				}
+			}//end if
 		}
+		
 		return true;
 	}
 	
@@ -155,21 +139,8 @@ public class ArcAnalyser {
 	 */
 	private TreeMap <String, List<Integer>> getConsecutiveSubStrMap(){
 		//Code changes default TreeMap ordering to key length in descending order
-		//TO DO - Change comparator method to Java 8 style.
-		// Code taken from Stack Overflow (INSERT LINK)
-		TreeMap <String, List<Integer>> subStrMap = new TreeMap <String	, List<Integer>>(
-				new Comparator<String>(){
-					@Override
-					public int compare(String s1, String s2){
-						if(s1.length() > s2.length()){
-							return -1;
-						} else if(s1.length() < s2.length()){
-							return 1;
-						} else {
-							return s1.compareTo(s2);
-						}	
-					}
-				});
+		
+		TreeMap <String, List<Integer>> subStrMap = new TreeMap<String, List<Integer>>(getComparator());
 		
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
@@ -192,6 +163,33 @@ public class ArcAnalyser {
 		}	
 		return subStrMap;
 	}
+	
+	/**
+	 * 
+	 * Return a comparator for uses in Treemap sorted by key size in descending order
+	 */
+	//TO DO - Change comparator method to Java 8 style.
+	// Code taken from Stack Overflow (INSERT LINK)
+	public Comparator<String> getComparator(){
+		Comparator<String> comp = new Comparator<String>(){
+			@Override
+			public int compare(String s1, String s2){
+				if(s1.length() > s2.length()){
+					return -1;
+				} else if(s1.length() < s2.length()){
+					return 1;
+				} else {
+					return s1.compareTo(s2);
+				}	
+			}
+		};
+		return comp;	
+	}
+			
+		
+		
+		
+	
 	
 	
 }

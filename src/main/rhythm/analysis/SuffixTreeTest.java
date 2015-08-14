@@ -30,34 +30,12 @@ public class SuffixTreeTest {
 		
 		
 		
-		String str1 = "ABABABAB"; 
+		String str1 = "123a123b123c"; 
 		testController.updateTree(str1);
 		testController.getMatchingStrings();
 
 		
-		
-		
-//		List<Integer> set1 = new ArrayList<Integer>();
-//		
-//		List<Integer> set2 = new ArrayList<Integer>();
-//		set2.add(4);
-//		set2.add(5);
-//		set2.add(6);
-//		
-//		List<List<Integer>> listSet = new ArrayList<List<Integer>>();
-//		
-//		listSet.add(set1);
-//		listSet.add(set2);
-//		
-//		
-//		List<Integer> subset = new ArrayList<Integer>();
-//		subset.add(2);
-//		subset.add(3);
-//		
-//		
-//		
-//		
-//		System.out.println(x.validSubString(listSet, subset));
+	
 		
 		
 	
