@@ -172,9 +172,9 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
 		setLineSubDivision();
-		drawArcXaxis();
 		drawArcDiagram();
-	    drawSliders();
+		drawArcXaxis();
+		drawSliders();
 	    updateText();  
 	 }
 	 
@@ -220,7 +220,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 				 
 			 pushStyle(); 
 			 noFill();
-			 stroke(100,127); // 2nd arg is alpha value
+			 stroke(100,90); // 2nd arg is alpha value
 			 strokeWeight(nodeLength);
 			 strokeCap(SQUARE); // Makes ends of arc square			 
 			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0);

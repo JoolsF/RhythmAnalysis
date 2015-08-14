@@ -26,15 +26,15 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
 public class ArcAnalyser {
 	
 	private SuffixTree suffixTree;
-//	public Map <Integer, List<List<Integer>>> usedIndices;
+	
 	
 	public ArcAnalyser(){
-//		this.usedIndices = new TreeMap<Integer, List<List<Integer>>>();
 		
 	}
+	
 	public ArcAnalyser(SuffixTree suffixTree){
+		this();
 		this.suffixTree = suffixTree;
-		
 	}
 		
 	/**
@@ -45,86 +45,39 @@ public class ArcAnalyser {
 	 */
 	public List<List<Integer>>  getArcCoordinates(){
 		List<List<Integer>> arcData = new ArrayList<List<Integer>>(); // for return
-		//List<List<Integer>> indicesUsedSoFar = new ArrayList<List<Integer>>();
-		
-		
-		
-		
-			
-		 for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
+		List<ArcPair> arcPairs = new ArrayList<ArcPair>();
+		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
 		 	String key = entry.getKey();
 		 	int keyLength = key.length();
 			List<Integer> value = entry.getValue();
 			
-			if(value.size() > 0){ 
-				
+			if(value.size() > 0){  // keep repeating substrings only		
 				for(int i = 0; i < value.size() -1; i++){
-					int thisValStart = value.get(i);
-					int thisValEnd = thisValStart + keyLength - 1;
-					int nextValStart = value.get(i + 1);
-					int nextValEnd = nextValStart + keyLength - 1;
-					
-					List<Integer> thisVal = getSequenceAsList(thisValStart, thisValEnd);
-					List<Integer> nextVal = getSequenceAsList(nextValStart, nextValEnd);
-					List<Integer> bothVal = new ArrayList<Integer>(thisVal);
-					bothVal.addAll(nextVal);
-					//NEED TO CHECK IF PAIRS ARE VALID
-//					if(validSubString(indicesUsedSoFar, thisVal)) { 				
-						
-						
-						arcData.add(Arrays.asList(value.get(i),
-												  value.get(i) + (keyLength -1),
-												  value.get(i+1),
-												  value.get(i+1) + (keyLength -1)));
-	//					indicesUsedSoFar.add(new ArrayList<Integer>(thisVal));
-		//				indicesUsedSoFar.add(new ArrayList<Integer>(nextVal));
-			//		} //end if
-				}	
+					ArcPair arcPair = new ArcPair(value.get(i), value.get(i+1), keyLength, key);
+
+					//TO DO pass in boolean test as arg so that behaviour of function can be modified
+					if(arcValid(arcPairs, arcPair)){
+						arcPairs.add(arcPair);
+						//to do use arcPair below
+						arcData.add(Arrays.asList(value.get(i), value.get(i) + (keyLength -1),
+												  value.get(i+1), value.get(i+1) + (keyLength -1)));
+					} //end if
+				}
 			}
 		} //end for		
-	
 		return arcData;
 	}
 	
-
-
-	
-	
-	private List<Integer> getSequenceAsList(int from, int to){
-		List<Integer> sequenceList = new ArrayList<Integer>();
+	public boolean arcValid(List<ArcPair> arcPairlist,ArcPair that){
+		if(arcPairlist.isEmpty()) return true;
 		
-		for(int i = from; i <= to; i ++) sequenceList.add(i);
-		
-		return sequenceList;
-	}
-	public boolean validSubString(List<List<Integer>> listOfLists, List<Integer> list){
-		
-		for(List<Integer> nextList: listOfLists){
-				if(list.size() < nextList.size()){
-				System.out.println("----------------");
-				System.out.println(list);
-				System.out.println(nextList);
-				
-				boolean contains = false;
-				boolean doesNotContain = false;
-				
-				for(Integer nextInt: list){
-					if(nextList.contains(nextInt)){
-						contains = true;
-					} else {
-						doesNotContain = true;
-					}
-				}
-				
-				if((contains && doesNotContain) == true){
-					return false;
-				}
-			}//end if
+		for(ArcPair next: arcPairlist){
+			if(! next.arcValid(that)){
+				return false;
+			}
 		}
-		
 		return true;
 	}
-	
 	
 	/**
 	 * . Removes overlapping substrings e.g. take String ABABABAB
@@ -145,6 +98,10 @@ public class ArcAnalyser {
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
+			
+			System.out.println("key " + key);
+			System.out.println("value " + value);
+			
 			//ensure the indices are sorted in ascending value
 			Collections.sort(value);
 			
@@ -158,6 +115,8 @@ public class ArcAnalyser {
 					if(entry.getValue().get(i) - lastValidIndex >= key.length()){
 						lastValidIndex = value.get(i);
 						subStrMap.get(key).add(lastValidIndex);
+						System.out.println("New key " + key);
+						System.out.println("New value " + lastValidIndex);
 					} 
 				}
 		}	
