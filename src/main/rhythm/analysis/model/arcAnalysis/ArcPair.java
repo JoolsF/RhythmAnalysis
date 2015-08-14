@@ -72,7 +72,7 @@ public class ArcPair {
 		intersection1.addAll(this.arc2);
 
 		Set<Integer> intersection2 = new HashSet<Integer>(that.arc1);
-		intersection1.addAll(that.arc2);
+		intersection2.addAll(that.arc2);
 		intersection1.retainAll(intersection2);		
 		if(intersection1.isEmpty()){
 			return true;
@@ -93,6 +93,7 @@ public class ArcPair {
 			return false;
 		}
 	}
+	
 	
 	private void debugPrint(String name, ArcPair ap){
 		System.out.println();
