@@ -36,8 +36,12 @@ public class SuffixTreeTest {
 		String str5 = "12ABAB12";
 		String str6 = "ABCDABCDCD";
 		
-		testController.updateTree(str6);
-		testController.getMatchingStrings();
+		testController.updateTree(str1);
+		for(List<Integer> next: testController.getMatchingStrings()){
+			System.out.println(next);
+		}
+		
+		System.out.println(testController.getTreeAsList());
 //
 //		ArcPair parent1 = new ArcPair(0,5,4);
 //		ArcPair parent2 = new ArcPair(1,6,3);

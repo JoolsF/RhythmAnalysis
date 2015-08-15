@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.gicentre.utils.multisketch.EmbeddedSketch;
 import org.gicentre.utils.multisketch.PopupWindow;
@@ -31,17 +32,19 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	private int characterSpacing = 15;
 	private Random rand = new Random();
 	
-	private Map<Integer, Integer> colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.  
 	private Arc_viewer arcViewerParent;
 	private Rhythm_controller controller;
 	
+	private Map<Integer, Integer> colourMap;
+	//Map<List<Integer>, Integer> usedRegion;
 	
-	Map<List<Integer>, Integer> usedRegion;
 	
 	public Text_viewer(Arc_viewer arcViewerParent, Rhythm_controller controller){
 		this.arcViewerParent = arcViewerParent;	
 		this.controller = controller;
-		usedRegion = new TreeMap<List<Integer>, Integer>();
+		this.colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.
+
+	//	private List<List<Integer>> colourMap;	this.
 	}
 	
 	
@@ -102,56 +105,35 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	 * 
 	 */
 	private void setColourMap(){ 
-		usedRegion = new TreeMap<List<Integer>, Integer>();
-		//map from string region to colour
-		
-		//int colour = getRandomNumber(255);
-		
 		for(List<Integer> matchingRegion: this.controller.getMatchingStrings()){
-			System.out.println("*****************");
-			System.out.println(matchingRegion);
+			
+			List<Integer> arc1Region = getSequenceAsList(matchingRegion.get(0), matchingRegion.get(1));
+			List<Integer> arc2Region = getSequenceAsList(matchingRegion.get(2), matchingRegion.get(3));
+			
+			Set<Integer> intersection = new TreeSet<Integer>(colourMap.keySet());
+			intersection.retainAll(arc1Region);
 			
 			
-//			List<Integer> arc1Region = getSequenceAsList(matchingRegion.get(0), matchingRegion.get(1));
-//			List<Integer> arc2Region = getSequenceAsList(matchingRegion.get(2), matchingRegion.get(3));
+			int colour;
 			
-			int colour = 1;
+			if(intersection.isEmpty()){
+				colour = getRandomNumber(255);
+			} else {
+				colour = intersection.iterator().next();;
+			}
 			
-			
-//			for(Integer next: arc1Region){
-//					colourMap.put(next, colour);
-//			}
-//				
-//			for(Integer next: arc2Region){
-//				colourMap.put(next, colour);
-//			}	
-//		
-			
+			for(Integer next: arc1Region) colourMap.put(next, colour);	
+			for(Integer next: arc2Region) colourMap.put(next, colour);	
 		}
-		}
+	}
 		
 	
-//	private List<Integer> getSequenceAsList(int from, int to){
-//		List<Integer> sequenceList = new ArrayList<Integer>();
-//		for(int i = from; i <= to; i ++) sequenceList.add(i);
-//		return sequenceList;
-//	}
-//	
-//	
-//	private Integer getColour(List<Integer> newRegion){
-//		
-//		for(Map.Entry<List<Integer>,Integer> next : usedRegion.entrySet()){
-//			Set<Integer> intersection = new HashSet<Integer>(next.getKey());
-//			intersection.retainAll(newRegion);
-//			if(! intersection.isEmpty()){
-//				return next.getValue();
-//			} 
-//		}
-//		int newColour = getRandomNumber(255);
-//		this.usedRegion.put(newRegion, newColour);
-//		return newColour;
-//	}
-
+	private List<Integer> getSequenceAsList(int from, int to){
+		List<Integer> sequenceList = new ArrayList<Integer>();
+		for(int i = from; i <= to; i ++) sequenceList.add(i);
+		return sequenceList;
+	}
+	
 
 	
 	@Override

@@ -46,6 +46,7 @@ public interface Node {
 	//TO DO - Add exception if there are duplicate values in list value for given key.  
 	// Indicates problem with construction of tree
 	public default Map<String, List<Integer>> nodesToMap(Map<String, List<Integer>> accMap){	
+		
 		Iterator<InnerNode> itr = getChildren().iterator();
 		while(itr.hasNext()){			 	
 			InnerNode currentNode = itr.next();
