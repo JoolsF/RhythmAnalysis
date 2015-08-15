@@ -120,9 +120,13 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		 return this.leftSlider.getSlider();
 	 }
 		
-	 public int getRightSlider(){
-		 return this.rightSlider.getSlider();
-	 }
+	public int getRightSlider(){
+		return this.rightSlider.getSlider();
+	}
+	
+	public List<List<Integer>> getNodePairs(){
+		return this.nodePairs;
+	}
 	
 	/**
 	 *  Given that first character of string will be rendered at start of line the line should be 
@@ -338,10 +342,11 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 public void mouseReleased() {
 	  leftSlider.lockSlider();
 	  rightSlider.lockSlider();
-	  //Add button for this
+	  //TO DO - Add button for this
 	  if(this.windowsOpen == false) {
 		  this.windowsOpen = true;
 		  textViewWindow.setVisible(true);
+		  this.textViewer.update();
 		  cycleViewWindow.setVisible(true);  
 	  } 
 	 

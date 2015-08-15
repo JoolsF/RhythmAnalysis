@@ -19,8 +19,7 @@ public class Rhythm_controller {
 	private ArcAnalyser arcAnalyser;
 	private SuffixTree suffixTree;
 	private List<Observer> observers = new ArrayList<Observer>();
-	
-	
+		
 	
 	/**
 	 * constructor

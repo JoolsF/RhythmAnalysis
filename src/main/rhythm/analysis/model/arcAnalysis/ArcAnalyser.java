@@ -26,6 +26,7 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
 public class ArcAnalyser {
 	
 	private SuffixTree suffixTree;
+	private List<List<Integer>> arcData;
 	
 	
 	public ArcAnalyser(){
@@ -35,6 +36,7 @@ public class ArcAnalyser {
 	public ArcAnalyser(SuffixTree suffixTree){
 		this();
 		this.suffixTree = suffixTree;
+		this.arcData = new ArrayList<List<Integer>>();
 	}
 		
 	/**
@@ -44,7 +46,7 @@ public class ArcAnalyser {
 	 *    coordinates
 	 */
 	public List<List<Integer>>  getArcCoordinates(){
-		List<List<Integer>> arcData = new ArrayList<List<Integer>>(); // for return
+		arcData = new ArrayList<List<Integer>>(); // for return
 		List<ArcPair> arcPairs = new ArrayList<ArcPair>();
 		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
 		 	String key = entry.getKey();
@@ -98,10 +100,6 @@ public class ArcAnalyser {
 		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
-			
-			System.out.println("key " + key);
-			System.out.println("value " + value);
-			
 			//ensure the indices are sorted in ascending value
 			Collections.sort(value);
 			
@@ -115,8 +113,6 @@ public class ArcAnalyser {
 					if(entry.getValue().get(i) - lastValidIndex >= key.length()){
 						lastValidIndex = value.get(i);
 						subStrMap.get(key).add(lastValidIndex);
-						System.out.println("New key " + key);
-						System.out.println("New value " + lastValidIndex);
 					} 
 				}
 		}	

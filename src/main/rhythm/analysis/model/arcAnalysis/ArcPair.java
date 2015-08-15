@@ -37,27 +37,20 @@ public class ArcPair {
 	}
 	
 	
-	public boolean arcValid(ArcPair that){
-		
-		debugPrint("this", this);
-		debugPrint("that", that);
-		//try 1212 3412 3412 12 as input (entering in these stages) 
+	public boolean arcValid(ArcPair that){	
+//		debugPrint("this", this);
+//		debugPrint("that", that);	
 		if(that.subStrLength > this.subStrLength || this.subStr.equals(that.subStr) ){	
 			// if the arc being compared is same size of greater than then true
-			System.out.println("Greater than or equal to");
 			return true;
-	  } else if (this.isSupersetOf(that)){
+		} else if (this.isSupersetOf(that)){
 		  // if arc being compared is smaller than this then the arcpair's span and there is an intersection, that's arcSpan 
 		  //must be contained within either arc1 of arc2 of this
-		  System.out.println("valid child");
 		  return true;	
-//BUG HERE
-	  } else if(noIntersection(that)) {
+		} else if(noIntersection(that)) {
 		  // the arc regions don't overlap at all return true;
-		  System.out.println("no intersection");
 		  return true;
-	  } else {
-		  System.out.println("rejected");
+		} else {
 		  return false;
 		}
 	}
