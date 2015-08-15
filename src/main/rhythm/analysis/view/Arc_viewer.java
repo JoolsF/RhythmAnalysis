@@ -52,6 +52,10 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	private ArcSlider leftSlider;
 	private ArcSlider rightSlider;
 	
+	//Ensures that arc only redrawn when model updated
+	//TO DO - Look for better method so that this variable isn't continually polled
+	
+	private List<List<Integer>> nodePairs;
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Constructor
@@ -86,6 +90,9 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		//ArcSlider(Arc_viewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
 		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
 		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
+		
+		
+		this.nodePairs = controller.getMatchingStrings();
 	}
 	
 	
@@ -200,8 +207,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
       *Height can be any value for now 
 	  */
 	 private void drawArcDiagram(){ 
-		 //Test data (should be from model, currently loaded from here)
-		 List<List<Integer>> nodePairs = controller.getMatchingStrings();	               
+		 
+		 //List<List<Integer>> nodePairs =                
 		 
 		 for(List<Integer> next: nodePairs){	 
 			//int nodeDistance = next[1]-next[0];
@@ -318,12 +325,14 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 public void mousePressed() {
 		 leftSlider.setOffsetIfLocked(mouseX);
 		 rightSlider.setOffsetIfLocked(mouseX);
+		 
 	 }
 	
 	 public void mouseDragged() {
 		 //arguments ensure that sliders do not overlap
 		 leftSlider.setSliderPixels(mouseX, leftSlider.getLeftMin(), rightSlider.getXPixels());
 		 rightSlider.setSliderPixels(mouseX, leftSlider.getXPixels(), rightSlider.getRightMax());
+		 
 	 }	 
 		
 	 public void mouseReleased() {
@@ -335,12 +344,14 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		  textViewWindow.setVisible(true);
 		  cycleViewWindow.setVisible(true);  
 	  } 
+	 
 	}
 
 
 	@Override
 	public void update() {
-		this.redraw();	
+		//on called on model calling update method as very expensive process.
+		this.nodePairs = this.controller.getMatchingStrings();	
 	}	 
 	 
 }

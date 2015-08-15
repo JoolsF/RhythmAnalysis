@@ -99,7 +99,7 @@ public class ArcPair {
 		System.out.println();
 		System.out.println("******************");
 		System.out.println(name);
-		System.out.println("String" + ap.subStr);
+		System.out.println("String " + ap.subStr);
 		System.out.println("arcspan " + ap.arcSpan);
 		System.out.println("arc1 " + ap.arc1);
 		System.out.println("arc2 " + ap.arc2);
