@@ -2,7 +2,10 @@ package rhythm.analysis.control;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import rhythm.analysis.model.arcAnalysis.ArcAnalyser;
 import rhythm.analysis.model.suffixTree.SuffixTree;
@@ -48,9 +51,9 @@ public class Rhythm_controller {
 	}
 	
 	public List<String> getTreeAsList(){
-		//System.out.println(this.model.getTree().nodesToList());
 		return this.suffixTree.getSubStringList();
 	}
+	
 	
 	public int getNumPulses(){
 		return this.suffixTree.getNumPulses();

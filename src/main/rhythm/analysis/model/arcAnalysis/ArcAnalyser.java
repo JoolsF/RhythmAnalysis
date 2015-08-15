@@ -70,7 +70,7 @@ public class ArcAnalyser {
 		return arcData;
 	}
 	
-	public boolean arcValid(List<ArcPair> arcPairlist,ArcPair that){
+	private boolean arcValid(List<ArcPair> arcPairlist,ArcPair that){
 		if(arcPairlist.isEmpty()) return true;
 		
 		for(ArcPair next: arcPairlist){
@@ -125,7 +125,7 @@ public class ArcAnalyser {
 	 */
 	//TO DO - Change comparator method to Java 8 style.
 	// Code taken from Stack Overflow (INSERT LINK)
-	public Comparator<String> getComparator(){
+	private Comparator<String> getComparator(){
 		Comparator<String> comp = new Comparator<String>(){
 			@Override
 			public int compare(String s1, String s2){

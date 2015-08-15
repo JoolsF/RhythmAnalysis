@@ -1,5 +1,6 @@
 package rhythm.analysis.model.suffixTree;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -100,7 +101,10 @@ public class SuffixTree {
 	public List<String> getSubStringList(){
 		return this.root.nodesToList();
 	}
-	
+	/**
+	 * Returns the suffix tree in descending order of key length
+	 * @return
+	 */
 	public Map<String, List<Integer>> getSubStringMap(){
 		return this.root.nodesToMap(new TreeMap<String, List<Integer>>());
 	}
@@ -108,4 +112,6 @@ public class SuffixTree {
 	public Node getTree(){
 		return this.root;
 	}
+	
+	
 }

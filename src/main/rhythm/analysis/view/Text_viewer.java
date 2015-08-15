@@ -30,7 +30,7 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	private int fontSize = 20;
 	private int lineHeight = fontSize;
 	private int characterSpacing = 15;
-	private Random rand = new Random();
+	//private Random rand = new Random();
 	
 	private Arc_viewer arcViewerParent;
 	private Rhythm_controller controller;
@@ -38,12 +38,14 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	private Map<Integer, Integer> colourMap;
 	//Map<List<Integer>, Integer> usedRegion;
 	
+	private int colour;
+	
 	
 	public Text_viewer(Arc_viewer arcViewerParent, Rhythm_controller controller){
 		this.arcViewerParent = arcViewerParent;	
 		this.controller = controller;
 		this.colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.
-
+		this.colour = 0;
 	//	private List<List<Integer>> colourMap;	this.
 	}
 	
@@ -92,8 +94,9 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	}
 	
 	
-	private int getRandomNumber(int upperLimit){
-		return rand.nextInt(upperLimit) + 1;
+	private int getColour(){
+		this.colour = (this.colour + 50) % 255;
+		return this.colour;
 	}
 	
 	/**
@@ -105,19 +108,17 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	 * 
 	 */
 	private void setColourMap(){ 
+		colourMap.clear();
 		for(List<Integer> matchingRegion: this.controller.getMatchingStrings()){
-			
 			List<Integer> arc1Region = getSequenceAsList(matchingRegion.get(0), matchingRegion.get(1));
 			List<Integer> arc2Region = getSequenceAsList(matchingRegion.get(2), matchingRegion.get(3));
 			
 			Set<Integer> intersection = new TreeSet<Integer>(colourMap.keySet());
-			intersection.retainAll(arc1Region);
-			
-			
+			intersection.retainAll(arc1Region);	
 			int colour;
 			
 			if(intersection.isEmpty()){
-				colour = getRandomNumber(255);
+				colour = getColour();
 			} else {
 				colour = intersection.iterator().next();;
 			}

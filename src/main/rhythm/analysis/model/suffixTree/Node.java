@@ -45,6 +45,8 @@ public interface Node {
 	
 	//TO DO - Add exception if there are duplicate values in list value for given key.  
 	// Indicates problem with construction of tree
+	//by passing in the Map as an argument you can determine the sort order
+	//e.g if you pass in treemap with comparator to define ordering
 	public default Map<String, List<Integer>> nodesToMap(Map<String, List<Integer>> accMap){	
 		
 		Iterator<InnerNode> itr = getChildren().iterator();
@@ -77,6 +79,8 @@ public interface Node {
     	}
 		return nodeList;
 	}
+	
+	
 	
 	
 	
