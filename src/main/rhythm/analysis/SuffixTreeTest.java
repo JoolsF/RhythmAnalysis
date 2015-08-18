@@ -26,8 +26,8 @@ public class SuffixTreeTest {
 	public static void main(String[] args){	
 		SuffixTree testSuffixTree = new SuffixTree(); 
 		Rhythm_controller testController = new Rhythm_controller();
-		ArcAnalyser x = new ArcAnalyser();
-		
+//		ArcAnalyser x = new ArcAnalyser();
+//		
 		String str1 = "123a123b123c";
 		String str2 = "11111111";
 		String str3 = "12qwqw12";
@@ -37,11 +37,14 @@ public class SuffixTreeTest {
 		String str6 = "ABCDABCDCD";
 		
 		testController.updateTree(str1);
-		for(List<Integer> next: testController.getMatchingStrings()){
-			System.out.println(next);
-		}
 		
-		System.out.println(testController.getTreeAsList());
+		
+		
+		
+			System.out.println(testController.getTreeAsMap());
+		
+		
+//		System.out.println(testController.getTreeAsList());
 //
 //		ArcPair parent1 = new ArcPair(0,5,4);
 //		ArcPair parent2 = new ArcPair(1,6,3);

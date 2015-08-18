@@ -234,7 +234,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 stroke(100,90); // 2nd arg is alpha value
 			 strokeWeight(nodeLength);
 			 strokeCap(SQUARE); // Makes ends of arc square			 
-			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0);
+			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0); //render upper half of circle
+			// arc(arcMiddle, screenMidY, arcWidth, arcWidth, 0, PI); //render lower half of circle
 			 popStyle(); 		 
 			}
 		 }	 

@@ -25,7 +25,7 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
 // reprocessing of maps
 public class ArcAnalyser {
 	
-	private SuffixTree suffixTree;
+	//private SuffixTree suffixTree;
 	private List<List<Integer>> arcData;
 	
 	
@@ -35,20 +35,34 @@ public class ArcAnalyser {
 	
 	public ArcAnalyser(SuffixTree suffixTree){
 		this();
-		this.suffixTree = suffixTree;
+//		this.suffixTree = suffixTree;
 		this.arcData = new ArrayList<List<Integer>>();
 	}
 		
+	
+	
+	
+	public List<List<Integer>> getArcCoordinatesExactMatch(Map<String, List<Integer>> suffixMap){
+		return getArcCoordinates(suffixMap);
+	}
+	
+	public void getArcCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
+		
+		//process suffix map through LevenshteinArc to get similar matches
+		getArcCoordinates(suffixMap);
+	}
+	
+	
 	/**
 	 * Processes map "Substring -> Indices" and processes as follows
 	 * 1. Remove overlapping substrings 
 	 * 2. If substring is of length > 1 and has more that one index (i.e it repeats) then create
 	 *    coordinates
 	 */
-	public List<List<Integer>>  getArcCoordinates(){
+	private List<List<Integer>>  getArcCoordinates(Map<String, List<Integer>> suffixMap){
 		arcData = new ArrayList<List<Integer>>(); // for return
 		List<ArcPair> arcPairs = new ArrayList<ArcPair>();
-		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap().entrySet()){
+		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap(suffixMap).entrySet()){
 		 	String key = entry.getKey();
 		 	int keyLength = key.length();
 			List<Integer> value = entry.getValue();
@@ -93,12 +107,12 @@ public class ArcAnalyser {
 	 *   
 	 *   Sorts by key length in descending order
 	 */
-	private TreeMap <String, List<Integer>> getConsecutiveSubStrMap(){
+	private TreeMap <String, List<Integer>> getConsecutiveSubStrMap(Map<String, List<Integer>> suffixMap){
 		//Code changes default TreeMap ordering to key length in descending order
 		
 		TreeMap <String, List<Integer>> subStrMap = new TreeMap<String, List<Integer>>(getComparator());
 		
-		for (Map.Entry<String, List<Integer>> entry : this.suffixTree.getSubStringMap().entrySet()){	
+		for (Map.Entry<String, List<Integer>> entry : suffixMap.entrySet()){	
 			String key = entry.getKey();
 			List<Integer> value = entry.getValue();
 			//ensure the indices are sorted in ascending value

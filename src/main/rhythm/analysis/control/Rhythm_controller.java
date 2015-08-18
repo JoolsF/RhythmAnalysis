@@ -56,13 +56,21 @@ public class Rhythm_controller {
 		return this.suffixTree.getSubStringList();
 	}
 	
+	public Map<String, List<Integer>> getTreeAsMap(){
+		return this.suffixTree.getSubStringMap();
+	}
+	
 	
 	public int getNumPulses(){
 		return this.suffixTree.getNumPulses();
 	}
 	
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getArcCoordinates();	 	
+		return this.arcAnalyser.getArcCoordinatesExactMatch(getTreeAsMap());	 	
+	}
+	
+	public void /*List<List<Integer>>*/ getSimilarStrings(){
+		//return this.arcAnalyser.getArcCoordinatesInexactMatch(getTreeAsMap());	 	
 	}
 	
 	
