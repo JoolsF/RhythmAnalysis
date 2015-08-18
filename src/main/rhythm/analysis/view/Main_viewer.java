@@ -26,21 +26,21 @@ public class Main_viewer extends PApplet implements Observer{
 	private ControlP5 cp5;
 	private Textarea myTextarea;
 	
-	private Rhythm_controller controller = null;
+	private Rhythm_controller controller;
 	
-	private PopupWindow arcViewWindow = null;
-	private Arc_viewer arcView = null;	
+	private PopupWindow arcViewWindow;
+	private Arc_viewer arcView;
 	
 	Textfield textfield;
 		
 	public Main_viewer(){
 		//MVC system started here
-		controller = new Rhythm_controller();
-		controller.attach(this);
+		this.controller = new Rhythm_controller();
+		this.controller.attach(this);
 		//Start second windows
-		arcView = new Arc_viewer(controller);
-		controller.attach(arcView);
-		arcViewWindow = new PopupWindow(this, arcView); 
+		this.arcView = new Arc_viewer(controller);
+		this.controller.attach(arcView);
+		this.arcViewWindow = new PopupWindow(this, arcView);	
 	}	
 	
 	/**
@@ -173,10 +173,12 @@ public class Main_viewer extends PApplet implements Observer{
 	}
 	
 	
+	
 	public void arcMax(int arcMinimum) {
-		println("a slider event. setting min arc to " + arcMinimum);
-		arcView.setArcMinimum(arcMinimum);
-		arcView.redraw();
+			System.out.println("ARC MIN");
+			println("a slider event. setting min arc to " + arcMinimum);
+			this.controller.setArcMin(arcMinimum);
+			arcView.redraw();
 	}
 
 	@Override

@@ -35,7 +35,6 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	
 	//Arc / line variables - Mutable
 	private float lineSubDivision;
-	private int arcMinimum;
 	
 	//Processing
 	private ControlP5 cp5;
@@ -84,7 +83,6 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		this.screenMidX = screenWidth / 2;
 		this.lineLength = screenWidth - (screenBorder * 2);
 		setLineSubDivision();
-		this.arcMinimum = 1; //minimum arc size given starting value of 1
 				
 		//Initialise sliders
 		//ArcSlider(Arc_viewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
@@ -102,11 +100,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	
 	public String getData(){
 		return this.controller.getModelString();
-	}
-	
-	public void setArcMinimum(int min){
-		 this.arcMinimum = min;
-	 }
+	}	
 	
 	public char[] getStringAsArray(){
 		return this.getData().toCharArray();
@@ -218,7 +212,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			//int nodeDistance = next[1]-next[0];
 			 int nodeDistance = next.get(1)- next.get(0);
 			 		 
-		 	if(nodeDistance >= arcMinimum){
+		 	if(nodeDistance >= this.controller.getArcMin() - 1){
 		 	 float regionAstart = next.get(0) * lineSubDivision + screenBorder;
 			 float regionAend = next.get(1) * lineSubDivision + screenBorder;
 			 float regionBstart = next.get(2) * lineSubDivision + screenBorder;

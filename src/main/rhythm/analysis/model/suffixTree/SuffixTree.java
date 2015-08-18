@@ -34,7 +34,8 @@ public class SuffixTree {
 	private Node root;
 	private String string;
 	//TO DO, set from ui
-	private int numPulses = 1; 
+	private int numPulses = 8; 
+	private int minSubStrLength;
 	private Rhythm_controller controller;
 	
 	
@@ -45,6 +46,7 @@ public class SuffixTree {
 	public SuffixTree(){
 		this.string = "";
 		this.root = new NodeRoot();
+		this.minSubStrLength = 1;
 	}
 	
 	
@@ -113,5 +115,13 @@ public class SuffixTree {
 		return this.root;
 	}
 	
+	public void setMinSubStrLength(int minSubStrLength){
+		//must be > 1
+		this.minSubStrLength = minSubStrLength;
+	}
+	
+	public int getMinSubStrLength(){
+		return this.minSubStrLength;
+	}
 	
 }

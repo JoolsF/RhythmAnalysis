@@ -55,6 +55,7 @@ public class ArcAnalyser {
 			
 			if(value.size() > 0){  // keep repeating substrings only		
 				for(int i = 0; i < value.size() -1; i++){
+					
 					ArcPair arcPair = new ArcPair(value.get(i), value.get(i+1), keyLength, key);
 
 					//TO DO pass in boolean test as arg so that behaviour of function can be modified

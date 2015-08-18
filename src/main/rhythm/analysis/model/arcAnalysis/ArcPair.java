@@ -14,6 +14,8 @@ public class ArcPair {
 	private int subStrLength;
 	private String subStr;
 	
+
+	
 	public ArcPair(int arc1start, int arc2start, int subStrLength, String subStr){
 		int arc1end = (arc1start + subStrLength -1);
 		int arc2end = (arc2start + subStrLength -1);
@@ -40,6 +42,8 @@ public class ArcPair {
 	public boolean arcValid(ArcPair that){	
 //		debugPrint("this", this);
 //		debugPrint("that", that);	
+		
+
 		if(that.subStrLength > this.subStrLength || this.subStr.equals(that.subStr) ){	
 			// if the arc being compared is same size of greater than then true
 			return true;

@@ -22,7 +22,8 @@ public class Rhythm_controller {
 	private ArcAnalyser arcAnalyser;
 	private SuffixTree suffixTree;
 	private List<Observer> observers = new ArrayList<Observer>();
-		
+	
+	private int arcMin;
 	
 	/**
 	 * constructor
@@ -30,6 +31,7 @@ public class Rhythm_controller {
 	public Rhythm_controller(){	
 		//create the model
 		suffixTree = new SuffixTree(this);	
+		this.arcMin = 1;
 		this.arcAnalyser = new ArcAnalyser(suffixTree);
 	}
 	
@@ -74,5 +76,13 @@ public class Rhythm_controller {
 		notifyAllObservers();
 	}
 	
+	public void setArcMin(int arcMin){
+		this.arcMin = arcMin;
+		notifyAllObservers();
+	}
+	
+	public int getArcMin(){
+		return this.arcMin;
+	}
 
 }

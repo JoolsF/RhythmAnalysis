@@ -108,23 +108,26 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	 * 
 	 */
 	private void setColourMap(){ 
+		
 		colourMap.clear();
 		for(List<Integer> matchingRegion: this.controller.getMatchingStrings()){
 			List<Integer> arc1Region = getSequenceAsList(matchingRegion.get(0), matchingRegion.get(1));
 			List<Integer> arc2Region = getSequenceAsList(matchingRegion.get(2), matchingRegion.get(3));
 			
-			Set<Integer> intersection = new TreeSet<Integer>(colourMap.keySet());
-			intersection.retainAll(arc1Region);	
-			int colour;
-			
-			if(intersection.isEmpty()){
-				colour = getColour();
-			} else {
-				colour = intersection.iterator().next();;
+			if(arc1Region.size() >= this.controller.getArcMin() -1){
+				Set<Integer> intersection = new TreeSet<Integer>(colourMap.keySet());
+				intersection.retainAll(arc1Region);	
+				int colour;
+				
+				if(intersection.isEmpty()){
+					colour = getColour();
+				} else {
+					colour = intersection.iterator().next();;
+				}
+				
+				for(Integer next: arc1Region) colourMap.put(next, colour);	
+				for(Integer next: arc2Region) colourMap.put(next, colour);
 			}
-			
-			for(Integer next: arc1Region) colourMap.put(next, colour);	
-			for(Integer next: arc2Region) colourMap.put(next, colour);	
 		}
 	}
 		
