@@ -45,7 +45,6 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 		this.controller.attach(this);
 	}
 	
-
 	 
 	public void setup() {
 		size( 500, 300 );
@@ -66,29 +65,49 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	}
 
 	
+	public void setPoints(){
+		points = new PVector[this.controller.getNumPulses()];
+		charPoints = new PVector[this.controller.getNumPulses()];
+		 float angle = TWO_PI / this.controller.getNumPulses();
+	     
+		    for (int i = 0; i < this.controller.getNumPulses(); i++) {
+		        float x = cos( angle * i ) * radius;
+		        float y = sin( angle * i ) * radius;
+		        points[i] = new PVector( x, y );
+		   }
+		    for (int i = 0; i < this.controller.getNumPulses(); i++) {
+		        float x = cos( angle * i ) * (radius + 20);
+		        float y = sin( angle * i ) * (radius + 20);
+		        charPoints[i] = new PVector( x, y );
+		   } 
+		
+	}
+	
+	
+	
 	//TO DO - Needs further debugging and integrating with data model.  Render circle commented out therefore
 	public void draw(){	
+		setPoints();
 		background(128);
 	    smooth();
 	    fill(0);
-	    //Integer[] testData = new Integer[]{1,5,10,11};
 
 	    
 	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){
 	    	
 	    	int leftSlider = this.arcViewerParent.getleftSlider();
 	    	int rightSlider = this.arcViewerParent.getRightSlider();
-	    	System.out.println("LEFT: " + leftSlider);
-	    	System.out.println("RIGHT: " + rightSlider);
-	 
-	    	rightSlider = rightSlider - (rightSlider % this.controller.getNumPulses()) - 1;
-	    	System.out.println("RIGHT NEW : " + rightSlider);
-	    	
+	    	System.out.println("left");
 	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); //left slider
+	    	
+	    	System.out.println("right");
 	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider)); //right slider
+	    	
+	    	System.out.println("------");
+	    	System.out.println();
+	    	System.out.println();
 	    }
-	    
-	    noLoop(); // updated by slider change
+	   // noLoop();
 	}
 	
 	
@@ -156,21 +175,47 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	 */
 	private Integer[] getOnsets(int sliderIndex){ //slider index
 		//TO DO - add exception handling here to deal with case when index is at end of string and period isn't "complete"
-		
+		List<Integer> result = new ArrayList<Integer>();
 		int periodStart = sliderIndex - (sliderIndex %  controller.getNumPulses());
-		
+		int periodEnd = periodStart + (controller.getNumPulses() -1);
 		char[] charArray = this.controller.getModelString().toCharArray();
 		
-		List<Integer> result = new ArrayList<Integer>();
 		
+		//length of character array must >= periodEnd, if not there will be an ArrayIndexOutOfBoundsError
+		//If this test is failed period start and period end must be moved back to to nearest
+		//multiple of pulses number
+		// i.e if array length is 10, period start is 8 and period end is 15 
+		// then period start should be
+//		println("period start" + periodStart);
+//		println("period end" + periodEnd);
+		if(periodEnd >= charArray.length){
+			periodEnd = periodStart -1;
+			periodStart = periodStart - this.controller.getNumPulses();
+			
+			println("-------------------");
+			println();
+			println();
+			//println("i " + i);
+			println("slider index " + sliderIndex);
+			println("array length " + charArray.length);
+			
+			println("pulses " + controller.getNumPulses());
+			println("new start" + (periodStart));
+			println("new end" + (periodEnd));
+		}
 		for(int i = periodStart; i < periodStart + controller.getNumPulses(); i++){
-			//println(i);
+			
+			
 			if(charArray[i] == '1') result.add(i % this.controller.getNumPulses()); //modulo num pulses because pulse must always be 0 to numpulses
+			
 		}	
 		return result.toArray(new Integer[result.size()]);
 		}
 	
-	
+	private int correction(int x){
+		int y = x - (x % this.controller.getNumPulses());
+		return y;
+	}
 
 
 	@Override

@@ -31,7 +31,10 @@ public class Main_viewer extends PApplet implements Observer{
 	private PopupWindow arcViewWindow;
 	private Arc_viewer arcView;
 	
-	Textfield textfield;
+	private Textfield textfield;
+	private Textfield textfield2;
+	
+	public boolean pulsesSet;
 		
 	public Main_viewer(){
 		//MVC system started here
@@ -40,7 +43,8 @@ public class Main_viewer extends PApplet implements Observer{
 		//Start second windows
 		this.arcView = new Arc_viewer(controller);
 		this.controller.attach(arcView);
-		this.arcViewWindow = new PopupWindow(this, arcView);	
+		this.arcViewWindow = new PopupWindow(this, arcView);
+		this.pulsesSet = false;
 	}	
 	
 	/**
@@ -62,11 +66,12 @@ public class Main_viewer extends PApplet implements Observer{
 		 	           .setColor(color(255,0,0));
 		textfield.setAutoClear(false);
 		
+			
 		//Button
 		cp5.addButton("clear_data")
 		.setBroadcast(false)	
 		.setValue(100)
-		.setPosition(40,125)
+		.setPosition(40,175)
 		.setSize(200,19)
 		.setBroadcast(true);
 			
@@ -74,22 +79,12 @@ public class Main_viewer extends PApplet implements Observer{
 		cp5.addButton("showArcTree")
 		.setBroadcast(false)
 		.setValue(100)
-		.setPosition(40,175)
+		.setPosition(40,225)
 		.setSize(200,19)
 		.setBroadcast(true);	
 		
 		// Slider
 		cp5.addSlider("arcMax")
-		.setBroadcast(false)
-		.setPosition(40,225)
-		.setSize(200,20)
-		.setRange(1,10)
-		.setNumberOfTickMarks(10)
-		.setValue(1)
-		.setBroadcast(true);
-		
-		// Slider
-		cp5.addSlider("Pulses")
 		.setBroadcast(false)
 		.setPosition(40,275)
 		.setSize(200,20)
@@ -97,17 +92,18 @@ public class Main_viewer extends PApplet implements Observer{
 		.setNumberOfTickMarks(10)
 		.setValue(1)
 		.setBroadcast(true);
-	     
-	    
+		
+		
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,350)
+	    .setPosition(40,325)
 	    .setSize(225,250)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
 	    .setColor(color(128))
 	    .setColorBackground(color(255,100))
-	    .setColorForeground(color(255,100));				
+	    .setColorForeground(color(255,100));
+		myTextarea.setText("Enter number of pulses to start (between 2 and 32");
 	}
 		
 
@@ -132,10 +128,10 @@ public class Main_viewer extends PApplet implements Observer{
 	 */
 	public void controlEvent(ControlEvent theEvent) {
 		if(theEvent.isAssignableFrom(Textfield.class)) {
-			println("controlEvent: accessing a string from controller '"
-					+theEvent.getName()+"': "
-					+theEvent.getStringValue()
-					);
+//			println("controlEvent: accessing a string from controller '"
+//					+theEvent.getName()+"': "
+//					+theEvent.getStringValue()
+//					);
 			}
 		}
 
@@ -144,15 +140,18 @@ public class Main_viewer extends PApplet implements Observer{
 	 * @param theText
 	 */
 	public void input(String theText) {
-		println("a textfield event for controller 'input' : "+theText);
-		if(inputValid(theText)){
+		
+		if(! pulsesSet) {
+			pulsesSetCheck(theText);
+			return;
+		}
+				
+		if(inputValid(theText) && pulsesSet){
 			this.controller.updateTree(theText);
 			this.myTextarea.setText(controller.getTreeAsList().toString());
 			textfield.clear();
 			arcView.redraw();
-		} else {
-			this.myTextarea.setText("Error, input must be multiple of " + this.controller.getNumPulses());
-		}
+		} 
 	}
 	/**
 	 * 
@@ -160,11 +159,70 @@ public class Main_viewer extends PApplet implements Observer{
 	 * @return
 	 */
 	private boolean inputValid(String theText){
-		//if(theText.length() % this.controller.getNumPulses() == 0){
+		
+		
+				
+		if(theText.length() >= 2){
 			return true;
-		//} else {
-		//	return false;
-		//}
+		} else {
+			this.myTextarea.setText("Error, input must 2 or more characters");
+			return false;
+		}
+	}
+	
+	public boolean pulsesSetCheck(String theText){
+		if(! pulsesSet){
+			if(isInteger(theText)){
+				Integer x = Integer.valueOf(theText);
+				if(x >= 2 && x <= 32){
+					this.controller.setNumPulses(x);
+					pulsesSet = true;
+					textfield.clear();
+					myTextarea.setText("Pulses set to " + x);
+					return true;
+				} else {
+					myTextarea.setText("Error.  Number out of range. Please enter number of pulses to start (between 2 and 32");
+					textfield.clear();
+					return false;
+					
+				}
+			} else {
+				myTextarea.setText("Error.  Input not integer value. Please enter number of pulses to start (between 2 and 32");
+				textfield.clear();
+				return false;
+			}
+			
+		}	
+		return false;
+	}
+	/**
+	 * Ref http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
+	 * @param str
+	 * @return
+	 */
+	
+	private static boolean isInteger(String str) {
+		if (str == null) {
+			return false;
+		}
+		int length = str.length();
+		if (length == 0) {
+			return false;
+		}
+		int i = 0;
+		if (str.charAt(0) == '-') {
+			if (length == 1) {
+				return false;
+			}
+			i = 1;
+		}
+		for (; i < length; i++) {
+			char c = str.charAt(i);
+			if (c <= '/' || c >= ':') {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	//BUTTONS
@@ -185,12 +243,15 @@ public class Main_viewer extends PApplet implements Observer{
 	
 	
 	public void arcMax(int arcMinimum) {
-			System.out.println("ARC MIN");
-			println("a slider event. setting min arc to " + arcMinimum);
+//			System.out.println("ARC MIN");
+//			println("a slider event. setting min arc to " + arcMinimum);
 			this.controller.setArcMin(arcMinimum);
 			arcView.redraw();
 	}
-
+	
+	
+	
+	
 	@Override
 	public void update() {
 		this.redraw();

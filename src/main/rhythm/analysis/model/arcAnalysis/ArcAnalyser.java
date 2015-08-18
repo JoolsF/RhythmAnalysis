@@ -47,7 +47,7 @@ public class ArcAnalyser {
 	}
 	
 	public void getArcCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
-		
+		//LevenshteinArc.getDifference(src, arc)
 		//process suffix map through LevenshteinArc to get similar matches
 		getArcCoordinates(suffixMap);
 	}

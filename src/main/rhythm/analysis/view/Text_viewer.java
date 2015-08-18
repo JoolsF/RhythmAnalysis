@@ -46,7 +46,6 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 		this.controller = controller;
 		this.colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.
 		this.colour = 0;
-	//	private List<List<Integer>> colourMap;	this.
 	}
 	
 	
@@ -63,7 +62,7 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 		background(128);
 		smooth();
 		// TO DO - handle this case better where string length == 0
-		if(this.controller.getModelString().length() != 0)  drawText();
+		if(this.controller.getModelString().length() > 0)  drawText();
 	}
 	
 	
@@ -73,8 +72,9 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 		
 		int left = arcViewerParent.getleftSlider();
 		int right = arcViewerParent.getRightSlider();
+		
 		int currentChar = 20 + left;
-		for(int i = left; i <= right ;i ++){	
+		for(int i = left; i <= right; i ++){	
 			if(colourMap.get(i) != null){
 				pushStyle();
 				fill(colourMap.get(i),255,255);
@@ -143,5 +143,6 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	@Override
 	public void update() {
 		setColourMap();
+		redraw();
 	}	
 }

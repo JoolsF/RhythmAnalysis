@@ -65,6 +65,10 @@ public class Rhythm_controller {
 		return this.suffixTree.getNumPulses();
 	}
 	
+	public void setNumPulses(int numPulses){
+		this.suffixTree.setNumPulses(numPulses);
+		//notifyAllObservers();
+	}
 	public List<List<Integer>> getMatchingStrings(){
 		return this.arcAnalyser.getArcCoordinatesExactMatch(getTreeAsMap());	 	
 	}

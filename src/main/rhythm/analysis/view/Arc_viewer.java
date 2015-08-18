@@ -64,6 +64,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		//Initialise controller
 		this.controller = controller;
 		//Initialise windows
+		this.controller.attach(this);
 		
 		this.textViewer = new Text_viewer(this, controller);
 		controller.attach(textViewer);

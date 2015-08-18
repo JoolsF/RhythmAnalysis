@@ -34,7 +34,7 @@ public class SuffixTree {
 	private Node root;
 	private String string;
 	//TO DO, set from ui
-	private int numPulses = 8; 
+	private int numPulses; 
 	private int minSubStrLength;
 	private Rhythm_controller controller;
 	
@@ -47,6 +47,7 @@ public class SuffixTree {
 		this.string = "";
 		this.root = new NodeRoot();
 		this.minSubStrLength = 1;
+		this.numPulses = 8;
 	}
 	
 	
@@ -100,6 +101,9 @@ public class SuffixTree {
 		return numPulses;
 	}
 	
+	public void setNumPulses(int numPulses){
+		this.numPulses = numPulses;
+	}
 	public List<String> getSubStringList(){
 		return this.root.nodesToList();
 	}
@@ -108,7 +112,7 @@ public class SuffixTree {
 	 * @return
 	 */
 	public Map<String, List<Integer>> getSubStringMap(){
-		return this.root.nodesToMap(new TreeMap<String, List<Integer>>());
+		return this.root.nodesToMap(new TreeMap<String, List<Integer>>(getComparator()));
 	}
 	
 	public Node getTree(){
@@ -123,5 +127,23 @@ public class SuffixTree {
 	public int getMinSubStrLength(){
 		return this.minSubStrLength;
 	}
+	
+	
+	private Comparator<String> getComparator(){
+		Comparator<String> comp = new Comparator<String>(){
+			@Override
+			public int compare(String s1, String s2){
+				if(s1.length() > s2.length()){
+					return -1;
+				} else if(s1.length() < s2.length()){
+					return 1;
+				} else {
+					return s1.compareTo(s2);
+				}	
+			}
+		};
+		return comp;	
+	}
+	
 	
 }
