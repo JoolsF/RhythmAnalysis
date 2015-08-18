@@ -114,7 +114,7 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 			List<Integer> arc1Region = getSequenceAsList(matchingRegion.get(0), matchingRegion.get(1));
 			List<Integer> arc2Region = getSequenceAsList(matchingRegion.get(2), matchingRegion.get(3));
 			
-			if(arc1Region.size() >= this.controller.getArcMin() -1){
+			if(arc1Region.size() -1 >= this.controller.getArcMin() -1){
 				Set<Integer> intersection = new TreeSet<Integer>(colourMap.keySet());
 				intersection.retainAll(arc1Region);	
 				int colour;

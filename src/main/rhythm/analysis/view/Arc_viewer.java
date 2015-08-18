@@ -222,7 +222,13 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 float nodeTo = getMidPoint(regionBstart, regionBend);		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
 			 float arcWidth = nodeTo - nodeFrom; 		 			 
-				 
+			 
+			 //Deals with single character matches.
+			 //TO DO  - Improve logic and build into algorithm above.
+			 if(nodeDistance == 0) {
+				 nodeLength = 10;
+			 }
+			 
 			 pushStyle(); 
 			 noFill();
 			 stroke(100,90); // 2nd arg is alpha value
