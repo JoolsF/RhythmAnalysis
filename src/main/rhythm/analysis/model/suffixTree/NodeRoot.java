@@ -32,7 +32,7 @@ public class NodeRoot implements Node {
 	@Override
 	public boolean addString(String string, int index) {
 		if (this.children.isEmpty()){
-			System.out.println("	Children empty.  Creating node " + string +"("+index+")");			
+//			System.out.println("	Children empty.  Creating node " + string +"("+index+")");			
 			this.children.add(new NodeLeaf(string, index, this));
 			return true;
 		} else{
@@ -43,7 +43,7 @@ public class NodeRoot implements Node {
 			}
 		}
 		//i.e no matches found
-		System.out.println("	No matches round at root adding: " + string +"("+index+")");		
+//		System.out.println("	No matches round at root adding: " + string +"("+index+")");		
 		addChildLeaf(string, index);
 		return true;
 	}
@@ -67,7 +67,7 @@ public class NodeRoot implements Node {
 	@Override
 	public void printTree() {
 		Iterator<InnerNode> itr = children.iterator();
-		System.out.println("ROOT:  \n  Children: " + this.getChildValues()+"\n");
+//		System.out.println("ROOT:  \n  Children: " + this.getChildValues()+"\n");
 		while(itr.hasNext()){
 			InnerNode element = itr.next();
 			element.printTree();

@@ -122,6 +122,9 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		return this.nodePairs;
 	}
 	
+	
+	
+	
 	/**
 	 *  Given that first character of string will be rendered at start of line the line should be 
 	 *  divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
@@ -304,7 +307,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		 ellipse(rightSlider.getXPixels(), screenMidY, rightSlider.getWidth(), rightSlider.getWidth());
 		 rightSlider.setSlider();
 		 rightSlider.checkSetOverSlider(mouseX, mouseY);
-		 //updateSliders();
+		 updateCycleViewer();
 		 popStyle();
 		 
 	 } 
@@ -315,7 +318,12 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 *----------------------------------------------------------------------------------------*/
 	
 	 
-	 private void updateText(){
+	 private void updateCycleViewer() {
+		this.cycleViewer.redraw();
+	}
+
+
+	private void updateText(){
 		 this.myTextarea.setText("Left slider: " +  this.leftSlider.getSlider() +
 					"\n" +
                  "Right slider: " + this.rightSlider.getSlider() + 

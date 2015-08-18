@@ -47,7 +47,7 @@ public class Main_viewer extends PApplet implements Observer{
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(300,600);	  
+		size(300,650);	  
 		//Fontsetup
 		PFont font = createFont("arial",20);
 		textFont(font);
@@ -64,11 +64,11 @@ public class Main_viewer extends PApplet implements Observer{
 		
 		//Button
 		cp5.addButton("clear_data")
-			.setBroadcast(false)	
-			.setValue(100)
-			.setPosition(40,125)
-			.setSize(200,19)
-			.setBroadcast(true);
+		.setBroadcast(false)	
+		.setValue(100)
+		.setPosition(40,125)
+		.setSize(200,19)
+		.setBroadcast(true);
 			
 		
 		cp5.addButton("showArcTree")
@@ -87,11 +87,21 @@ public class Main_viewer extends PApplet implements Observer{
 		.setNumberOfTickMarks(10)
 		.setValue(1)
 		.setBroadcast(true);
+		
+		// Slider
+		cp5.addSlider("Pulses")
+		.setBroadcast(false)
+		.setPosition(40,275)
+		.setSize(200,20)
+		.setRange(1,10)
+		.setNumberOfTickMarks(10)
+		.setValue(1)
+		.setBroadcast(true);
 	     
 	    
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,300)
+	    .setPosition(40,350)
 	    .setSize(225,250)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
@@ -150,11 +160,11 @@ public class Main_viewer extends PApplet implements Observer{
 	 * @return
 	 */
 	private boolean inputValid(String theText){
-		if(theText.length() % this.controller.getNumPulses() == 0){
+		//if(theText.length() % this.controller.getNumPulses() == 0){
 			return true;
-		} else {
-			return false;
-		}
+		//} else {
+		//	return false;
+		//}
 	}
 	
 	//BUTTONS

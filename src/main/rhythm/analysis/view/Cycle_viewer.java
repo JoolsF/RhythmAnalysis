@@ -42,6 +42,7 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 		points = new PVector[this.controller.getNumPulses()];
 		charPoints = new PVector[this.controller.getNumPulses()];
 		radius = 70;
+		this.controller.attach(this);
 	}
 	
 
@@ -74,9 +75,20 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 
 	    
 	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){
-	    	renderCircle(width/4, height /2, getOnsets(this.arcViewerParent.getleftSlider())); //left slider
-	    	renderCircle((width/4) * 3, height /2,  getOnsets(this.arcViewerParent.getRightSlider())); //right slider
+	    	
+	    	int leftSlider = this.arcViewerParent.getleftSlider();
+	    	int rightSlider = this.arcViewerParent.getRightSlider();
+	    	System.out.println("LEFT: " + leftSlider);
+	    	System.out.println("RIGHT: " + rightSlider);
+	 
+	    	rightSlider = rightSlider - (rightSlider % this.controller.getNumPulses()) - 1;
+	    	System.out.println("RIGHT NEW : " + rightSlider);
+	    	
+	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); //left slider
+	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider)); //right slider
 	    }
+	    
+	    noLoop(); // updated by slider change
 	}
 	
 	
