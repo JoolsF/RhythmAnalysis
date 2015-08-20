@@ -41,13 +41,13 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 		this.controller = controller;
 		points = new PVector[this.controller.getNumPulses()];
 		charPoints = new PVector[this.controller.getNumPulses()];
-		radius = 70;
+		radius = 180;
 		this.controller.attach(this);
 	}
 	
 	 
 	public void setup() {
-		size( 500, 300 );
+		size( 900, 500 );
 	    textSize(15);
 	    float angle = TWO_PI / this.controller.getNumPulses();
 	     
@@ -107,7 +107,7 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	    	System.out.println();
 	    	System.out.println();
 	    }
-	   // noLoop();
+	   noLoop();
 	}
 	
 	
@@ -117,8 +117,6 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 		fill(255);
 		translate(xTranslate, yTranslate);
 	    ellipse(0,0, radius * 2, radius * 2); //draws circle
-	    
-	    //rect(-150, 200, radius*3, 300);
 	    popStyle();
 	    
 	    //TO DO - refactor so less nested and more readable
@@ -126,7 +124,7 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	        for (int j = 0; j < this.controller.getNumPulses(); j++) {  	
 	        	pushStyle();
 	        	//noFill();
-	        	ellipse(points[i].x, points[i].y, 5, 5); //draws an circle at each point
+	        	ellipse(points[i].x, points[i].y, 5, 5); //draws a circle at each point
 	        	popStyle();
 	        	text(i, charPoints[i].x -5, charPoints[i].y +5); 
 	        	if ( j != i ) {
@@ -180,42 +178,25 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 		int periodEnd = periodStart + (controller.getNumPulses() -1);
 		char[] charArray = this.controller.getModelString().toCharArray();
 		
-		
-		//length of character array must >= periodEnd, if not there will be an ArrayIndexOutOfBoundsError
-		//If this test is failed period start and period end must be moved back to to nearest
-		//multiple of pulses number
-		// i.e if array length is 10, period start is 8 and period end is 15 
-		// then period start should be
-//		println("period start" + periodStart);
-//		println("period end" + periodEnd);
+		/*
+		length of character array must >= periodEnd, if not there will be an ArrayIndexOutOfBoundsError
+		If this test is failed period start and period end must be moved back to to nearest
+		multiple of pulses number
+		 i.e if array length is 10, period start is 8 and period end is 15 
+		 then period start should be
+		 */
 		if(periodEnd >= charArray.length){
 			periodEnd = periodStart -1;
 			periodStart = periodStart - this.controller.getNumPulses();
-			
-			println("-------------------");
-			println();
-			println();
-			//println("i " + i);
-			println("slider index " + sliderIndex);
-			println("array length " + charArray.length);
-			
-			println("pulses " + controller.getNumPulses());
-			println("new start" + (periodStart));
-			println("new end" + (periodEnd));
 		}
-		for(int i = periodStart; i < periodStart + controller.getNumPulses(); i++){
-			
-			
-			if(charArray[i] == '1') result.add(i % this.controller.getNumPulses()); //modulo num pulses because pulse must always be 0 to numpulses
-			
+		for(int i = periodStart; i < periodStart + controller.getNumPulses(); i++){	
+			//modulo num pulses because pulse must always be 0 to numpulses
+			if(charArray[i] == '1') result.add(i % this.controller.getNumPulses()); 			
 		}	
+		
 		return result.toArray(new Integer[result.size()]);
-		}
-	
-	private int correction(int x){
-		int y = x - (x % this.controller.getNumPulses());
-		return y;
 	}
+	
 
 
 	@Override

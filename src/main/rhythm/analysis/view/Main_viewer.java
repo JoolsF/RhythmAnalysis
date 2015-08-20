@@ -35,16 +35,20 @@ public class Main_viewer extends PApplet implements Observer{
 	private Textfield textfield2;
 	
 	public boolean pulsesSet;
+	public boolean initialInputSet;
 		
 	public Main_viewer(){
 		//MVC system started here
 		this.controller = new Rhythm_controller();
 		this.controller.attach(this);
+		
 		//Start second windows
 		this.arcView = new Arc_viewer(controller);
 		this.controller.attach(arcView);
 		this.arcViewWindow = new PopupWindow(this, arcView);
+
 		this.pulsesSet = false;
+		this.initialInputSet = false;
 	}	
 	
 	/**
@@ -52,6 +56,7 @@ public class Main_viewer extends PApplet implements Observer{
 	 */
 	public void setup() {  
 		size(300,650);	  
+		
 		//Fontsetup
 		PFont font = createFont("arial",20);
 		textFont(font);
@@ -66,31 +71,33 @@ public class Main_viewer extends PApplet implements Observer{
 		 	           .setColor(color(255,0,0));
 		textfield.setAutoClear(false);
 		
-			
+		arcViewWindow.setVisible(true);
+		
 		//Button
 		cp5.addButton("clear_data")
 		.setBroadcast(false)	
 		.setValue(100)
-		.setPosition(40,175)
+		.setPosition(40,125)
 		.setSize(200,19)
 		.setBroadcast(true);
 			
-		
-		cp5.addButton("showArcTree")
-		.setBroadcast(false)
-		.setValue(100)
-		.setPosition(40,225)
-		.setSize(200,19)
-		.setBroadcast(true);	
-		
 		// Slider
 		cp5.addSlider("arcMax")
 		.setBroadcast(false)
-		.setPosition(40,275)
+		.setPosition(40,225)
 		.setSize(200,20)
 		.setRange(1,10)
 		.setNumberOfTickMarks(10)
 		.setValue(1)
+		.setBroadcast(true);
+		
+		cp5.addSlider("pulses")
+		.setBroadcast(false)
+		.setPosition(40,275)
+		.setSize(200,20)
+		.setRange(3,32)
+		.setNumberOfTickMarks(10)
+		.setValue(8)
 		.setBroadcast(true);
 		
 		
@@ -158,16 +165,18 @@ public class Main_viewer extends PApplet implements Observer{
 	 * @param theText
 	 * @return
 	 */
-	private boolean inputValid(String theText){
-		
-		
-				
-		if(theText.length() >= 2){
-			return true;
-		} else {
-			this.myTextarea.setText("Error, input must 2 or more characters");
-			return false;
+	private boolean inputValid(String theText){	
+		if(! this.initialInputSet){
+				if(theText.length() > 2){
+				this.initialInputSet = true;
+				return true;
+			} else {
+				this.myTextarea.setText("Error, initial input must greater than 2 characters");
+				textfield.clear();
+				return false;
+			}
 		}
+		return true;	
 	}
 	
 	public boolean pulsesSetCheck(String theText){
@@ -178,7 +187,7 @@ public class Main_viewer extends PApplet implements Observer{
 					this.controller.setNumPulses(x);
 					pulsesSet = true;
 					textfield.clear();
-					myTextarea.setText("Pulses set to " + x);
+					myTextarea.setText("Pulses set to " + x + ". Program initialised");
 					return true;
 				} else {
 					myTextarea.setText("Error.  Number out of range. Please enter number of pulses to start (between 2 and 32");
@@ -227,28 +236,23 @@ public class Main_viewer extends PApplet implements Observer{
 	
 	//BUTTONS
 	public void clear_data(){
-//T DO needs debugging - ensure model reset correctly
+//TO DO needs debugging - ensure model reset correctly
 //		this.myTextarea.setText("Data cleared");
 //		this.controller.resetModel();
 	}
 	
-	public void showArcTree(){
-		//if(arcViewWindow.isVisible()){
-			//arcViewWindow.setVisible(false);	
-		//} else{
-			arcViewWindow.setVisible(true);
-		//}	
-	}
 	
-	
-	
+		
 	public void arcMax(int arcMinimum) {
-//			System.out.println("ARC MIN");
-//			println("a slider event. setting min arc to " + arcMinimum);
 			this.controller.setArcMin(arcMinimum);
 			arcView.redraw();
 	}
 	
+	//Slider inactive currently as causing ArrayIndexOutOfBoundsException when moved rapidly
+	//Need to improve synchronisation with model.
+	public void pulses(int numPulses) {
+		//this.controller.setNumPulses(numPulses);
+	}
 	
 	
 	
