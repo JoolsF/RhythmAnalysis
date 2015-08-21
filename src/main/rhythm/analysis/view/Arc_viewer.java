@@ -79,7 +79,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		
 		//Initialise screen dimensions
 		this.screenWidth = 1000;
-		this.screenHeight = 700;
+		this.screenHeight = 800;
 		this.screenBorder = 50;
 		this.screenMidY = screenHeight / 2;
 		this.screenMidX = screenWidth / 2;
@@ -226,20 +226,30 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 float nodeFrom = getMidPoint(regionAstart, regionAend);
 			 float nodeTo = getMidPoint(regionBstart, regionBend);		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
-			 float arcWidth = nodeTo - nodeFrom; 		 			 
+			 float arcWidth = nodeTo - nodeFrom; 	
+			 float arcHeight = arcWidth;
+			 float arcSpan =  regionBend - regionAstart;
 			 
 			 //Checks if the phase of the two arc are the same.
-			 boolean phaseEqual = (next.get(0) % this.controller.getNumPulses()) == (next.get(2) % this.controller.getNumPulses());
+			 int arc1Phase = next.get(0) % this.controller.getNumPulses() -1;
+			 int arc2Phase = next.get(2) % this.controller.getNumPulses() -1;
+			 
+			 boolean phaseEqual = (arc1Phase == arc2Phase);
 			 //Deals with single character matches.
+			 
 			 //TO DO  - Improve logic and build into algorithm above.
-			 if(nodeDistance == 0) {
-				 nodeLength = 10;
-			 }
+			 if(nodeDistance == 0)  nodeLength = 10;
+			 //TO DO - Fix line below so that arcs above a 
+			 //if(arcSpan / lineLength > 0.9) arcHeight -= 100; 
 			 
 			 pushStyle(); 
 			 noFill();
 			 if(phaseEqual){
-				 stroke(204, 102, 0, 90);
+				 if(arc1Phase == 0) {
+					 stroke(204, 102, 2, 90);
+				 } else {
+					 stroke(0, 168, 204, 90);
+				 }
 			 } else {
 			     stroke(100,90); // 2nd arg is alpha value	 
 			 }
@@ -247,7 +257,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 strokeWeight(nodeLength);
 			 strokeCap(SQUARE); // Makes ends of arc square	
 			 //arc(a, b, c, d, start, stop)
-			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, start, stop);
+			 arc(arcMiddle, screenMidY, arcWidth,arcHeight, start, stop);
 			 popStyle(); 		 
 			}
 		 }	 
@@ -337,7 +347,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		 this.myTextarea.setText("Left slider: " +  this.leftSlider.getSlider() +
 					"\n" +
                  "Right slider: " + this.rightSlider.getSlider() + 
-                 "\nSubdiv: " + lineSubDivision);
+                 "\nCycle length " + this.controller.getNumPulses());
 	 }
 
 	 
