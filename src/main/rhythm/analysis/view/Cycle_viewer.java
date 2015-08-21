@@ -97,15 +97,9 @@ public class Cycle_viewer extends EmbeddedSketch implements Observer  {
 	    	
 	    	int leftSlider = this.arcViewerParent.getleftSlider();
 	    	int rightSlider = this.arcViewerParent.getRightSlider();
-	    	System.out.println("left");
+	    	
 	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); //left slider
-	    	
-	    	System.out.println("right");
 	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider)); //right slider
-	    	
-	    	System.out.println("------");
-	    	System.out.println();
-	    	System.out.println();
 	    }
 	   noLoop();
 	}

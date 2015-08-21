@@ -228,6 +228,11 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
 			 float arcWidth = nodeTo - nodeFrom; 		 			 
 			 
+			 boolean phaseEqual = (next.get(0) % this.controller.getNumPulses()) == (next.get(2) % this.controller.getNumPulses());
+			 System.out.println("A " + next.get(0) % this.controller.getNumPulses());
+			 System.out.println("B " + next.get(2) % this.controller.getNumPulses());
+			 System.out.println("Phase equals " + phaseEqual);
+			 System.out.println();
 			 //Deals with single character matches.
 			 //TO DO  - Improve logic and build into algorithm above.
 			 if(nodeDistance == 0) {
@@ -236,7 +241,12 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 
 			 pushStyle(); 
 			 noFill();
-			 stroke(100,90); // 2nd arg is alpha value
+			 if(phaseEqual){
+				 stroke(204, 102, 0, 90);
+			 } else {
+			     stroke(100,90); // 2nd arg is alpha value	 
+			 }
+			 
 			 strokeWeight(nodeLength);
 			 strokeCap(SQUARE); // Makes ends of arc square			 
 			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0); //render upper half of circle
@@ -252,7 +262,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 				 		 
 			 	if(nodeDistance >= this.controller.getArcMin() - 1){
 			 	 float regionAstart = next.get(0) * lineSubDivision + screenBorder;
-				 float regionAend = next.get(1) * lineSubDivision + screenBorder;
+			 	 float regionAend = next.get(1) * lineSubDivision + screenBorder;
 				 float regionBstart = next.get(2) * lineSubDivision + screenBorder;
 				 float regionBend= next.get(3) * lineSubDivision + screenBorder;
 				 float nodeLength = regionAend - regionAstart;
