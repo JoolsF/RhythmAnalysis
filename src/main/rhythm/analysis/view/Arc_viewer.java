@@ -182,7 +182,10 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
 		setLineSubDivision();
-		drawArcDiagram();
+		
+		drawArcDiagram(nodePairsExact, -PI, 0);
+		drawArcDiagram(nodePairsSimilar, 0, PI);
+		
 		drawArcXaxis();
 		drawSliders();
 	    updateText();  
@@ -208,14 +211,11 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	  * The width will simply be nodeTo position - nodeFrom position
       *	The strokeWeight will be the distance regionAstart -> regionAend 
       *Height can be any value for now 
+	 * @param nodePairsExact2 
 	  */
-	 private void drawArcDiagram(){ 
-		 
-		 //List<List<Integer>> nodePairs =                
-		 
-		 for(List<Integer> next: nodePairsExact){	 
-			//int nodeDistance = next[1]-next[0];
-			 int nodeDistance = next.get(1)- next.get(0);
+	 private void drawArcDiagram(List<List<Integer>> nodePairs, float start, float stop){ 
+		 for(List<Integer> next: nodePairs){	 
+			int nodeDistance = next.get(1)- next.get(0);
 			 		 
 		 	if(nodeDistance >= this.controller.getArcMin() - 1){
 		 	 float regionAstart = next.get(0) * lineSubDivision + screenBorder;
@@ -228,11 +228,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
 			 float arcWidth = nodeTo - nodeFrom; 		 			 
 			 
+			 //Checks if the phase of the two arc are the same.
 			 boolean phaseEqual = (next.get(0) % this.controller.getNumPulses()) == (next.get(2) % this.controller.getNumPulses());
-			 System.out.println("A " + next.get(0) % this.controller.getNumPulses());
-			 System.out.println("B " + next.get(2) % this.controller.getNumPulses());
-			 System.out.println("Phase equals " + phaseEqual);
-			 System.out.println();
 			 //Deals with single character matches.
 			 //TO DO  - Improve logic and build into algorithm above.
 			 if(nodeDistance == 0) {
@@ -248,47 +245,13 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 }
 			 
 			 strokeWeight(nodeLength);
-			 strokeCap(SQUARE); // Makes ends of arc square			 
-			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0); //render upper half of circle
-			// arc(arcMiddle, screenMidY, arcWidth, arcWidth, 0, PI); //render lower half of circle
+			 strokeCap(SQUARE); // Makes ends of arc square	
+			 //arc(a, b, c, d, start, stop)
+			 arc(arcMiddle, screenMidY, arcWidth, arcWidth, start, stop);
 			 popStyle(); 		 
 			}
 		 }	 
 		 
-		//TEMPORARY SECTION REPETITION
-		 for(List<Integer> next: nodePairsSimilar){	 
-				//int nodeDistance = next[1]-next[0];
-				 int nodeDistance = next.get(1)- next.get(0);
-				 		 
-			 	if(nodeDistance >= this.controller.getArcMin() - 1){
-			 	 float regionAstart = next.get(0) * lineSubDivision + screenBorder;
-			 	 float regionAend = next.get(1) * lineSubDivision + screenBorder;
-				 float regionBstart = next.get(2) * lineSubDivision + screenBorder;
-				 float regionBend= next.get(3) * lineSubDivision + screenBorder;
-				 float nodeLength = regionAend - regionAstart;
-				 float nodeFrom = getMidPoint(regionAstart, regionAend);
-				 float nodeTo = getMidPoint(regionBstart, regionBend);		 
-				 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
-				 float arcWidth = nodeTo - nodeFrom; 		 			 
-				 
-				 //Deals with single character matches.
-				 //TO DO  - Improve logic and build into algorithm above.
-				 if(nodeDistance == 0) {
-					 nodeLength = 10;
-				 }
-				 
-				 pushStyle(); 
-				 noFill();
-				 stroke(100,90); // 2nd arg is alpha value
-				 strokeWeight(nodeLength);
-				 strokeCap(SQUARE); // Makes ends of arc square			 
-//				 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0); //render upper half of circle
-				 arc(arcMiddle, screenMidY, arcWidth, arcWidth -10, 0, PI); //render lower half of circle
-				 popStyle(); 		 
-				}
-			 }	 
-		 
-		 //TEMPORARY SECTION - REPETITION
 	 }
 	 //Helper method for drawArcDiagram
 	 private float getMidPoint(float x, float y){
