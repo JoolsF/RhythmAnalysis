@@ -68,13 +68,12 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	
 	public void drawText(){
 		int currentline = lineHeight;
-		char[] charArray = this.controller.getModelString().toCharArray();
-		
 		int left = arcViewerParent.getleftSlider();
 		int right = arcViewerParent.getRightSlider();
 		
-		int currentChar = 20 + left;
-		for(int i = left; i <= right; i ++){	
+		char[] charArray = this.controller.getModelString().substring(left,right).toCharArray();
+		int currentChar = 20;//; + left;
+		for(int i = 0; i < charArray.length; i ++){	
 			if(colourMap.get(i) != null){
 				pushStyle();
 				fill(colourMap.get(i),255,255);
