@@ -73,8 +73,8 @@ public class Rhythm_controller {
 		return this.arcAnalyser.getArcCoordinatesExactMatch(getTreeAsMap());	 	
 	}
 	
-	public void /*List<List<Integer>>*/ getSimilarStrings(){
-		//return this.arcAnalyser.getArcCoordinatesInexactMatch(getTreeAsMap());	 	
+	public List<List<Integer>> getSimilarStrings(){
+		return this.arcAnalyser.getArcCoordinatesInexactMatch(getTreeAsMap());	 	
 	}
 	
 	

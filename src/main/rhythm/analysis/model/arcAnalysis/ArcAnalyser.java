@@ -46,10 +46,10 @@ public class ArcAnalyser {
 		return getArcCoordinates(suffixMap);
 	}
 	
-	public void getArcCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
+	public List<List<Integer>> getArcCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
 		//LevenshteinArc.getDifference(src, arc)
 		//process suffix map through LevenshteinArc to get similar matches
-		getArcCoordinates(suffixMap);
+		return getArcCoordinates( LevenshteinArc.findSimilarStrings(suffixMap));
 	}
 	
 	

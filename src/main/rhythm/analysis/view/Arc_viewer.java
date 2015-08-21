@@ -54,7 +54,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	//Ensures that arc only redrawn when model updated
 	//TO DO - Look for better method so that this variable isn't continually polled
 	
-	private List<List<Integer>> nodePairs;
+	private List<List<Integer>> nodePairsExact;
+	private List<List<Integer>> nodePairsSimilar;
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Constructor
@@ -90,8 +91,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
 		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
 		
-		
-		this.nodePairs = controller.getMatchingStrings();
+		this.nodePairsExact = controller.getMatchingStrings();
+		this.nodePairsSimilar = controller.getSimilarStrings();
 	}
 	
 	
@@ -120,7 +121,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	}
 	
 	public List<List<Integer>> getNodePairs(){
-		return this.nodePairs;
+		return this.nodePairsExact;
 	}
 	
 	
@@ -212,7 +213,7 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 		 
 		 //List<List<Integer>> nodePairs =                
 		 
-		 for(List<Integer> next: nodePairs){	 
+		 for(List<Integer> next: nodePairsExact){	 
 			//int nodeDistance = next[1]-next[0];
 			 int nodeDistance = next.get(1)- next.get(0);
 			 		 
@@ -243,6 +244,41 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 			 popStyle(); 		 
 			}
 		 }	 
+		 
+		//TEMPORARY SECTION REPETITION
+		 for(List<Integer> next: nodePairsSimilar){	 
+				//int nodeDistance = next[1]-next[0];
+				 int nodeDistance = next.get(1)- next.get(0);
+				 		 
+			 	if(nodeDistance >= this.controller.getArcMin() - 1){
+			 	 float regionAstart = next.get(0) * lineSubDivision + screenBorder;
+				 float regionAend = next.get(1) * lineSubDivision + screenBorder;
+				 float regionBstart = next.get(2) * lineSubDivision + screenBorder;
+				 float regionBend= next.get(3) * lineSubDivision + screenBorder;
+				 float nodeLength = regionAend - regionAstart;
+				 float nodeFrom = getMidPoint(regionAstart, regionAend);
+				 float nodeTo = getMidPoint(regionBstart, regionBend);		 
+				 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
+				 float arcWidth = nodeTo - nodeFrom; 		 			 
+				 
+				 //Deals with single character matches.
+				 //TO DO  - Improve logic and build into algorithm above.
+				 if(nodeDistance == 0) {
+					 nodeLength = 10;
+				 }
+				 
+				 pushStyle(); 
+				 noFill();
+				 stroke(100,90); // 2nd arg is alpha value
+				 strokeWeight(nodeLength);
+				 strokeCap(SQUARE); // Makes ends of arc square			 
+//				 arc(arcMiddle, screenMidY, arcWidth, arcWidth, -PI, 0); //render upper half of circle
+				 arc(arcMiddle, screenMidY, arcWidth, arcWidth -10, 0, PI); //render lower half of circle
+				 popStyle(); 		 
+				}
+			 }	 
+		 
+		 //TEMPORARY SECTION - REPETITION
 	 }
 	 //Helper method for drawArcDiagram
 	 private float getMidPoint(float x, float y){
@@ -366,7 +402,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	@Override
 	public void update() {
 		//on called on model calling update method as very expensive process.
-		this.nodePairs = this.controller.getMatchingStrings();	
+		this.nodePairsExact = this.controller.getMatchingStrings();	
+		this.nodePairsSimilar = this.controller.getSimilarStrings();	
 	}	 
 	 
 }
