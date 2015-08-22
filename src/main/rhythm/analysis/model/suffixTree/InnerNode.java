@@ -44,12 +44,10 @@ public interface InnerNode extends Node {
 	}
 	
 	// returns true if the child has a non "$" sibling
+	// TO DO - Rethink this line.  This deals with case where node's parent is root
 	public default boolean needToSplitNode(){
-		if ((getLastSiblingValue().equals("$") && this.getSiblings().size() > 2) ||
-		 (! getLastSiblingValue().equals("$") && this.getSiblings().size() > 1) || 
-		// TO DO - Rethink this line.  This deals with case where node's parent is root
-		// Could use instanceOf but needs proper OO solution		 
-		 this.getParent().getString().equals("ROOT")){
+		if (( getLastSiblingValue().equals("$") && this.getSiblings().size() > 2) ||
+			  this.getParent() instanceof NodeRoot){
 			return true;
 		}else {
 			return false;
