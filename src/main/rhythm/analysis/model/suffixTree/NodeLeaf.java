@@ -35,7 +35,7 @@ public class NodeLeaf implements InnerNode {
 //			debugTrace("Node has a prefix, child has a prefix", string, index);
 			if(this.needToSplitNode()){
 //				debugTrace("Splitting Node ", string, index);	
-				prepNodeSwap(string, index);
+				convertToNodeNonLeaf(string, index);
 				return true;
 			} else {
 				this.movePrefixUp(string);
@@ -83,8 +83,8 @@ public class NodeLeaf implements InnerNode {
 	 * Children methods
 	 *----------------------------------------------------------------------------------------*/
 	
-	//TO DO - reassess having public method here not in Node interface
-	public void prepNodeSwap(String str, int index){		
+	
+	private void convertToNodeNonLeaf(String str, int index){		
 		remove$Children();
 		String prefix =  this.string.substring(0, str.length());
 		String suffix = this.string.substring(str.length(), this.string.length());

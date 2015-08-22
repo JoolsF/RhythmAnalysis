@@ -58,7 +58,6 @@ public class NodeNonLeaf implements InnerNode {
 			//BASE CASE
 			if(! this.needToSplitNode()  && ! (this.parent instanceof NodeRoot)){ // TO DO - refactor this.  Avoid checking class
 				//i.e the current node matches str 100%
-				//do we also need to check if current node has no $ children??	
 				//move the prefix to the parent and remove this node				
 				this.getParent().setString(this.getParent().getString() + this.getCommonPrefix(str));
 				this.getParent().addChildren(this.children);
