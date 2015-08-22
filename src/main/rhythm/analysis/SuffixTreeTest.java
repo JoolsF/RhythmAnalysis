@@ -22,15 +22,18 @@ public class SuffixTreeTest {
 	
 	
 	public static void main(String[] args){	
-//		SuffixTree testSuffixTree = new SuffixTree(); 
+		SuffixTree testSuffixTree = new SuffixTree(); 
 		
 
 		String str1 = "123a223b123c";
 		String str2 = "123a123b";
 		String str3 = "12345671234568";
-		Rhythm_controller testController = new Rhythm_controller();
-		
-		testController.updateTree("123a");
+		testSuffixTree.addString(str1 + str1 + str2 + str3);
+		System.out.println(testSuffixTree.getTree().nodesToList());
+//		Rhythm_controller testController = new Rhythm_controller();
+//		
+//		testController.updateTree(str1);
+//		System.out.println(testController.getTreeAsMap());
 //		Map<String, List<Integer>> same = testController.getTreeAsMap();
 //		Map<String, List<Integer>> similar = LevenshteinArc.findSimilarStrings(testController.getTreeAsMap()); 
 //		
