@@ -30,7 +30,7 @@ public class SuffixTreeTest {
 		String str3 = "12345671234568";
 		Rhythm_controller testController = new Rhythm_controller();
 		
-		testController.updateTree(str1);
+		testController.updateTree("123a");
 //		Map<String, List<Integer>> same = testController.getTreeAsMap();
 //		Map<String, List<Integer>> similar = LevenshteinArc.findSimilarStrings(testController.getTreeAsMap()); 
 //		

@@ -143,6 +143,15 @@ public class NodeRoot implements Node {
 	 *----------------------------------------------------------------------------------------*/
 	
 	// TO DO - Incorporate this into rhythm controller method add string.  String should be stored in root not controller.
+	
+	@Override
+	public String getString() {
+		//TO DO - This should return whole string
+		// Currently being used to check type of string to avoid class cast exception in InnerNode interface.  Code smell, bad OO design.  Rethink.
+		return "ROOT";
+	}
+	
+	//Refactor interfaces so this isn't needed
 	@Override
 	public void setString(String str) {
 		//
@@ -150,30 +159,6 @@ public class NodeRoot implements Node {
 		
 	}
 
-	@Override
-	public String getString() {
-		//TO DO - This should return whole string
-		// Currently being used to check type of string to avoid class cast exception in InnerNode interface.  Code smell, bad OO design.  Rethink.
-		return "ROOT";
-	}
-
-	@Override
-	public int getStringIndex() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setSubString(int start) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setStringIndex(int index) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public List<InnerNode> getChildren() {

@@ -17,6 +17,10 @@ public interface InnerNode extends Node {
 	public Node getParent();
 	public String getfullString();
 	public List<Integer> getIndices();
+	public int getStringIndex();
+		
+	public void setSubString(int start); 
+	public void setStringIndex(int index);
 	
 	
 	/*-----------------------------------------------------------------------------------------
