@@ -1,4 +1,4 @@
-package rhythm.analysis.model.arcAnalysis;
+package rhythm.analysis.model.stringHierachyAnalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,33 +23,32 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
  */
 //TO DO - Once prototype working will need improving as expensive computation involving lots of 
 // reprocessing of maps
-public class ArcAnalyser {
+public class StringHierarchyAnalyser {
 	
 	//private SuffixTree suffixTree;
 	private List<List<Integer>> arcData;
 	
 	
-	public ArcAnalyser(){
+	public StringHierarchyAnalyser(){
 		
 	}
 	
-	public ArcAnalyser(SuffixTree suffixTree){
+	public StringHierarchyAnalyser(SuffixTree suffixTree){
 		this();
-//		this.suffixTree = suffixTree;
 		this.arcData = new ArrayList<List<Integer>>();
 	}
 		
 	
 	
 	
-	public List<List<Integer>> getArcCoordinatesExactMatch(Map<String, List<Integer>> suffixMap){
-		return getArcCoordinates(suffixMap);
+	public List<List<Integer>> getStringCoordinatesExactMatch(Map<String, List<Integer>> suffixMap){
+		return getStringCoordinates(suffixMap);
 	}
 	
-	public List<List<Integer>> getArcCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
+	public List<List<Integer>> getStringCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
 		//LevenshteinArc.getDifference(src, arc)
-		//process suffix map through LevenshteinArc to get similar matches
-		return getArcCoordinates( LevenshteinArc.findSimilarStrings(suffixMap));
+		//process suffix map through LevenshteinAnalyser to get similar matches
+		return getStringCoordinates(LevenshteinAnalyser.findSimilarStrings(suffixMap));
 	}
 	
 	
@@ -59,9 +58,9 @@ public class ArcAnalyser {
 	 * 2. If substring is of length > 1 and has more that one index (i.e it repeats) then create
 	 *    coordinates
 	 */
-	private List<List<Integer>>  getArcCoordinates(Map<String, List<Integer>> suffixMap){
+	private List<List<Integer>>  getStringCoordinates(Map<String, List<Integer>> suffixMap){
 		arcData = new ArrayList<List<Integer>>(); // for return
-		List<ArcPair> arcPairs = new ArrayList<ArcPair>();
+		List<StringPair> arcPairs = new ArrayList<StringPair>();
 		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap(suffixMap).entrySet()){
 		 	String key = entry.getKey();
 		 	int keyLength = key.length();
@@ -70,26 +69,26 @@ public class ArcAnalyser {
 			if(value.size() > 0){  // keep repeating substrings only		
 				for(int i = 0; i < value.size() -1; i++){
 					
-					ArcPair arcPair = new ArcPair(value.get(i), value.get(i+1), keyLength, key);
+					StringPair arcPair = new StringPair(value.get(i), value.get(i+1), keyLength, key);
 
 					//TO DO pass in boolean test as arg so that behaviour of function can be modified
-					if(arcValid(arcPairs, arcPair)){
+					if(stringValid(arcPairs, arcPair)){
 						arcPairs.add(arcPair);
 						//to do use arcPair below
 						arcData.add(Arrays.asList(value.get(i), value.get(i) + (keyLength -1),
 												  value.get(i+1), value.get(i+1) + (keyLength -1)));
-					} //end if
+					} 
 				}
 			}
-		} //end for		
+		} 	
 		return arcData;
 	}
 	
-	private boolean arcValid(List<ArcPair> arcPairlist,ArcPair that){
-		if(arcPairlist.isEmpty()) return true;
+	private boolean stringValid(List<StringPair> stringPairlist,StringPair that){
+		if(stringPairlist.isEmpty()) return true;
 		
-		for(ArcPair next: arcPairlist){
-			if(! next.arcValid(that)){
+		for(StringPair next: stringPairlist){
+			if(! next.stringValid(that)){
 				return false;
 			}
 		}
@@ -107,7 +106,7 @@ public class ArcAnalyser {
 	 *   
 	 *   Sorts by key length in descending order
 	 */
-	private TreeMap <String, List<Integer>> getConsecutiveSubStrMap(Map<String, List<Integer>> suffixMap){
+	public TreeMap <String, List<Integer>> getConsecutiveSubStrMap(Map<String, List<Integer>> suffixMap){
 		//Code changes default TreeMap ordering to key length in descending order
 		
 		TreeMap <String, List<Integer>> subStrMap = new TreeMap<String, List<Integer>>(getComparator());
@@ -155,11 +154,6 @@ public class ArcAnalyser {
 		};
 		return comp;	
 	}
-			
-		
-		
-		
-	
-	
+				
 	
 }

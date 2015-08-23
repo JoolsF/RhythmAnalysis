@@ -10,7 +10,7 @@ import org.gicentre.utils.multisketch.EmbeddedSketch;
 
 
 import processing.core.PVector;
-import rhythm.analysis.control.Rhythm_controller;
+import rhythm.analysis.control.RhythmController;
 
 
 /**
@@ -26,17 +26,17 @@ import rhythm.analysis.control.Rhythm_controller;
  */
 
 //TO DO - Need to rotate circle -90 so that 0 is at 0 degrees.
-public class Cycle_viewer extends EmbeddedSketch implements Observer  {
+public class CycleViewer extends EmbeddedSketch implements Observer  {
 	private static final long serialVersionUID = 1L;
 	private PVector[] points;
 	private PVector[] charPoints;
 	private float radius;
 	
-	private Arc_viewer arcViewerParent;
-	private Rhythm_controller controller;
+	private ArcViewer arcViewerParent;
+	private RhythmController controller;
 	
 	
-	public Cycle_viewer(Arc_viewer arcViewerParent,Rhythm_controller controller ){
+	public CycleViewer(ArcViewer arcViewerParent,RhythmController controller ){
 		this.arcViewerParent = arcViewerParent;
 		this.controller = controller;
 		points = new PVector[this.controller.getNumPulses()];

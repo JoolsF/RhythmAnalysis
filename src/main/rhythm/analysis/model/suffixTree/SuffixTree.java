@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import rhythm.analysis.control.Rhythm_controller;
+import rhythm.analysis.control.RhythmController;
 
 
 
@@ -36,7 +36,7 @@ public class SuffixTree {
 	//TO DO, set from ui
 	private int numPulses; 
 	private int minSubStrLength;
-	private Rhythm_controller controller;
+	private RhythmController controller;
 	
 	
 	/*-----------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class SuffixTree {
 	}
 	
 	
-	public SuffixTree(Rhythm_controller controller) {
+	public SuffixTree(RhythmController controller) {
 		this();
 		this.controller = controller;
 	}
@@ -71,13 +71,13 @@ public class SuffixTree {
 		
 		for(int i = startFrom; i < newString.length(); i++){			
 			for(int index = 0; index <= i; index++){
-				System.out.println("NODE TO ADD: " + newString.substring(index, i+1) + "(" +index+")");
+//				System.out.println("NODE TO ADD: " + newString.substring(index, i+1) + "(" +index+")");
 				root.addString(newString.substring(index, i+1), index);
 				
 			}	
 			root.addString("$", i+1);
-			System.out.println("$ " + (i+1));
-			System.out.println("%% END OF SUBSTRING %%");
+//			System.out.println("$ " + (i+1));
+//			System.out.println("%% END OF SUBSTRING %%");
 
 		}
 		//Each time string is added this is called to reprocess nodeValues;
@@ -92,7 +92,7 @@ public class SuffixTree {
 	public String getString(){
 		return this.string;
 	}
-	public void setController(Rhythm_controller rhythm_controller) {
+	public void setController(RhythmController rhythm_controller) {
 		this.controller = rhythm_controller;
 		
 	}

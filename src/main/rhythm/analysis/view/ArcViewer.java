@@ -2,7 +2,7 @@ package rhythm.analysis.view;
 import java.util.List;
 
 import processing.core.*;
-import rhythm.analysis.control.Rhythm_controller;
+import rhythm.analysis.control.RhythmController;
 
 import org.gicentre.utils.multisketch.*;
 import org.gicentre.utils.move.*;
@@ -21,13 +21,13 @@ http://www.gicentre.net/utils/zoom
 
 Processing Mouse Functions demo used for custom slider
 */
-public class Arc_viewer extends EmbeddedSketch implements Observer  {
+public class ArcViewer extends EmbeddedSketch implements Observer  {
 	private static final long serialVersionUID = 1L;	
 
 	/*-----------------------------------------------------------------------------------------
 	 * Fields
 	 *----------------------------------------------------------------------------------------*/
-	private Rhythm_controller controller = null;
+	private RhythmController controller = null;
 		
 	//Screen size variables - Immutable
 	public final int screenWidth, screenHeight, screenBorder,screenMidY,screenMidX ;
@@ -44,8 +44,8 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	//Nested windows
 	private boolean windowsOpen;
 	private PopupWindow textViewWindow, cycleViewWindow;
-	private Text_viewer textViewer;
-	private Cycle_viewer cycleViewer;
+	private TextViewer textViewer;
+	private CycleViewer cycleViewer;
 	
 	//Arc sliders
 	private ArcSlider leftSlider;
@@ -61,17 +61,17 @@ public class Arc_viewer extends EmbeddedSketch implements Observer  {
 	 * Constructor
 	 *----------------------------------------------------------------------------------------*/
 			
-	public Arc_viewer(Rhythm_controller controller){		
+	public ArcViewer(RhythmController controller){		
 		//Initialise controller
 		this.controller = controller;
 		//Initialise windows
 		this.controller.attach(this);
 		
-		this.textViewer = new Text_viewer(this, controller);
+		this.textViewer = new TextViewer(this, controller);
 		controller.attach(textViewer);
 		this.textViewWindow = new PopupWindow(this, textViewer); 
 		
-		this.cycleViewer = new Cycle_viewer(this, controller);
+		this.cycleViewer = new CycleViewer(this, controller);
 		controller.attach(cycleViewer);
 		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
 		

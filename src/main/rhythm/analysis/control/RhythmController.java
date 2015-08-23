@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import rhythm.analysis.model.arcAnalysis.ArcAnalyser;
+import rhythm.analysis.model.stringHierachyAnalysis.StringHierarchyAnalyser;
 import rhythm.analysis.model.suffixTree.SuffixTree;
 import rhythm.analysis.view.Observer;
 
@@ -17,9 +17,9 @@ import rhythm.analysis.view.Observer;
  *
  */
 
-public class Rhythm_controller {
+public class RhythmController {
 	
-	private ArcAnalyser arcAnalyser;
+	private StringHierarchyAnalyser arcAnalyser;
 	private SuffixTree suffixTree;
 	private List<Observer> observers = new ArrayList<Observer>();
 	
@@ -28,11 +28,11 @@ public class Rhythm_controller {
 	/**
 	 * constructor
 	 */
-	public Rhythm_controller(){	
+	public RhythmController(){	
 		//create the model
 		suffixTree = new SuffixTree(this);	
 		this.arcMin = 1;
-		this.arcAnalyser = new ArcAnalyser(suffixTree);
+		this.arcAnalyser = new StringHierarchyAnalyser(suffixTree);
 	}
 	
 	public void notifyAllObservers(){
@@ -70,11 +70,11 @@ public class Rhythm_controller {
 		notifyAllObservers();
 	}
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getArcCoordinatesExactMatch(getTreeAsMap());	 	
+		return this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap());	 	
 	}
 	
 	public List<List<Integer>> getSimilarStrings(){
-		return this.arcAnalyser.getArcCoordinatesInexactMatch(getTreeAsMap());	 	
+		return this.arcAnalyser.getStringCoordinatesInexactMatch(getTreeAsMap());	 	
 	}
 	
 	

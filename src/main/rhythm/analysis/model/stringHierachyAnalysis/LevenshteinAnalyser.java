@@ -1,4 +1,4 @@
-package rhythm.analysis.model.arcAnalysis;
+package rhythm.analysis.model.stringHierachyAnalysis;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import rhythm.analysis.control.Rhythm_controller;
+import rhythm.analysis.control.RhythmController;
 
 /**
  * 
@@ -16,7 +16,7 @@ import rhythm.analysis.control.Rhythm_controller;
  * 
  *
  */
-public class LevenshteinArc {
+public class LevenshteinAnalyser {
 	
 	
 	private static double getDifference(String src, String arc){

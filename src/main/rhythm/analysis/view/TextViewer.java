@@ -16,10 +16,10 @@ import org.gicentre.utils.multisketch.PopupWindow;
 import controlP5.ControlP5;
 import controlP5.Textarea;
 import processing.core.PFont;
-import rhythm.analysis.control.Rhythm_controller;
-import rhythm.analysis.model.arcAnalysis.ArcPair;
+import rhythm.analysis.control.RhythmController;
+import rhythm.analysis.model.stringHierachyAnalysis.StringPair;
 
-public class Text_viewer  extends EmbeddedSketch implements Observer{
+public class TextViewer  extends EmbeddedSketch implements Observer{
 
 	private static final long serialVersionUID = 1L;
 	private final int screenWidth = 500;
@@ -32,8 +32,8 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	private int characterSpacing = 15;
 	//private Random rand = new Random();
 	
-	private Arc_viewer arcViewerParent;
-	private Rhythm_controller controller;
+	private ArcViewer arcViewerParent;
+	private RhythmController controller;
 	
 	private Map<Integer, Integer> colourMap;
 	//Map<List<Integer>, Integer> usedRegion;
@@ -41,7 +41,7 @@ public class Text_viewer  extends EmbeddedSketch implements Observer{
 	private int colour;
 	
 	
-	public Text_viewer(Arc_viewer arcViewerParent, Rhythm_controller controller){
+	public TextViewer(ArcViewer arcViewerParent, RhythmController controller){
 		this.arcViewerParent = arcViewerParent;	
 		this.controller = controller;
 		this.colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.

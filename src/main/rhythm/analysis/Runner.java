@@ -14,6 +14,6 @@ public class Runner {
 	  }
 	
 	public void launchViewer(){
-		PApplet.main(new String[] { "rhythm.analysis.view.Main_viewer" });
+		PApplet.main(new String[] { "rhythm.analysis.view.MainViewer" });
 	}
 }

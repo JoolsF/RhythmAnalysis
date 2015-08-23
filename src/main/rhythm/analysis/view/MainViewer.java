@@ -18,18 +18,18 @@ import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textarea;
 import controlP5.Textfield;
-import rhythm.analysis.control.Rhythm_controller;
+import rhythm.analysis.control.RhythmController;
 
-public class Main_viewer extends PApplet implements Observer{
+public class MainViewer extends PApplet implements Observer{
 	private static final long serialVersionUID = 1L;
 	
 	private ControlP5 cp5;
 	private Textarea myTextarea;
 	
-	private Rhythm_controller controller;
+	private RhythmController controller;
 	
 	private PopupWindow arcViewWindow;
-	private Arc_viewer arcView;
+	private ArcViewer arcView;
 	
 	private Textfield textfield;
 	private Textfield textfield2;
@@ -37,13 +37,13 @@ public class Main_viewer extends PApplet implements Observer{
 	public boolean pulsesSet;
 	public boolean initialInputSet;
 		
-	public Main_viewer(){
+	public MainViewer(){
 		//MVC system started here
-		this.controller = new Rhythm_controller();
+		this.controller = new RhythmController();
 		this.controller.attach(this);
 		
 		//Start second windows
-		this.arcView = new Arc_viewer(controller);
+		this.arcView = new ArcViewer(controller);
 		this.controller.attach(arcView);
 		this.arcViewWindow = new PopupWindow(this, arcView);
 

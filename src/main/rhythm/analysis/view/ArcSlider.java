@@ -1,7 +1,7 @@
 package rhythm.analysis.view;
 
 public class ArcSlider {
-	private Arc_viewer arcViewer;
+	private ArcViewer arcViewer;
 	
 	private int slider;// = 0;
 	private int leftMin;
@@ -15,7 +15,7 @@ public class ArcSlider {
 	private boolean overSlider;
 	private boolean sliderlocked;
 	
-	public ArcSlider(Arc_viewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
+	public ArcSlider(ArcViewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
 		this.arcViewer = arcViewer;
 		
 		this.leftMin = leftMin;

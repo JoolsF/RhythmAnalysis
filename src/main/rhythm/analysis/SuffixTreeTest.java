@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import rhythm.analysis.control.Rhythm_controller;
-import rhythm.analysis.model.arcAnalysis.ArcAnalyser;
-import rhythm.analysis.model.arcAnalysis.ArcPair;
-import rhythm.analysis.model.arcAnalysis.LevenshteinArc;
+import rhythm.analysis.control.RhythmController;
+import rhythm.analysis.model.stringHierachyAnalysis.LevenshteinAnalyser;
+import rhythm.analysis.model.stringHierachyAnalysis.StringHierarchyAnalyser;
+import rhythm.analysis.model.stringHierachyAnalysis.StringPair;
 import rhythm.analysis.model.suffixTree.SuffixTree;
-import rhythm.analysis.view.Arc_viewer;
+import rhythm.analysis.view.ArcViewer;
 
 
 
@@ -23,13 +23,16 @@ public class SuffixTreeTest {
 	
 	public static void main(String[] args){	
 		SuffixTree testSuffixTree = new SuffixTree(); 
-		
+		StringHierarchyAnalyser sha = new StringHierarchyAnalyser();
 
-		String str1 = "123a223b123c";
+		String str1 = "abababab";
 		String str2 = "123a123b";
 		String str3 = "12345671234568";
-		testSuffixTree.addString(str1 + str1 + str2 + str3);
-		System.out.println(testSuffixTree.getTree().nodesToList());
+		testSuffixTree.addString(str1);
+		System.out.println(testSuffixTree.getTree().nodesToMap(new TreeMap<String, List<Integer>>()));
+		
+		System.out.println(sha.getConsecutiveSubStrMap(testSuffixTree.getTree().nodesToMap(new TreeMap<String, List<Integer>>())));
+		
 //		Rhythm_controller testController = new Rhythm_controller();
 //		
 //		testController.updateTree(str1);
