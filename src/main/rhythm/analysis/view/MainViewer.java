@@ -10,6 +10,8 @@ http://forum.processing.org/two/discussion/1368/controlp5-buttons-controls-trigg
 
 //TO DO look into performance.  I.e when new string analysed other screen should close and their objects be destroyed
 //TO DO look into slider graphics versus output when string length > 50.  Scale and ouput not matching
+import java.io.File;
+
 import processing.core.*;
 
 import org.gicentre.utils.multisketch.*;
@@ -57,7 +59,7 @@ public class MainViewer extends PApplet implements Observer{
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(300,550);	  
+		size(300,600);	  
 		
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -85,20 +87,20 @@ public class MainViewer extends PApplet implements Observer{
 			
 		// Slider
 		cp5.addSlider("arcMax")
-		.setBroadcast(false)
-		.setPosition(40,125)
-		.setSize(200,20)
-		.setRange(1,20)
-		.setNumberOfTickMarks(20)
-		.setValue(1)
-		.setBroadcast(true);
+			.setBroadcast(false)
+			.setPosition(40,125)
+			.setSize(200,20)
+			.setRange(1,20)
+			.setNumberOfTickMarks(20)
+			.setValue(1)
+			.setBroadcast(true);
 		
 		  // create a toggle and change the default look to a (on/off) switch look
-		  cp5.addToggle("ArcFilter")
-		     .setPosition(40,175)
-		     .setSize(50,20)
-		     .setValue(true)
-		     .setMode(ControlP5.SWITCH)
+		 cp5.addToggle("ArcFilter")
+		 	.setPosition(40,175)
+		 	.setSize(50,20)
+		 	.setValue(true)
+		 	.setMode(ControlP5.SWITCH)
 		     ;
 		
 //		cp5.addSlider("pulses")
@@ -110,11 +112,20 @@ public class MainViewer extends PApplet implements Observer{
 //		.setValue(8)
 //		.setBroadcast(true);
 		
+
 		
+		cp5.addButton("loadFile")
+		.setBroadcast(false)	
+		.setValue(100)
+		.setPosition(40,225)
+		.setSize(50,20)
+		.setBroadcast(true);	
+		  
+		  
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,250)
-	    .setSize(200,250)
+	    .setPosition(40,275)
+	    .setSize(200,290)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
 	    .setColor(color(128))
@@ -217,6 +228,10 @@ public class MainViewer extends PApplet implements Observer{
 		}	
 		return false;
 	}
+	
+	
+
+	
 	/**
 	 * Ref http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
 	 * @param str
@@ -253,6 +268,24 @@ public class MainViewer extends PApplet implements Observer{
 //		this.myTextarea.setText("Data cleared");
 //		this.controller.resetModel();
 //	}
+	
+	public void loadFile() {
+		if(pulsesSet){
+			selectInput("Select a file to process:", "fileSelected");
+		}	else {
+			myTextarea.setText("Error.  You must first enter number of pulses to start (between 2 and 32");
+		}
+	}
+	
+	public void fileSelected(File selection) {
+	  if (selection == null) {
+	    //println("Window was closed or the user hit cancel.");
+	  } else {
+	   // println("User selected " + selection.getAbsolutePath());
+		  this.initialInputSet = true;
+	
+	  }
+	}
 	
 	
 		
