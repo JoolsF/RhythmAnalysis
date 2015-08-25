@@ -31,8 +31,8 @@ public class NodeRoot implements Node {
 	*/		
 	@Override
 	public boolean addString(String string, int index) {
-		if (this.children.isEmpty()){
-//			System.out.println("	Children empty.  Creating node " + string +"("+index+")");			
+		if (this.children.isEmpty()){		
+			debugTrace("	Children empty.  Creating node ", string, index);
 			this.children.add(new NodeLeaf(string, index, this));
 			return true;
 		} else{
@@ -42,8 +42,7 @@ public class NodeRoot implements Node {
 				}
 			}
 		}
-		//i.e no matches found
-//		System.out.println("	No matches round at root adding: " + string +"("+index+")");		
+		debugTrace("	No matches found. Creating node ", string, index);	
 		addChildLeaf(string, index);
 		return true;
 	}
@@ -67,7 +66,6 @@ public class NodeRoot implements Node {
 	@Override
 	public void printTree() {
 		Iterator<InnerNode> itr = children.iterator();
-//		System.out.println("ROOT:  \n  Children: " + this.getChildValues()+"\n");
 		while(itr.hasNext()){
 			InnerNode element = itr.next();
 			element.printTree();
@@ -163,6 +161,17 @@ public class NodeRoot implements Node {
 	@Override
 	public List<InnerNode> getChildren() {
 		return this.children;
+	}
+
+	
+	private void debugTrace(String location, String str, int index){		
+		System.out.println("	*******************");
+		System.out.println("	Location: " + location + " " + this.getString());
+		System.out.println("	Child values: " + this.getChildValues() );
+		System.out.println("	Node type: " + this.getClass());
+		System.out.println("	String to add: " + str + "(" + index +")");
+		System.out.println();
+		System.out.println();
 	}
 	
 }

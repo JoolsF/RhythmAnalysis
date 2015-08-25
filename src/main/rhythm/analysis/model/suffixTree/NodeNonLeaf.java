@@ -41,7 +41,7 @@ public class NodeNonLeaf implements InnerNode {
 	public boolean addString(String str, int index) {
 				
 		if(this.nodeHasAPrefixOf(str)){
-//			debugTrace("Node has a a prefix of: ", str, index);
+			debugTrace("Node has a a prefix of: ", str, index);
 			//BASE CASE
 			//TO DO check case if parent is root.
 			if(this.needToSplitNode()){
@@ -49,7 +49,7 @@ public class NodeNonLeaf implements InnerNode {
 				return true;
 			} else {
 				//Move prefix onto parent and remove from this.
-//				debugTrace("Move prefix onto parent and remove from this: ", str, index);
+				debugTrace("Move prefix onto parent and remove from this: ", str, index);
 				movePrefixUp(str);				
 				return true;	
 			}
@@ -64,22 +64,22 @@ public class NodeNonLeaf implements InnerNode {
 				this.getParent().removeChild(this);
 				return true;
 			} else {
-//				debugTrace("Node string, = str", str, index);
+				debugTrace("Node string, = str", str, index);
 				//IF HAS A $ SIBLING THIS NEEDS TO BE REMOVED
 				//IGNORE IF PARENT IS ROOT THOUGH
 				this.remove$Children();
 				if(children.get(children.size()-1).getString().equals("$")){
-//					debugTrace("	Child has string of $, index changed only ", str, index);					
+					debugTrace("	Child has string of $, index changed only ", str, index);					
 					children.get(children.size()-1).setStringIndex(index);				
 					return true;
 				} else {
-//					debugTrace("	No child with $ value, creating leaf node ", str, index);			
+					debugTrace("	No child with $ value, creating leaf node ", str, index);			
 					this.addChildLeaf("$", index);
 					return true;
 				}
 			}
 		} else if(this.nodeIsAPrefixOf(str)){
-//			debugTrace("Node is a prefix of:",  str, index);
+			debugTrace("Node is a prefix of:",  str, index);
 			//I.e the incoming string 'str' is a prefix of this then the next path must be chosen.  Each child will be iterated through
 			for(InnerNode child: children){
 				//goes through the children in turn, if a match is found will return true else will return false and continue
@@ -91,12 +91,12 @@ public class NodeNonLeaf implements InnerNode {
 		} else if(this.string.equals("$")){
 			//BASE CASE
 			//MEANS WE ARE AT LAST CHILD BECAUSE $ WHERE IT EXISTS WILL ALWAYS BE AT THE END
-//			debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
+			debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
 			this.string = string;
 			this.stringIndex = index;
 			return true;
 		} else {
-//			debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
+			debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
 			return false;
 		}
 		

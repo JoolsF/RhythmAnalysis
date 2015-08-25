@@ -71,14 +71,12 @@ public class SuffixTree {
 		
 		for(int i = startFrom; i < newString.length(); i++){			
 			for(int index = 0; index <= i; index++){
-//				System.out.println("NODE TO ADD: " + newString.substring(index, i+1) + "(" +index+")");
+				debugTrace("------------------------\n NODE TO ADD: " + newString.substring(index, i+1), index);
 				root.addString(newString.substring(index, i+1), index);
 				
 			}	
+			debugTrace("NODE TO ADD: $",(i+1));
 			root.addString("$", i+1);
-//			System.out.println("$ " + (i+1));
-//			System.out.println("%% END OF SUBSTRING %%");
-
 		}
 		//Each time string is added this is called to reprocess nodeValues;
 		this.root.processTree("");
@@ -145,5 +143,8 @@ public class SuffixTree {
 		return comp;	
 	}
 	
+	private void debugTrace(String str, int index){		
+		System.out.println(str +"("+index+")" + "\n");
+	}
 	
 }
