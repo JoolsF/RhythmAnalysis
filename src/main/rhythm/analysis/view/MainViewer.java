@@ -88,8 +88,8 @@ public class MainViewer extends PApplet implements Observer{
 		.setBroadcast(false)
 		.setPosition(40,125)
 		.setSize(200,20)
-		.setRange(1,10)
-		.setNumberOfTickMarks(10)
+		.setRange(1,20)
+		.setNumberOfTickMarks(20)
 		.setValue(1)
 		.setBroadcast(true);
 		
