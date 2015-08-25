@@ -97,57 +97,6 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	
 	
 	/*-----------------------------------------------------------------------------------------
-	 * Getters and setters
-	 *----------------------------------------------------------------------------------------*/
-	
-	public String getData(){
-		return this.controller.getModelString();
-	}	
-	
-	public char[] getStringAsArray(){
-		return this.getData().toCharArray();
-	}
-	
-	public String getString(){
-		return this.getData();
-	}
-	
-	public int getleftSlider(){
-		 return this.leftSlider.getSlider();
-	 }
-		
-	public int getRightSlider(){
-		return this.rightSlider.getSlider();
-	}
-	
-	public List<List<Integer>> getNodePairs(){
-		return this.nodePairsExact;
-	}
-	
-	
-	
-	
-	/**
-	 *  Given that first character of string will be rendered at start of line the line should be 
-	 *  divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
-	 *	therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
-	 */
-	private void setLineSubDivision(){
-		// TO DO - handle case better where model data is empty string
-		if(getData().length() == 0){
-			this.lineSubDivision  = lineLength / 2;	
-		} else {
-			this.lineSubDivision  = lineLength / (getData().length() -1);
-		}
-	}
-	
-	public float getLineSubdivision(){
-		return this.lineSubDivision;
-	}
-	
-	
-	
-	/*-----------------------------------------------------------------------------------------
 	 * Processing setup and draw methods
 	 *----------------------------------------------------------------------------------------*/	
 	 /**
@@ -176,22 +125,81 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 
 	
 	 /**
-	   * Processing draw method run in a loop - redraws the screen
+	   * Processing draw method runs in a loop - redraws the screen
 	   */
-	 public  void draw()  {
+	 public void draw()  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
+		
 		setLineSubDivision();
 		
+		//The five draw methods below should be called in this order to ensure layers overlap correctly
 		drawArcDiagram(nodePairsExact, -PI, 0);
 		drawArcDiagram(nodePairsSimilar, 0, PI);
-		
 		drawArcXaxis();
 		drawSliders();
-	    updateText();  
+	    drawTopLeftText();  
 	 }
 	 
 	  
+	 
+
+		/*-----------------------------------------------------------------------------------------
+		 * Getters and setters
+		 *----------------------------------------------------------------------------------------*/
+		
+		public String getData(){
+			return this.controller.getModelString();
+		}	
+		
+		public char[] getStringAsArray(){
+			return this.getData().toCharArray();
+		}
+		
+		public String getString(){
+			return this.getData();
+		}
+		
+		public int getleftSlider(){
+			 return this.leftSlider.getSlider();
+		 }
+			
+		public int getRightSlider(){
+			return this.rightSlider.getSlider();
+		}
+		
+		public List<List<Integer>> getNodePairs(){
+			return this.nodePairsExact;
+		}
+		
+		
+		
+		
+		/**
+		 *  Given that first character of string will be rendered at start of line the line should be 
+		 *  divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
+		 *	therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
+		 */
+		private void setLineSubDivision(){
+			// TO DO - handle case better where model data is empty string
+			if(getData().length() == 0){
+				this.lineSubDivision  = lineLength / 2;	
+			} else {
+				this.lineSubDivision  = lineLength / (getData().length() -1);
+			}
+		}
+		
+		public float getLineSubdivision(){
+			return this.lineSubDivision;
+		}
+		
+		
+		
+	 
+	 
+	 
+	 
+	 
 	 /*-----------------------------------------------------------------------------------------
 	  * Arc diagram draw methods
 	  *----------------------------------------------------------------------------------------*/	
@@ -233,10 +241,10 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 //Checks if the phase of the two arc are the same.
 			 int arc1Phase = next.get(0) % this.controller.getNumPulses() -1;
 			 int arc2Phase = next.get(2) % this.controller.getNumPulses() -1;
-			 
 			 boolean phaseEqual = (arc1Phase == arc2Phase);
-			 //Deals with single character matches.
 			 
+			 
+			 //Deals with single character matches.
 			 //TO DO  - Improve logic and build into algorithm above.
 			 if(nodeDistance == 0)  nodeLength = 10;
 			 //TO DO - Fix line below so that arcs above a 
@@ -250,7 +258,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 				 } else {
 					 stroke(0, 168, 204, 90);
 				 }
-			 } else {
+			 } else{
 			     stroke(100,90); // 2nd arg is alpha value	 
 			 }
 			 
@@ -343,7 +351,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	}
 
 
-	private void updateText(){
+	private void drawTopLeftText(){
 		 this.myTextarea.setText("Left slider: " +  this.leftSlider.getSlider() +
 					"\n" +
                  "Right slider: " + this.rightSlider.getSlider() + 

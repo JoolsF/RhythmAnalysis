@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import rhythm.analysis.control.RhythmController;
 import rhythm.analysis.model.suffixTree.SuffixTree;
 
 
@@ -26,7 +27,7 @@ import rhythm.analysis.model.suffixTree.SuffixTree;
 public class StringHierarchyAnalyser {
 	
 	//private SuffixTree suffixTree;
-	private List<List<Integer>> arcData;
+	private List<List<Integer>> stringPairData;
 	
 	
 	public StringHierarchyAnalyser(){
@@ -35,20 +36,20 @@ public class StringHierarchyAnalyser {
 	
 	public StringHierarchyAnalyser(SuffixTree suffixTree){
 		this();
-		this.arcData = new ArrayList<List<Integer>>();
+		this.stringPairData = new ArrayList<List<Integer>>();
 	}
 		
 	
 	
 	
-	public List<List<Integer>> getStringCoordinatesExactMatch(Map<String, List<Integer>> suffixMap){
-		return getStringCoordinates(suffixMap);
+	public List<List<Integer>> getStringCoordinatesExactMatch(Map<String, List<Integer>> suffixMap, boolean applyStringAnalysis){
+		return getStringCoordinates(suffixMap, applyStringAnalysis);
 	}
 	
-	public List<List<Integer>> getStringCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap){
+	public List<List<Integer>> getStringCoordinatesInexactMatch(Map<String, List<Integer>> suffixMap, boolean applyStringAnalysis){
 		//LevenshteinArc.getDifference(src, arc)
 		//process suffix map through LevenshteinAnalyser to get similar matches
-		return getStringCoordinates(LevenshteinAnalyser.findSimilarStrings(suffixMap));
+		return getStringCoordinates(LevenshteinAnalyser.findSimilarStrings(suffixMap),applyStringAnalysis);
 	}
 	
 	
@@ -58,9 +59,9 @@ public class StringHierarchyAnalyser {
 	 * 2. If substring is of length > 1 and has more that one index (i.e it repeats) then create
 	 *    coordinates
 	 */
-	private List<List<Integer>>  getStringCoordinates(Map<String, List<Integer>> suffixMap){
-		arcData = new ArrayList<List<Integer>>(); // for return
-		List<StringPair> arcPairs = new ArrayList<StringPair>();
+	private List<List<Integer>>  getStringCoordinates(Map<String, List<Integer>> suffixMap,  boolean applyStringAnalysis){
+		stringPairData = new ArrayList<List<Integer>>(); // for return
+		List<StringPair> stringPairs = new ArrayList<StringPair>();
 		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap(suffixMap).entrySet()){
 		 	String key = entry.getKey();
 		 	int keyLength = key.length();
@@ -69,19 +70,19 @@ public class StringHierarchyAnalyser {
 			if(value.size() > 0){  // keep repeating substrings only		
 				for(int i = 0; i < value.size() -1; i++){
 					
-					StringPair arcPair = new StringPair(value.get(i), value.get(i+1), keyLength, key);
+					StringPair stringPair = new StringPair(value.get(i), value.get(i+1), keyLength, key);
 
-					//TO DO pass in boolean test as arg so that behaviour of function can be modified
-					if(stringValid(arcPairs, arcPair)){
-						arcPairs.add(arcPair);
+					//TO DO pass in boolean test as function arg so that behaviour of method can be better modified and updated
+					if(! applyStringAnalysis || stringValid(stringPairs, stringPair)){
+						stringPairs.add(stringPair);
 						//to do use arcPair below
-						arcData.add(Arrays.asList(value.get(i), value.get(i) + (keyLength -1),
+						stringPairData.add(Arrays.asList(value.get(i), value.get(i) + (keyLength -1),
 												  value.get(i+1), value.get(i+1) + (keyLength -1)));
 					} 
 				}
 			}
 		} 	
-		return arcData;
+		return stringPairData;
 	}
 	
 	private boolean stringValid(List<StringPair> stringPairlist,StringPair that){

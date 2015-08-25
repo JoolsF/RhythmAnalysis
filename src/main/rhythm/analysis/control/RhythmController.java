@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import rhythm.analysis.model.stringHierachyAnalysis.StringHierarchyAnalyser;
 import rhythm.analysis.model.suffixTree.SuffixTree;
+import rhythm.analysis.view.MainViewer;
 import rhythm.analysis.view.Observer;
 
 /**
@@ -24,15 +25,19 @@ public class RhythmController {
 	private List<Observer> observers = new ArrayList<Observer>();
 	
 	private int arcMin;
+	private boolean applyArcAnalysis;
+	
+	private MainViewer mainviewer;
 	
 	/**
 	 * constructor
 	 */
-	public RhythmController(){	
+	public RhythmController(MainViewer mainViewer){	
 		//create the model
 		suffixTree = new SuffixTree(this);	
 		this.arcMin = 1;
 		this.arcAnalyser = new StringHierarchyAnalyser(suffixTree);
+		this.mainviewer = mainViewer;
 	}
 	
 	public void notifyAllObservers(){
@@ -70,11 +75,11 @@ public class RhythmController {
 		notifyAllObservers();
 	}
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap());	 	
+		return this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap(), this.mainviewer.getToggleValue());	 	
 	}
 	
 	public List<List<Integer>> getSimilarStrings(){
-		return this.arcAnalyser.getStringCoordinatesInexactMatch(getTreeAsMap());	 	
+		return this.arcAnalyser.getStringCoordinatesInexactMatch(getTreeAsMap(), this.mainviewer.getToggleValue());	 	
 	}
 	
 	
@@ -96,5 +101,6 @@ public class RhythmController {
 	public int getArcMin(){
 		return this.arcMin;
 	}
+	
 
 }

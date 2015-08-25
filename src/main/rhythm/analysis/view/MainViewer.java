@@ -34,12 +34,13 @@ public class MainViewer extends PApplet implements Observer{
 	private Textfield textfield;
 	private Textfield textfield2;
 	
-	public boolean pulsesSet;
-	public boolean initialInputSet;
+	private boolean pulsesSet;
+	private boolean initialInputSet;
+	private boolean toggleValue;
 		
 	public MainViewer(){
 		//MVC system started here
-		this.controller = new RhythmController();
+		this.controller = new RhythmController(this);
 		this.controller.attach(this);
 		
 		//Start second windows
@@ -49,13 +50,14 @@ public class MainViewer extends PApplet implements Observer{
 
 		this.pulsesSet = false;
 		this.initialInputSet = false;
+		this.toggleValue = true;
 	}	
 	
 	/**
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(300,650);	  
+		size(300,550);	  
 		
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -73,38 +75,46 @@ public class MainViewer extends PApplet implements Observer{
 		
 		arcViewWindow.setVisible(true);
 		
-		//Button
-		cp5.addButton("clear_data")
-		.setBroadcast(false)	
-		.setValue(100)
-		.setPosition(40,125)
-		.setSize(200,19)
-		.setBroadcast(true);
+//		//Button
+//		cp5.addButton("clear_data")
+//		.setBroadcast(false)	
+//		.setValue(100)
+//		.setPosition(40,125)
+//		.setSize(200,19)
+//		.setBroadcast(true);
 			
 		// Slider
 		cp5.addSlider("arcMax")
 		.setBroadcast(false)
-		.setPosition(40,225)
+		.setPosition(40,125)
 		.setSize(200,20)
 		.setRange(1,10)
 		.setNumberOfTickMarks(10)
 		.setValue(1)
 		.setBroadcast(true);
 		
-		cp5.addSlider("pulses")
-		.setBroadcast(false)
-		.setPosition(40,275)
-		.setSize(200,20)
-		.setRange(3,32)
-		.setNumberOfTickMarks(10)
-		.setValue(8)
-		.setBroadcast(true);
+		  // create a toggle and change the default look to a (on/off) switch look
+		  cp5.addToggle("ArcFilter")
+		     .setPosition(40,175)
+		     .setSize(50,20)
+		     .setValue(true)
+		     .setMode(ControlP5.SWITCH)
+		     ;
+		
+//		cp5.addSlider("pulses")
+//		.setBroadcast(false)
+//		.setPosition(40,275)
+//		.setSize(200,20)
+//		.setRange(3,32)
+//		.setNumberOfTickMarks(10)
+//		.setValue(8)
+//		.setBroadcast(true);
 		
 		
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,325)
-	    .setSize(225,250)
+	    .setPosition(40,250)
+	    .setSize(200,250)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
 	    .setColor(color(128))
@@ -117,6 +127,12 @@ public class MainViewer extends PApplet implements Observer{
 	public void draw() {
 		background(0);
 		fill(255);
+		 if(toggleValue==true) {
+			 fill(255,255,220);
+		 } else {
+			 fill(128,128,110);
+		 }
+		 
 	}
 	
 	//ControlP5 code starts here
@@ -133,14 +149,11 @@ public class MainViewer extends PApplet implements Observer{
 	 * 
 	 * @param theEvent
 	 */
-	public void controlEvent(ControlEvent theEvent) {
-		if(theEvent.isAssignableFrom(Textfield.class)) {
-//			println("controlEvent: accessing a string from controller '"
-//					+theEvent.getName()+"': "
-//					+theEvent.getStringValue()
-//					);
-			}
-		}
+//	public void controlEvent(ControlEvent theEvent) {
+//		if(theEvent.isAssignableFrom(Textfield.class)) {
+//
+//			}
+//		}
 
 	/**
 	 * Automatically receives results from controller input
@@ -235,11 +248,11 @@ public class MainViewer extends PApplet implements Observer{
 	}
 	
 	//BUTTONS
-	public void clear_data(){
-//TO DO needs debugging - ensure model reset correctly
+//	public void clear_data(){
+////TO DO needs debugging - ensure model reset correctly
 //		this.myTextarea.setText("Data cleared");
 //		this.controller.resetModel();
-	}
+//	}
 	
 	
 		
@@ -248,11 +261,20 @@ public class MainViewer extends PApplet implements Observer{
 			arcView.redraw();
 	}
 	
-	//Slider inactive currently as causing ArrayIndexOutOfBoundsException when moved rapidly
-	//Need to improve synchronisation with model.
-	public void pulses(int numPulses) {
-		//this.controller.setNumPulses(numPulses);
+	public void ArcFilter(boolean theFlag) {
+		this.toggleValue = theFlag;
 	}
+	
+	public boolean getToggleValue(){
+		return this.toggleValue;
+	}
+	
+	
+//	//Slider inactive currently as causing ArrayIndexOutOfBoundsException when moved rapidly
+//	//Need to improve synchronisation with model.
+//	public void pulses(int numPulses) {
+//		//this.controller.setNumPulses(numPulses);
+//	}
 	
 	
 	

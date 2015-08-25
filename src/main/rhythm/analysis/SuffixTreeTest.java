@@ -25,13 +25,13 @@ public class SuffixTreeTest {
 		SuffixTree testSuffixTree = new SuffixTree(); 
 		StringHierarchyAnalyser sha = new StringHierarchyAnalyser();
 
-		String str1 = "abababab";
+		String str1 = "abababababab";
 		String str2 = "123a123b";
 		String str3 = "12345671234568";
 		testSuffixTree.addString(str1);
 		System.out.println(testSuffixTree.getTree().nodesToMap(new TreeMap<String, List<Integer>>()));
 		
-		System.out.println(sha.getConsecutiveSubStrMap(testSuffixTree.getTree().nodesToMap(new TreeMap<String, List<Integer>>())));
+		//System.out.println(sha.getStringCoordinatesExactMatch(testSuffixTree.getTree().nodesToMap(new TreeMap<String, List<Integer>>())));
 		
 //		Rhythm_controller testController = new Rhythm_controller();
 //		
