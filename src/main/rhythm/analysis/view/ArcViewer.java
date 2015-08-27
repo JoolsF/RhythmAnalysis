@@ -4,8 +4,9 @@ import java.util.List;
 import processing.core.*;
 import rhythm.analysis.control.RhythmController;
 
+
 import org.gicentre.utils.multisketch.*;
-import org.gicentre.utils.move.*;
+
 
 import controlP5.ControlP5;
 import controlP5.Textarea;
@@ -27,7 +28,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	/*-----------------------------------------------------------------------------------------
 	 * Fields
 	 *----------------------------------------------------------------------------------------*/
-	private RhythmController controller = null;
+	private RhythmController controller;
 		
 	//Screen size variables - Immutable
 	public final int screenWidth, screenHeight, screenBorder,screenMidY,screenMidX ;
@@ -388,7 +389,9 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		  this.windowsOpen = true;
 		  textViewWindow.setVisible(true);
 		  this.textViewer.update();
-		  cycleViewWindow.setVisible(true);  
+	  //TO DO - Improve this logic.  If cycle viewer not needed it shouldn't be constructed.
+	  if(this.controller.getNumPulses() > 1) cycleViewWindow.setVisible(true);  
+		  
 	  } 
 	 
 	}
