@@ -71,14 +71,14 @@ public class SuffixTree {
 		
 		for(int i = startFrom; i < newString.length(); i++){			
 			for(int index = 0; index <= i; index++){
-				debugTrace("------------------------\nNODE TO ADD: " + newString.substring(index, i+1), index);
+//				debugTrace("------------------------\nNODE TO ADD: " + newString.substring(index, i+1), index);
 				root.addString(newString.substring(index, i+1), index);
-				debugTrace("ADDED TO TREE: " + newString.substring(index, i+1), index);
+//				debugTrace("ADDED TO TREE: " + newString.substring(index, i+1), index);
 				
 			}	
-			debugTrace("NODE TO ADD: $",(i+1));
+//			debugTrace("NODE TO ADD: $",(i+1));
 			root.addString("$", i+1);
-			debugTrace("ADDED TO TREE: $", (i+1));
+//			debugTrace("ADDED TO TREE: $", (i+1));
 		}
 		//Each time string is added this is called to reprocess nodeValues;
 		this.root.processTree("");

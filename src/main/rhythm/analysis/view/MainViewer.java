@@ -39,6 +39,8 @@ public class MainViewer extends PApplet implements Observer{
 	private boolean pulsesSet;
 	private boolean initialInputSet;
 	private boolean toggleValue;
+	
+	private File userFile;
 		
 	public MainViewer(){
 		//MVC system started here
@@ -53,6 +55,8 @@ public class MainViewer extends PApplet implements Observer{
 		this.pulsesSet = false;
 		this.initialInputSet = false;
 		this.toggleValue = true;
+		
+		this.userFile = null;
 	}	
 	
 	/**
@@ -279,10 +283,19 @@ public class MainViewer extends PApplet implements Observer{
 	
 	public void fileSelected(File selection) {
 	  if (selection == null) {
-	    //println("Window was closed or the user hit cancel.");
+	    println("Window was closed or the user hit cancel.");
 	  } else {
-	   // println("User selected " + selection.getAbsolutePath());
+		  //println("User selected " + selection.getAbsolutePath());
 		  this.initialInputSet = true;
+		  String lines[] = loadStrings(selection.getAbsolutePath());
+		  StringBuffer sb = new StringBuffer();
+		 
+		  // println("there are " + lines.length + " lines");
+		  for (int i = 0 ; i < lines.length; i++) {
+		    sb.append(lines[i]);
+		  }
+		  
+		  input(sb.toString());
 	
 	  }
 	}

@@ -32,7 +32,7 @@ public class NodeRoot implements Node {
 	@Override
 	public boolean addString(String string, int index) {
 		if (this.children.isEmpty()){		
-			debugTrace("	Children empty.  Creating node ", string, index);
+//			debugTrace("	Children empty.  Creating node ", string, index);
 			this.children.add(new NodeLeaf(string, index, this));
 			return true;
 		} else{
@@ -42,7 +42,7 @@ public class NodeRoot implements Node {
 				}
 			}
 		}
-		debugTrace("	No matches found. Creating node ", string, index);	
+//		debugTrace("	No matches found. Creating node ", string, index);	
 		addChildLeaf(string, index);
 		return true;
 	}
