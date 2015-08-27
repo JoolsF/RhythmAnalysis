@@ -28,7 +28,7 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 	
 	private PFont f;
 	private int fontSize = 20;
-	private int lineHeight = fontSize;
+	private int lineHeight = fontSize + 5;
 	private int characterSpacing = 15;
 	//private Random rand = new Random();
 	
