@@ -20,6 +20,7 @@ import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textarea;
 import controlP5.Textfield;
+import controlP5.Toggle;
 import rhythm.analysis.control.RhythmController;
 
 public class MainViewer extends PApplet implements Observer{
@@ -35,14 +36,20 @@ public class MainViewer extends PApplet implements Observer{
 	
 	private Textfield textfield;
 	private Textfield textfield2;
-	
+		
 	private boolean pulsesSet;
 	private boolean initialInputSet;
-	private boolean toggleValue;
+	private boolean toggleSimilarity;
+	private boolean toggleArcFilter;
 	
 	private File userFile;
 		
 	public MainViewer(){
+		this.pulsesSet = false;
+		this.initialInputSet = false;
+		this.toggleSimilarity = false; // set to false by default
+		this.toggleArcFilter = true;
+		
 		//MVC system started here
 		this.controller = new RhythmController(this);
 		this.controller.attach(this);
@@ -52,18 +59,13 @@ public class MainViewer extends PApplet implements Observer{
 		this.controller.attach(arcView);
 		this.arcViewWindow = new PopupWindow(this, arcView);
 
-		this.pulsesSet = false;
-		this.initialInputSet = false;
-		this.toggleValue = true;
-		
-		this.userFile = null;
 	}	
 	
 	/**
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(300,600);	  
+		size(300,650);	  
 		
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -90,7 +92,7 @@ public class MainViewer extends PApplet implements Observer{
 //		.setBroadcast(true);
 			
 		// Slider
-		cp5.addSlider("arcMax")
+		cp5.addSlider("arcMin")
 			.setBroadcast(false)
 			.setPosition(40,125)
 			.setSize(200,20)
@@ -100,12 +102,19 @@ public class MainViewer extends PApplet implements Observer{
 			.setBroadcast(true);
 		
 		  // create a toggle and change the default look to a (on/off) switch look
-		 cp5.addToggle("ArcFilter")
+		cp5.addToggle("similarity")
 		 	.setPosition(40,175)
 		 	.setSize(50,20)
-		 	.setValue(true)
+		 	.setValue(false) // set to false by default
 		 	.setMode(ControlP5.SWITCH)
 		     ;
+		
+		cp5.addToggle("arcFilter")
+	 	.setPosition(40,225)
+	 	.setSize(50,20)
+	 	.setValue(true) // set to false by default
+	 	.setMode(ControlP5.SWITCH)
+	     ;
 		
 //		cp5.addSlider("pulses")
 //		.setBroadcast(false)
@@ -121,14 +130,14 @@ public class MainViewer extends PApplet implements Observer{
 		cp5.addButton("loadFile")
 		.setBroadcast(false)	
 		.setValue(100)
-		.setPosition(40,225)
+		.setPosition(40,275)
 		.setSize(50,20)
 		.setBroadcast(true);	
 		  
 		  
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,275)
+	    .setPosition(40,325)
 	    .setSize(200,290)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
@@ -142,7 +151,7 @@ public class MainViewer extends PApplet implements Observer{
 	public void draw() {
 		background(0);
 		fill(255);
-		 if(toggleValue==true) {
+		 if(toggleArcFilter==true) {
 			 fill(255,255,220);
 		 } else {
 			 fill(128,128,110);
@@ -294,25 +303,36 @@ public class MainViewer extends PApplet implements Observer{
 		  for (int i = 0 ; i < lines.length; i++) {
 		    sb.append(lines[i]);
 		  }
+		  //removes all white space
+		  input(sb.toString().replaceAll("\\s+",""));
 		  
-		  input(sb.toString());
-	
 	  }
 	}
 	
 	
 		
-	public void arcMax(int arcMinimum) {
+	public void arcMin(int arcMinimum) {
 			this.controller.setArcMin(arcMinimum);
 			arcView.redraw();
+			arcView.updateTextViewer();
 	}
 	
-	public void ArcFilter(boolean theFlag) {
-		this.toggleValue = theFlag;
+	public void similarity(boolean theFlag) {
+		this.toggleSimilarity = theFlag;
+		
 	}
 	
-	public boolean getToggleValue(){
-		return this.toggleValue;
+	public void arcFilter(boolean theFlag) {
+		this.toggleArcFilter = theFlag;
+		
+	}
+	
+	public boolean getArcFilterToggleValue(){
+		return this.toggleArcFilter;
+	}
+	
+	public boolean getSimilarityToggleValue(){
+		return this.toggleSimilarity;
 	}
 	
 	

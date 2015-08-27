@@ -75,11 +75,15 @@ public class RhythmController {
 		notifyAllObservers();
 	}
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap(), this.mainviewer.getToggleValue());	 	
+		return this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap(), this.mainviewer.getArcFilterToggleValue());	 	
 	}
 	
 	public List<List<Integer>> getSimilarStrings(){
-		return this.arcAnalyser.getStringCoordinatesInexactMatch(getTreeAsMap(), this.mainviewer.getToggleValue());	 	
+		if(this.mainviewer.getSimilarityToggleValue()){
+			return this.arcAnalyser.getStringCoordinatesInexactMatch(getTreeAsMap(), this.mainviewer.getArcFilterToggleValue());
+		}	else {
+			return new ArrayList<List<Integer>>();
+		} 	
 	}
 	
 	
@@ -95,7 +99,6 @@ public class RhythmController {
 	
 	public void setArcMin(int arcMin){
 		this.arcMin = arcMin;
-		notifyAllObservers();
 	}
 	
 	public int getArcMin(){

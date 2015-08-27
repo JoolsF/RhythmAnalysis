@@ -63,7 +63,7 @@ public class StringHierarchyAnalyser {
 		stringPairData = new ArrayList<List<Integer>>(); // for return
 		List<StringPair> stringPairs = new ArrayList<StringPair>();
 		for (Map.Entry<String, List<Integer>> entry :  getConsecutiveSubStrMap(suffixMap).entrySet()){
-		 	String key = entry.getKey();
+			String key = entry.getKey();
 		 	int keyLength = key.length();
 			List<Integer> value = entry.getValue();
 			

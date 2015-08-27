@@ -13,7 +13,8 @@ import rhythm.analysis.control.RhythmController;
 /**
  * 
  * Utility class for Arc Analysis containing one public static method getDifference. 
- * 
+ * Note - This implementation is a highly inefficient, 'naive' implementation, and serves only as a simple proof of concept.
+ * By default it should not be used with large inputs.
  *
  */
 public class LevenshteinAnalyser {
@@ -51,7 +52,7 @@ public class LevenshteinAnalyser {
 						keyToTest.length() == keyInMap.length()){
 						
 						double diff = getDifference(keyToTest, keyInMap);
-						if(diff <= 0.2 && diff > 0){
+						if( diff > 0 && diff <= 0.125){
 							List<Integer> intList = new ArrayList<Integer>();
 							Set<Integer> intSet = new TreeSet<Integer>();
 							intSet.addAll(entry.getValue());

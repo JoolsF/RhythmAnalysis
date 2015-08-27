@@ -67,6 +67,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		//Initialise windows
 		this.controller.attach(this);
 		
+	
 		this.textViewer = new TextViewer(this, controller);
 		controller.attach(textViewer);
 		this.textViewWindow = new PopupWindow(this, textViewer); 
@@ -172,7 +173,9 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			return this.nodePairsExact;
 		}
 		
-		
+		public void updateTextViewer(){
+			this.textViewer.update();
+		}
 		
 		
 		/**
