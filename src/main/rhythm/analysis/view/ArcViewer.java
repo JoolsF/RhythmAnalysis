@@ -82,7 +82,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		this.screenWidth = 1000;
 		this.screenHeight = 800;
 		this.screenBorder = 50;
-		this.screenMidY = screenHeight / 2;
+		this.screenMidY = (screenHeight / 2) - 20;
 		this.screenMidX = screenWidth / 2;
 		this.lineLength = screenWidth - (screenBorder * 2);
 		setLineSubDivision();
@@ -234,6 +234,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 float regionBstart = next.get(2) * lineSubDivision + screenBorder;
 			 float regionBend= next.get(3) * lineSubDivision + screenBorder;
 			 float nodeLength = regionAend - regionAstart;
+			 float nodeGap = regionBstart - regionAend;
 			 float nodeFrom = getMidPoint(regionAstart, regionAend);
 			 float nodeTo = getMidPoint(regionBstart, regionBend);		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
@@ -251,7 +252,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 //TO DO  - Improve logic and build into algorithm above.
 			 if(nodeDistance == 0)  nodeLength = 10;
 			 //TO DO - Fix line below so that arcs above a 
-			 //if(arcSpan / lineLength > 0.9) arcHeight -= 100; 
+			 if(arcSpan / lineLength > 0.9 && nodeGap > 150) arcHeight -= 150; 
 			 
 			 pushStyle(); 
 			 noFill();
@@ -267,7 +268,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 
 			 strokeWeight(nodeLength);
 			 strokeCap(SQUARE); // Makes ends of arc square	
-			 //arc(a, b, c, d, start, stop)
+			 //arc(a, b, c, d, start, stop) 
 			 arc(arcMiddle, screenMidY, arcWidth,arcHeight, start, stop);
 			 popStyle(); 		 
 			}
