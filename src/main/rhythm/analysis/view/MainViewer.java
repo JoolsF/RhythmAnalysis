@@ -65,7 +65,7 @@ public class MainViewer extends PApplet implements Observer{
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(300,650);	  
+		size(300,700);	  
 		
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -116,6 +116,13 @@ public class MainViewer extends PApplet implements Observer{
 	 	.setMode(ControlP5.SWITCH)
 	     ;
 		
+		cp5.addToggle("arcColour")
+	 	.setPosition(40,275)
+	 	.setSize(50,20)
+	 	.setValue(true) // set to false by default
+	 	.setMode(ControlP5.SWITCH)
+	     ;
+		
 //		cp5.addSlider("pulses")
 //		.setBroadcast(false)
 //		.setPosition(40,275)
@@ -130,14 +137,14 @@ public class MainViewer extends PApplet implements Observer{
 		cp5.addButton("loadFile")
 		.setBroadcast(false)	
 		.setValue(100)
-		.setPosition(40,275)
+		.setPosition(40,325)
 		.setSize(50,20)
 		.setBroadcast(true);	
 		  
 		  
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,325)
+	    .setPosition(40,375)
 	    .setSize(200,290)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
@@ -304,7 +311,15 @@ public class MainViewer extends PApplet implements Observer{
 		    sb.append(lines[i]);
 		  }
 		  //removes all white space
-		  input(sb.toString().replaceAll("\\s+",""));
+		  String s = sb.toString().replaceAll("\\s+","");
+
+		  //TO DO - Remove this limit once program memory footprint and speed has been improved
+		  if(s.length() <= 4000){
+			  input(s);  
+		  } else {
+			  myTextarea.setText("Error. File is " + s.length() + "characters long. 4000 character limit currently (excluding whitespace)");
+		  }
+
 		  
 	  }
 	}
@@ -325,6 +340,10 @@ public class MainViewer extends PApplet implements Observer{
 	public void arcFilter(boolean theFlag) {
 		this.toggleArcFilter = theFlag;
 		
+	}
+	
+	public void arcColour(boolean theFlag) {
+		this.arcView.setArcColour(theFlag);
 	}
 	
 	public boolean getArcFilterToggleValue(){

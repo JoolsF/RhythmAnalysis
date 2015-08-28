@@ -75,12 +75,16 @@ public class RhythmController {
 		notifyAllObservers();
 	}
 	public List<List<Integer>> getMatchingStrings(){
-		return this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap(), this.mainviewer.getArcFilterToggleValue());	 	
+		List<List<Integer>>  x = this.arcAnalyser.getStringCoordinatesExactMatch(getTreeAsMap(), this.mainviewer.getArcFilterToggleValue());
+		System.out.println("got matching strings");
+		return x;
 	}
 	
 	public List<List<Integer>> getSimilarStrings(){
 		if(this.mainviewer.getSimilarityToggleValue()){
+			System.out.println("got similar strings");
 			return this.arcAnalyser.getStringCoordinatesInexactMatch(getTreeAsMap(), this.mainviewer.getArcFilterToggleValue());
+			
 		}	else {
 			return new ArrayList<List<Integer>>();
 		} 	
@@ -89,6 +93,7 @@ public class RhythmController {
 	
 	public void updateTree(String str){
 		this.suffixTree.addString(str);
+		System.out.println("tree updated");
 		notifyAllObservers();
 	}
 	

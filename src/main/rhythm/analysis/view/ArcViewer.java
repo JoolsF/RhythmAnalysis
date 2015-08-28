@@ -48,6 +48,8 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	private TextViewer textViewer;
 	private CycleViewer cycleViewer;
 	
+	private boolean applyColour;
+	
 	//Arc sliders
 	private ArcSlider leftSlider;
 	private ArcSlider rightSlider;
@@ -95,6 +97,8 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		
 		this.nodePairsExact = controller.getMatchingStrings();
 		this.nodePairsSimilar = controller.getSimilarStrings();
+		
+		this.applyColour = true;
 	}
 	
 	
@@ -178,6 +182,10 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			this.textViewer.update();
 		}
 		
+		public void setArcColour(boolean flag){
+			this.applyColour = flag;
+		}
+		
 		
 		/**
 		 *  Given that first character of string will be rendered at start of line the line should be 
@@ -257,7 +265,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 
 			 pushStyle(); 
 			 noFill();
-			 if(phaseEqual){
+			 if(phaseEqual && this.applyColour){
 				 if(arc1Phase == 0) {
 					 stroke(204, 102, 2, 90);
 				 } else {
