@@ -31,7 +31,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	private RhythmController controller;
 		
 	//Screen size variables - Immutable
-	public final int screenWidth, screenHeight, screenBorder,screenMidY,screenMidX ;
+	public final int screenWidth, screenHeight, screenBorder, screenHeightWithBorder, screenMidY,screenMidX ;
 	public final float lineLength;
 	
 	//Arc / line variables - Mutable
@@ -83,9 +83,10 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		
 		//Initialise screen dimensions
 		this.screenWidth = 1000;
-		this.screenHeight = 800;
 		this.screenBorder = 50;
-		this.screenMidY = (screenHeight / 2) - 20;
+		this.screenHeight = 1000;
+		this.screenHeightWithBorder = screenHeight - (screenBorder * 2);
+		this.screenMidY = (screenHeightWithBorder / 2);
 		this.screenMidX = screenWidth / 2;
 		this.lineLength = screenWidth - (screenBorder * 2);
 		setLineSubDivision();
