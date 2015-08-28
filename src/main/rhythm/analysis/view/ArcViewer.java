@@ -31,7 +31,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	private RhythmController controller;
 		
 	//Screen size variables - Immutable
-	public final int screenWidth, screenHeight, screenBorder, screenHeightWithBorder, screenMidY,screenMidX ;
+	public final int screenWidth, screenHeight, screenBorder, screenMidY,screenMidX ;
 	public final float lineLength;
 	
 	//Arc / line variables - Mutable
@@ -83,10 +83,10 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		
 		//Initialise screen dimensions
 		this.screenWidth = 1000;
-		this.screenBorder = 50;
-		this.screenHeight = 1000;
-		this.screenHeightWithBorder = screenHeight - (screenBorder * 2);
-		this.screenMidY = (screenHeightWithBorder / 2);
+		this.screenBorder = 125;
+		this.screenHeight = 800;
+		//TO DO - - 20 offset being used to correct centering.  Find cause and remove.
+		this.screenMidY = (screenHeight / 2) - 20; 
 		this.screenMidX = screenWidth / 2;
 		this.lineLength = screenWidth - (screenBorder * 2);
 		setLineSubDivision();
@@ -262,7 +262,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 //TO DO  - Improve logic and build into algorithm above.
 			 if(nodeDistance == 0)  nodeLength = 10;
 			 //TO DO - Fix line below so that arcs above a 
-			 if(arcSpan / lineLength > 0.9 && nodeGap > 150) arcHeight -= 150; 
+			// if(arcSpan / lineLength > 0.9 && nodeGap > 150) arcHeight -= 150; 
 			 
 			 pushStyle(); 
 			 noFill();
@@ -318,7 +318,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			    	popMatrix();
 			  }
 		 } else {
-			 int x = getData().length() / 25;
+			 int x = getData().length() / 24;
 			 for(int i = 1; i < getData().length(); i ++){
 			 	pushMatrix();
 		    	translate(linePosition, screenMidY);
