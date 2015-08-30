@@ -318,7 +318,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			    	popMatrix();
 			  }
 		 } else {
-			 int x = getData().length() / 24;
+			 int x = getData().length() / 25;
 			 for(int i = 1; i < getData().length(); i ++){
 			 	pushMatrix();
 		    	translate(linePosition, screenMidY);
@@ -327,7 +327,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			    	pushMatrix();
 			    	rotate(-HALF_PI);
 			    	//TO DO - make second variable b in text(a,b,c,d) below proportional to string length so that very large strings don't overlap x axis
-			    	text(i,-20, 0);
+			    	text(i + 1,-20, 0); // i + 1 so that axis start from 1 not 0
 			    	ellipse(0,-0,3,3);
 			    	popMatrix();
 			    }
@@ -366,9 +366,10 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 
 
 	private void drawTopLeftText(){
-		 this.myTextarea.setText("Left slider: " +  this.leftSlider.getSlider() +
+		// 1 added to left and right slider value so that it displays from 1 not 0
+		 this.myTextarea.setText("Left slider: " +  (this.leftSlider.getSlider() + 1) +
 					"\n" +
-                 "Right slider: " + this.rightSlider.getSlider() + 
+                 "Right slider: " + (this.rightSlider.getSlider() + 1) + 
                  "\nCycle length " + this.controller.getNumPulses());
 	 }
 
