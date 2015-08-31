@@ -120,22 +120,7 @@ public class ModelPerformanceTests {
 		return results;
 	}
 	
-	private void updateTreeMemoryTest(int upTo, int increments){
-		Map<Integer, Long> results = new LinkedHashMap<Integer, Long>();
-		String testString  = "qwerty";
-		
-		for(int stringLength = 100;  stringLength <= upTo; stringLength+= increments){
-			System.out.println("****************************");
-			System.out.println("String Length:  " + stringLength);
-			System.out.println("Used memory before:  " + getUsedMemory());
-			updateTree(new RhythmController(),  randomStringGenerator(stringLength, testString));
-			System.out.println("Used memory after:  " + getUsedMemory());
-		}
-		
-	}
-	private long getUsedMemory(){
-		return runtime.totalMemory() - runtime.freeMemory();   	
-	}
+
 	
 	
 	
@@ -146,7 +131,6 @@ public class ModelPerformanceTests {
 	private void launchTests() {
 //		updateTreeRuntimeTest();
 //		getMatchingRuntimeTest();
-		updateTreeMemoryTest(3000,100);
 	}
 	public static void main(String[] args){
 		new ModelPerformanceTests().launchTests();
