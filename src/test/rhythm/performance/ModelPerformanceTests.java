@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.lang.instrument.Instrumentation;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -48,6 +49,13 @@ public class ModelPerformanceTests {
 		return System.currentTimeMillis() - start;
 	}
 	
+	private long getSubStringsNaive(String str){
+		long start = System.currentTimeMillis();
+		NaiveSubstringFinder.enumerateSubstrings(str);
+		return System.currentTimeMillis() - start;
+	}
+	
+	
 	
 	/*-----------------------------------------------------------------------------------------
 	 * String generators
@@ -71,30 +79,39 @@ public class ModelPerformanceTests {
 	/*-----------------------------------------------------------------------------------------
 	 * Test runners
 	 *----------------------------------------------------------------------------------------*/
+	
+	/**
+	 * updateTree test runner
+	 */
 	public void updateTreeRuntimeTest(){
 		System.out.println("UPDATE TREE TEST");
 		//for(int alphabetSize = 2; alphabetSize <= 10; alphabetSize += 2 ){
 			System.out.println("****************************");
 			System.out.println("alphabetSize: " + 5);
-			for (Map.Entry<Integer, Long> entry :  updateTreeRuntimeTestHelper(5, 8000, 500).entrySet()){
+			for (Map.Entry<Integer, Long> entry :  updateTreeRuntimeTestHelper(5, 2000, 500).entrySet()){
 				System.out.println(entry.getKey() + "," + entry.getValue());
 			}
 			System.out.println();
 		//}
-		//System.out.println("done");
+
 	}
 	
 	private Map<Integer, Long> updateTreeRuntimeTestHelper(int strLength, int upTo, int increments){
 		String testString = "abcdefghijklmnopqrstuvwxyz";
 		Map<Integer, Long> results = new LinkedHashMap<Integer, Long>();
 		
-		for(int stringLength = 2000;  stringLength <= upTo; stringLength+= increments){
+		for(int stringLength = 0;  stringLength <= upTo; stringLength+= increments){
 			long time = updateTree(new RhythmController(),  randomStringGenerator(stringLength, testString.substring(0, strLength)));
 			results.put(stringLength,  time);
 			//System.out.println(stringLength);
 		}
 		return results;
 	}
+	
+	
+	/**
+	 * getMatchingStrings test runner
+	 */
 	public void getMatchingRuntimeTest(){
 		System.out.println("GET MATCHING STRING TEST");
 		
@@ -121,7 +138,32 @@ public class ModelPerformanceTests {
 	}
 	
 
+	/**
+	 * findSubstringNaive test runner
+	 */
 	
+	
+	
+	
+	public void getSubStringsNaiveRunner(int from, int to, int increments){	
+		System.out.println("Get SUBSTRINGS NAIVE METHOD TEST");
+		String testString = "abcdefghijk";
+		Map<Integer, Long> results = new LinkedHashMap<Integer, Long>();
+		
+		for(int stringLength = from;  stringLength <= to; stringLength+= increments){
+			long time = getSubStringsNaive(randomStringGenerator(stringLength, testString));
+			System.out.println(stringLength + "->" + time);
+			results.put(stringLength,  time);
+		}
+		for(Map.Entry<Integer, Long> entry: results.entrySet()){	
+			System.out.println("****************************");
+			System.out.println("String: " + entry.getKey());
+			System.out.println("Time: " + entry.getValue());
+			System.out.println();
+			
+		}
+	
+	}
 	
 	
 	
@@ -129,8 +171,10 @@ public class ModelPerformanceTests {
 	 * Launch and main
 	 *----------------------------------------------------------------------------------------*/
 	private void launchTests() {
-//		updateTreeRuntimeTest();
+		updateTreeRuntimeTest();
 //		getMatchingRuntimeTest();
+//		getSubStringsNaiveRunner(0, 4000, 100);
+//	System.out.println( getSubStringsNaive(randomStringGenerator(1300, "abcde")));
 	}
 	public static void main(String[] args){
 		new ModelPerformanceTests().launchTests();

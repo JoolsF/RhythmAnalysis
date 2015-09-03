@@ -13,8 +13,8 @@ import rhythm.analysis.control.RhythmController;
 /**
  * 
  * Utility class for Arc Analysis containing one public static method getDifference. 
- * Note - This implementation is a highly inefficient, 'naive' implementation, and serves only as a simple proof of concept.
- * By default it should not be used with large inputs.
+ * Note - This implementation is a HIGHLY inefficient, 'naive' implementation, and serves only as a simple heuristic proof of concept.
+ * Intended for strings of length < 1000
  *
  */
 public class LevenshteinAnalyser {
