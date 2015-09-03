@@ -6,10 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-
-
 public class NaiveSubstringFinder {
-
 
 	public static Map<String, Set<Integer>> enumerateSubstrings(String str){
 		Map<String, Set<Integer>> substringMap =  new TreeMap<String, Set<Integer>>();;

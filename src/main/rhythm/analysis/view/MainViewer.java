@@ -42,7 +42,6 @@ public class MainViewer extends PApplet implements Observer{
 	private boolean toggleSimilarity;
 	private boolean toggleArcFilter;
 	
-	private File userFile;
 		
 	public MainViewer(){
 		this.pulsesSet = false;
@@ -65,7 +64,7 @@ public class MainViewer extends PApplet implements Observer{
 	 * setup() called immediately after constructor
 	 */
 	public void setup() {  
-		size(300,700);	  
+		size(280,610);	  
 		
 		//Fontsetup
 		PFont font = createFont("arial",20);
@@ -74,7 +73,7 @@ public class MainViewer extends PApplet implements Observer{
 		
 		//Input textfield 1
 		textfield = cp5.addTextfield("input")
-					   .setPosition(40,50)
+					   .setPosition(40,70)
 		 	           .setSize(200,40)
 		 	           .setFont(font)
 		 	           .setFocus(true)
@@ -94,7 +93,7 @@ public class MainViewer extends PApplet implements Observer{
 		// Slider
 		cp5.addSlider("arcMin")
 			.setBroadcast(false)
-			.setPosition(40,125)
+			.setPosition(40,135)
 			.setSize(200,20)
 			.setRange(1,20)
 			.setNumberOfTickMarks(20)
@@ -103,21 +102,21 @@ public class MainViewer extends PApplet implements Observer{
 		
 		  // create a toggle and change the default look to a (on/off) switch look
 		cp5.addToggle("similarity")
-		 	.setPosition(40,175)
+		 	.setPosition(40,185)
 		 	.setSize(50,20)
 		 	.setValue(false) // set to false by default
 		 	.setMode(ControlP5.SWITCH)
 		     ;
 		
 		cp5.addToggle("arcFilter")
-	 	.setPosition(40,225)
+	 	.setPosition(115,185)
 	 	.setSize(50,20)
 	 	.setValue(true) // set to false by default
 	 	.setMode(ControlP5.SWITCH)
 	     ;
 		
 		cp5.addToggle("arcColour")
-	 	.setPosition(40,275)
+	 	.setPosition(185,185)
 	 	.setSize(50,20)
 	 	.setValue(true) // set to false by default
 	 	.setMode(ControlP5.SWITCH)
@@ -137,14 +136,14 @@ public class MainViewer extends PApplet implements Observer{
 		cp5.addButton("loadFile")
 		.setBroadcast(false)	
 		.setValue(100)
-		.setPosition(40,325)
+		.setPosition(40,235)
 		.setSize(50,20)
 		.setBroadcast(true);	
 		  
 		  
 		//Text area
 		myTextarea = cp5.addTextarea("txt")
-	    .setPosition(40,375)
+	    .setPosition(40,285)
 	    .setSize(200,290)
 	    .setFont(createFont("arial",12))
 	    .setLineHeight(14)
@@ -157,13 +156,9 @@ public class MainViewer extends PApplet implements Observer{
 
 	public void draw() {
 		background(0);
-		fill(255);
-		 if(toggleArcFilter==true) {
-			 fill(255,255,220);
-		 } else {
-			 fill(128,128,110);
-		 }
-		 
+		textSize(17);
+		text("Rhythmic Data Analyser",45,40);	
+		fill(255);	 
 	}
 	
 	//ControlP5 code starts here
