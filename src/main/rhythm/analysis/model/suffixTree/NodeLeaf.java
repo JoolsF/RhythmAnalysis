@@ -4,7 +4,7 @@ package rhythm.analysis.model.suffixTree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeLeaf implements InnerNode {
+public class NodeLeaf extends InnerNodeAbstract {
 
 	private String string;
 	private int stringIndex;

@@ -50,7 +50,7 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 	
 	
 	public void setup() {
-		size(screenWidth, screenHeight);	
+		size(screenWidth, screenHeight);
 		f = createFont("Georgia",fontSize,true);
 	    textFont(f);
 	    fill(0); //set colour black

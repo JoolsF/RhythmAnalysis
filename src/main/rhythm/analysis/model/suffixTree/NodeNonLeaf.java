@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class NodeNonLeaf implements InnerNode {
+public class NodeNonLeaf extends InnerNodeAbstract {
 	
 	private String string;
 	private int stringIndex;

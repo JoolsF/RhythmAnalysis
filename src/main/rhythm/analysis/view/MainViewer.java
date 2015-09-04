@@ -65,7 +65,7 @@ public class MainViewer extends PApplet implements Observer{
 	 */
 	public void setup() {  
 		size(280,610);	  
-		
+		frame.setTitle("Rhythmic Data Analyser");
 		//Fontsetup
 		PFont font = createFont("arial",20);
 		textFont(font);
@@ -150,11 +150,12 @@ public class MainViewer extends PApplet implements Observer{
 	    .setColor(color(128))
 	    .setColorBackground(color(255,100))
 	    .setColorForeground(color(255,100));
-		myTextarea.setText("Enter number of pulses to start (between 2 and 32");
+		myTextarea.setText("Enter number of pulses to start (between 2 and 32)");
 	}
 		
 
 	public void draw() {
+		
 		background(0);
 		textSize(17);
 		text("Rhythmic Data Analyser",45,40);	
@@ -210,7 +211,7 @@ public class MainViewer extends PApplet implements Observer{
 				this.initialInputSet = true;
 				return true;
 			} else {
-				this.myTextarea.setText("Error, initial input must greater than 2 characters");
+				this.myTextarea.setText("Error. Initial input must be greater than 2 characters");
 				textfield.clear();
 				return false;
 			}
@@ -226,16 +227,16 @@ public class MainViewer extends PApplet implements Observer{
 					this.controller.setNumPulses(x);
 					pulsesSet = true;
 					textfield.clear();
-					myTextarea.setText("Pulses set to " + x + ". Program initialised");
+					myTextarea.setText("Pulses set to " + x + ". Program initialised.");
 					return true;
 				} else {
-					myTextarea.setText("Error.  Number out of range. Please enter number of pulses to start (between 2 and 32");
+					myTextarea.setText("Error.  Number out of range. Please enter number of pulses to start (between 2 and 32)");
 					textfield.clear();
 					return false;
 					
 				}
 			} else {
-				myTextarea.setText("Error.  Input not integer value. Please enter number of pulses to start (between 2 and 32");
+				myTextarea.setText("Error.  Input not integer value. Please enter number of pulses to start (between 2 and 32)");
 				textfield.clear();
 				return false;
 			}
@@ -288,7 +289,7 @@ public class MainViewer extends PApplet implements Observer{
 		if(pulsesSet){
 			selectInput("Select a file to process:", "fileSelected");
 		}	else {
-			myTextarea.setText("Error.  You must first enter number of pulses to start (between 2 and 32");
+			myTextarea.setText("Error.  You must first enter number of pulses to start (between 2 and 32)");
 		}
 	}
 	

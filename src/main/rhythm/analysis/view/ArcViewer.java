@@ -117,7 +117,6 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	    textFont(f);
 	    fill(0);
 	    textAlign(CENTER);
-	    
 	    //Text area
 	    pushStyle();
 	    myTextarea = cp5.addTextarea("txt")
@@ -137,9 +136,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 public void draw()  {
 		super.draw();   // Should be the first line of draw().
 		background(200, 255, 200); // Should be second line of draw(). 
-		
 		setLineSubDivision();
-		
 		//The five draw methods below should be called in this order to ensure layers overlap correctly
 		drawArcDiagram(nodePairsExact, -PI, 0);
 		drawArcDiagram(nodePairsSimilar, 0, PI);
