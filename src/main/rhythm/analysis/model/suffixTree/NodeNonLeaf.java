@@ -3,6 +3,11 @@ package rhythm.analysis.model.suffixTree;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+/**
+ * NodeNonLeaf class extends InnerNodeAbstract.  Represents all non-leaf nodes in the suffix tree apart from the root
+ * @author Julian Fenner
+ */
+
 
 public class NodeNonLeaf extends InnerNodeAbstract {
 	
@@ -34,43 +39,41 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 	}
 	
 	/*-----------------------------------------------------------------------------------------
-	 * Add string
+	 * Add substring
 	 *----------------------------------------------------------------------------------------*/
 	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public boolean addString(String str, int index) {
+	public boolean addSubstring(String str, int index) {
 				
 		if(this.nodeHasAPrefixOf(str)){
 //			debugTrace("Node has a a prefix of: ", str, index);
-			//BASE CASE
-			//TO DO check case if parent is root.
 			if(this.needToSplitNode()){
 				splitThisNode(str, index);
 				return true;
-			} else {
-				//Move prefix onto parent and remove from this.
+			} else { /* Move prefix onto parent and remove from this.*/
 //				debugTrace("Move prefix onto parent and remove from this: ", str, index);
 				movePrefixUp(str);				
 				return true;	
 			}
 			
 		} else if(this.string.equals(str)){
-			//BASE CASE
-			if(! this.needToSplitNode()  && ! (this.parent instanceof NodeRoot)){ // TO DO - refactor this.  Avoid checking class
-				//i.e the current node matches str 100%
-				//move the prefix to the parent and remove this node				
-				this.getParent().setString(this.getParent().getString() + this.getCommonPrefix(str));
+			// TO DO - Refactor line below to avoid checking class
+			if(! this.needToSplitNode()  && ! (this.parent instanceof NodeRoot)){
+				/* i.e the current node matches str 100%
+				move the prefix to the parent and remove this node */				
+				this.getParent().setSubstring(this.getParent().getSubstring() + this.getCommonPrefix(str));
 				this.getParent().addChildren(this.children);
 				this.getParent().removeChild(this);
 				return true;
 			} else {
 //				debugTrace("Node string, = str", str, index);
-				//IF HAS A $ SIBLING THIS NEEDS TO BE REMOVED
-				//IGNORE IF PARENT IS ROOT THOUGH
 				this.remove$Children();
-				if(children.get(children.size()-1).getString().equals("$")){
+				if(children.get(children.size()-1).getSubstring().equals("$")){
 //					debugTrace("	Child has string of $, index changed only ", str, index);					
-					children.get(children.size()-1).setStringIndex(index);				
+					children.get(children.size()-1).setSubstringIndex(index);				
 					return true;
 				} else {
 //					debugTrace("	No child with $ value, creating leaf node ", str, index);			
@@ -78,19 +81,15 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 					return true;
 				}
 			}
-		} else if(this.nodeIsAPrefixOf(str)){
+		} else if(this.nodeIsAPrefixOf(str)){/*if str is a prefix of this then iterate through child nodes */
 //			debugTrace("Node is a prefix of:",  str, index);
-			//I.e the incoming string 'str' is a prefix of this then the next path must be chosen.  Each child will be iterated through
 			for(InnerNode child: children){
-				//goes through the children in turn, if a match is found will return true else will return false and continue
-				if (child.addString(this.removeNodeFromArg(str), index)){
+				if (child.addSubstring(this.removeNodeFromArg(str), index)){
 					return true;
 				}
 			}
 			return false;	
-		} else if(this.string.equals("$")){
-			//BASE CASE
-			//MEANS WE ARE AT LAST CHILD BECAUSE $ WHERE IT EXISTS WILL ALWAYS BE AT THE END
+		} else if(this.string.equals("$")){ /*If this point reaches we are at last child because $ children always at the end*/			
 //			debugTrace("Node = $ (" + this.stringIndex + ")", str, index);
 			this.string = string;
 			this.stringIndex = index;
@@ -99,9 +98,8 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 //			debugTrace("Nothing matched in NodeNonLeaf " + this.string + "(" + this.stringIndex  + ") Returning false", str, index);
 			return false;
 		}
-		
 	}	
-	/**
+	/*
 	 * Private helper method for addString
 	 */
 	private void splitThisNode(String str, int index){
@@ -123,10 +121,8 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
 	
-	/*
-	 * 
-	 * pass string value "down" 
-	 * add accumulated indices at the end
+	/** 
+	 * @inheritDoc
 	 */
 	@Override
 	public List<Integer> processTree(String str) {
@@ -141,14 +137,15 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 	}
 	
 	
-	
-	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void printTree() {
+	public void printNode() {
 		Iterator<InnerNode> itr = children.iterator();
 		while(itr.hasNext()){
 			Node element = itr.next();
-			element.printTree();
+			element.printNode();
 		}
 		System.out.println("\n--------------------------------------------"
 							+ "\n NODE: " + this.string + " (" + this.stringIndex + ") "
@@ -163,12 +160,13 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 	/*-----------------------------------------------------------------------------------------
 	 * Children methods
 	 *----------------------------------------------------------------------------------------*/
-
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {		
 		this.children.remove(nodeToDelete);
-		if(replacementNode.getString().equals("$")){
+		if(replacementNode.getSubstring().equals("$")){
 			this.children.add(this.children.size(),replacementNode);	
 		} else {	
 			this.children.add(0,replacementNode);
@@ -176,13 +174,17 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 		
 	}
 	
-	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public void addChild(InnerNode child) {
 		this.children.add(child);
 		
 	}
-
+	/** 
+	 * @inheritDoc
+	 */
 	private void addChildLeaf(String string, int index) {
 		InnerNode child = new NodeLeaf(string, index, this);
 		if(string.equals("$")){
@@ -192,36 +194,51 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 			this.children.add(0,child);
 		}		
 	}
-
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public void setParent(Node parent) {
 		this.parent = parent;
 		
 	}
 	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public List<InnerNode> getChildren() {
 		return this.children;
 	}
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public Node getParent() {
 		return this.parent;
 	}
 
 	
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public void removeChild(InnerNode child) {
 		this.children.remove(child);
 		
 	}
-
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public void addChildren(List<InnerNode> children) {
 		for(InnerNode next: children){
 			next.setParent(this);
 			
-			if(next.getString().equals("$")){
+			if(next.getSubstring().equals("$")){
 				this.children.add(this.children.size(),next);	
 			} else {
 				this.children.add(0,next);
@@ -233,40 +250,57 @@ public class NodeNonLeaf extends InnerNodeAbstract {
 	 * String getters and setters
 	 *----------------------------------------------------------------------------------------*/
 	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public String getString() {
+	public String getSubstring() {
 		return this.string;
 	}
 
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void setSubString(int start) {
+	public void setSubstringByIndex(int start) {
 		this.string = this.string.substring(start);
 	}
 
-	
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public int getStringIndex() {
+	public int getSubstringIndex() {
 		return this.stringIndex;
 	}
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void setString(String str) {
+	public void setSubstring(String str) {
 			this.string = str;
 	}
-
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void setStringIndex(int index) {
+	public void setSubstringIndex(int index) {
 		this.stringIndex = index;
 		
 	}
-
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public String getfullString() {
 		return this.parentPrefix + this.string;
 	}
 
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public List<Integer> getIndices() {
 		return this.indices;

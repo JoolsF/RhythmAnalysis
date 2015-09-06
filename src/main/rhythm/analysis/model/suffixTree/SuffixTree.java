@@ -10,32 +10,19 @@ import rhythm.analysis.control.RhythmController;
 
 
 /**
- * @author Julian Fenner
+ * SuffixTree class
+ * Container class for the suffix tree.  Contains the root Node and a RhythmController field to connect the suffix tree to the model
+ * Also controls the process of adding string to the suffix tree but iterating through the substrings and adding them to the root node
  * 
- * My implementation / adaptation of Ukkonens' suffix tree construction algorithm 
- * https://www.cs.helsinki.fi/u/ukkonen
- * http://www.geeksforgeeks.org/ukkonens-suffix-tree-construction-part-1/
- */
-/*
- * TO REFACTOR - Whole package....
- *  1 Convert child nodes arraylists into hashmaps 
- * 	Means order of nodes won't matter i.e $ last and no need to iterate through children
- * 
- *  2 Replace all printline methods with logging
- *  
- *  3. Add exception handling
- *  
- *  4. Use findbugs
- *  
+ * @author Julian Fenner 
  */
 
 public class SuffixTree {
 	
 	private Node root;
 	private String string;
-	//TO DO, set from ui
 	private int numPulses; 
-	private int minSubStrLength;
+	private int minSubstrLength;
 	private RhythmController controller;
 	
 	
@@ -46,41 +33,36 @@ public class SuffixTree {
 	public SuffixTree(){
 		this.string = "";
 		this.root = new NodeRoot();
-		this.minSubStrLength = 1;
+		this.minSubstrLength = 1;
 		this.numPulses = 8;
 	}
-	
 	
 	public SuffixTree(RhythmController controller) {
 		this();
 		this.controller = controller;
 	}
 		
-	
-	public void reset(){
-		this.string = "";
-		this.root = null; //nullifying current object.
-		this.root = new NodeRoot();
-	}
-	
-	public void addString(String str1){		
-		//allows for updating of string
-		int startFrom = this.string.length(); 
-		String newString = this.string + str1;
+
+	/**
+	 * Takes a string argument and iterates through all substrings and corresponding indices adding them to root node
+	 * @param the string to be added
+	 * @return void
+	 */
+	public void addString(String str){		
+		int startFrom = this.string.length(); // Allows for updating of suffix tree if further strings are added onto the end of initial string 
+		String newString = this.string + str;
 		this.string = newString;	
 		
 		for(int i = startFrom; i < newString.length(); i++){			
 			for(int index = 0; index <= i; index++){
 //				debugTrace("------------------------\nNODE TO ADD: " + newString.substring(index, i+1), index);
-				root.addString(newString.substring(index, i+1), index);
+				root.addSubstring(newString.substring(index, i+1), index);
 //				debugTrace("ADDED TO TREE: " + newString.substring(index, i+1), index);
-				
 			}	
 //			debugTrace("NODE TO ADD: $",(i+1));
-			root.addString("$", i+1);
+			root.addSubstring("$", i+1);
 //			debugTrace("ADDED TO TREE: $", (i+1));
 		}
-		//Each time string is added this is called to reprocess nodeValues;
 		this.root.processTree("");
 		
 	}
@@ -89,43 +71,78 @@ public class SuffixTree {
 	 * Getters and setters
 	 *----------------------------------------------------------------------------------------*/
 
+	/**
+	 * Gets the string field of the suffix tree
+	 * @return the whole string represented by the suffix tree
+	 */
 	public String getString(){
 		return this.string;
 	}
+	
+	/**
+	 * Sets the SuffixTree class's controller
+	 * @param the suffix tree's controller
+	 */
 	public void setController(RhythmController rhythm_controller) {
 		this.controller = rhythm_controller;
 		
 	}
 	
+	/**
+	 * Gets the number of pulses per cycle in the data
+	 * @return the number of pulse.
+	 */
 	public int getNumPulses(){
 		return numPulses;
 	}
 	
+	/**
+	 * sets the number of pulses per cycle in the data.
+	 * @param the number of pulses.
+	 */
 	public void setNumPulses(int numPulses){
 		this.numPulses = numPulses;
 	}
-	public List<String> getSubStringList(){
+	
+	/**
+	 * Returns the value of every node in the in the suffix tree as a list.
+	 * @return a list of strings
+	 */
+	public List<String> getSubstringList(){
 		return this.root.nodesToList();
 	}
+	
 	/**
 	 * Returns the suffix tree in descending order of key length
-	 * @return
+	 * @return a map with  the key being the substring and the value being the list of indices at which the substring occurs
 	 */
-	public Map<String, List<Integer>> getSubStringMap(){
+	public Map<String, List<Integer>> getSubstringMap(){
 		return this.root.nodesToMap(new TreeMap<String, List<Integer>>(getComparator()));
 	}
 	
+	/**
+	 * Get the suffix tree's root node
+	 * @return the suffix tree's root node 
+	 */
 	public Node getTree(){
 		return this.root;
 	}
 	
-	public void setMinSubStrLength(int minSubStrLength){
+	/**
+	 * sets the minimum substringLength of the suffix tree
+	 * @param minSubStrLength
+	 */
+	public void setMinSubstrLength(int minSubStrLength){
 		//must be > 1
-		this.minSubStrLength = minSubStrLength;
+		this.minSubstrLength = minSubStrLength;
 	}
 	
-	public int getMinSubStrLength(){
-		return this.minSubStrLength;
+	
+	/**
+	 * @return int 
+	 */
+	public int getMinSubstrLength(){
+		return this.minSubstrLength;
 	}
 	
 	

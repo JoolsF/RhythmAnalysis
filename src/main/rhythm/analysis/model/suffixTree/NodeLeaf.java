@@ -27,9 +27,11 @@ public class NodeLeaf extends InnerNodeAbstract {
 	/*-----------------------------------------------------------------------------------------
 	 * Add string
 	 *----------------------------------------------------------------------------------------*/
-	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public boolean addString(String string, int index) {
+	public boolean addSubstring(String string, int index) {
 		if (this.nodeHasAPrefixOf(string)){
 			//BASE CASE - two sub cases 
 //			debugTrace("Node has a prefix, child has a prefix", string, index);
@@ -68,13 +70,20 @@ public class NodeLeaf extends InnerNodeAbstract {
 	/*-----------------------------------------------------------------------------------------
 	 * Tree analysis and post-processing methods
 	 *----------------------------------------------------------------------------------------*/
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public List<Integer> processTree(String str) {
 		this.parentPrefix = str;
 		return getIndices();
 	}
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void printTree() {	
+	public void printNode() {	
 //		System.out.println("NODE: " + this.string + " (" + this.stringIndex + ")" 
 //				+ "\n  Type: " + this.getClass().toString()+"\n");	
 	}
@@ -83,7 +92,9 @@ public class NodeLeaf extends InnerNodeAbstract {
 	 * Children methods
 	 *----------------------------------------------------------------------------------------*/
 	
-	
+	/** 
+	 * @inheritDoc
+	 */
 	private void convertToNodeNonLeaf(String str, int index){		
 		remove$Children();
 		String prefix =  this.string.substring(0, str.length());
@@ -99,40 +110,54 @@ public class NodeLeaf extends InnerNodeAbstract {
 		swapNode(this, replacementNode);	
 	}
 	
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode) {
 		parent.swapNode(nodeToDelete, replacementNode);	
 	}
 
-		
+	/** 
+	 * @inheritDoc
+	 */	
 	@Override
 	public void setParent(Node parent) {
 		this.parent = parent;
 		
 	}
-
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public Node getParent() {
 		return this.parent;
 	}
 
-	//Method not needed - Rethink interface.
+
+	
+	//TO DO - Rethink interface, null implementation
 	@Override
 	public void addChild(InnerNode child) {
 		// TODO Auto-generated method stub	
 	}
-	//Method not needed - Rethink interface.
+
+	
 	@Override
+	//TO DO - Rethink interface, null implementation
 	public void removeChild(InnerNode child) {
 		// TODO Auto-generated method stub	
 	}
-	//Method not needed - Rethink interface.
+
+	
+	//TO DO - Rethink interface, null implementation
 	@Override
 	public void addChildren(List<InnerNode> children) {
 		// TODO Auto-generated method stub	
 	}
-	///Method not needed - Rethink interface.
+	
+	
+	//TO DO - Rethink interface, null implementation
 	@Override
 	public List<InnerNode> getChildren() {
 		return new ArrayList<InnerNode>();
@@ -142,30 +167,49 @@ public class NodeLeaf extends InnerNodeAbstract {
 	/*-----------------------------------------------------------------------------------------
 	 * String getters and setters
 	 *----------------------------------------------------------------------------------------*/
-	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void setString(String str) {
+	public void setSubstring(String str) {
 		this.string = str;
 	}
-
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void setStringIndex(int index) {
+	public void setSubstringIndex(int index) {
 		this.stringIndex = index;
 	}
-
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public int getStringIndex() {
+	public int getSubstringIndex() {
 		return this.stringIndex;
 	}
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public void setSubString(int start) {
+	public void setSubstringByIndex(int start) {
 		this.string = this.string.substring(start);
 	}
+	
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
-	public String getString() {
+	public String getSubstring() {
 		return this.string;
 	}
 
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public String getfullString() {
 		if(this.string == "$"){
@@ -175,6 +219,9 @@ public class NodeLeaf extends InnerNodeAbstract {
 		}
 	}
 
+	/** 
+	 * @inheritDoc
+	 */
 	@Override
 	public List<Integer> getIndices() {
 		List<Integer> list = new ArrayList<Integer>();

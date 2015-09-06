@@ -13,15 +13,22 @@ import controlP5.Textarea;
 import controlP5.Textfield;
 import g4p_controls.*;
 
-/*
-Referenced
-https://processing.org/tutorials/text/
-https://processing.org/tutorials/transform2d/
-https://processing.org/tutorials/curves/
-http://www.gicentre.net/utils/zoom
-
-Processing Mouse Functions demo used for custom slider
+/**
+ * ArcViewer class
+ * 
+ *  This view class is a child view of the MainViewer class.  It is responsible for rendering the arcs
+ *  and arc sliders.  
+ * 
+ *  Referenced
+ *  https://processing.org/tutorials/text/
+ *  https://processing.org/tutorials/transform2d/
+ *  https://processing.org/tutorials/curves/
+ *  http://www.gicentre.net/software/#/utils/
+ *  Processing's 'Mouse Functions' demo referenced for custom slider
+ *  
+ *  @author Julian Fenner
 */
+
 public class ArcViewer extends EmbeddedSketch implements Observer  {
 	private static final long serialVersionUID = 1L;	
 
@@ -31,34 +38,34 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	private RhythmController controller;
 		
 	//Screen size variables - Immutable
-	public final int screenWidth, screenHeight, screenBorder, screenMidY,screenMidX ;
+	public final int screenWidth, screenHeight, screenBorder, screenMidY, screenMidX;
 	public final float lineLength;
 	
-	//Arc / line variables - Mutable
+	//Pixel value of arc view x-axis subdivisions 
 	private float lineSubDivision;
 	
-	//Processing
+	//Processing fields
 	private ControlP5 cp5;
 	private PFont f;	
 	private Textarea myTextarea;
-	
-	//Nested windows
-	private boolean windowsOpen;
-	private PopupWindow textViewWindow, cycleViewWindow;
-	private TextViewer textViewer;
-	private CycleViewer cycleViewer;
-	
-	private boolean applyColour;
 	
 	//Arc sliders
 	private ArcSlider leftSlider;
 	private ArcSlider rightSlider;
 	
-	//Ensures that arc only redrawn when model updated
-	//TO DO - Look for better method so that this variable isn't continually polled
+	//Boolean value controlling whether arc colour applied
+	private boolean applyColour;
 	
+	//Node data from model. Stored locally to avoid continual polling.
 	private List<List<Integer>> nodePairsExact;
 	private List<List<Integer>> nodePairsSimilar;
+	
+	//Child view windows
+	private PopupWindow textViewWindow, cycleViewWindow;
+	private TextViewer textViewer;
+	private CycleViewer cycleViewer;
+	private boolean windowsOpen;
+	
 	
 	/*-----------------------------------------------------------------------------------------
 	 * Constructor
@@ -69,17 +76,6 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		this.controller = controller;
 		//Initialise windows
 		this.controller.attach(this);
-		
-	
-		this.textViewer = new TextViewer(this, controller);
-		controller.attach(textViewer);
-		this.textViewWindow = new PopupWindow(this, textViewer); 
-		
-		this.cycleViewer = new CycleViewer(this, controller);
-		controller.attach(cycleViewer);
-		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
-		
-		this.windowsOpen = false;
 		
 		//Initialise screen dimensions
 		this.screenWidth = 1000;
@@ -92,14 +88,26 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		setLineSubDivision();
 				
 		//Initialise sliders
-		//ArcSlider(Arc_viewer arcViewer, int sliderWidth, int leftMin, int rightMax, int startX){
 		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
 		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
 		
+		//Get data from model
 		this.nodePairsExact = controller.getMatchingStrings();
 		this.nodePairsSimilar = controller.getSimilarStrings();
-		
+	
 		this.applyColour = true;
+		
+		//Intialise child views
+		this.textViewer = new TextViewer(this, controller);
+		controller.attach(textViewer);
+		this.textViewWindow = new PopupWindow(this, textViewer); 
+		
+		this.cycleViewer = new CycleViewer(this, controller);
+		controller.attach(cycleViewer);
+		this.cycleViewWindow = new PopupWindow(this, cycleViewer);	
+		
+		this.windowsOpen = false;
+		
 	}
 	
 	
@@ -107,7 +115,9 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 * Processing setup and draw methods
 	 *----------------------------------------------------------------------------------------*/	
 	 /**
-	  * Initialises the sketch ready to display the arc diagram
+	  * Processing setup method run immediately after constructor.
+	  * Initialises key screen elements such as size and background.
+	  * Run once
 	  */
 	 public void setup() {
 		size(screenWidth, screenHeight);
@@ -131,7 +141,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 
 	
 	 /**
-	   * Processing draw method runs in a loop - redraws the screen
+	   * Processing draw method runs in a loop immediately after setup()
 	   */
 	 public void draw()  {
 		super.draw();   // Should be the first line of draw().

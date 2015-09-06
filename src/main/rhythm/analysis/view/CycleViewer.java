@@ -44,8 +44,16 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 		radius = 180;
 		this.controller.attach(this);
 	}
+
 	
-	 
+	/*-----------------------------------------------------------------------------------------
+	 * Processing setup and draw methods
+	 *----------------------------------------------------------------------------------------*/	
+	 /**
+	  * Processing setup method run immediately after constructor.
+	  * Initialises key screen elements such as size and background.
+	  * Run once
+	  */
 	public void setup() {
 		size( 900, 500 );
 	    textSize(15);
@@ -64,6 +72,29 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	   
 	}
 
+	
+	/**
+     * Processing draw method runs in a loop immediately after setup() by default.
+     * Loop deactivated with noLoop() at end of method
+	 */
+	public void draw(){	
+		setPoints();
+		background(128);
+	    smooth();
+	    fill(0);
+
+	    
+	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){
+	    	
+	    	int leftSlider = this.arcViewerParent.getleftSlider();
+	    	int rightSlider = this.arcViewerParent.getRightSlider();
+	    	
+	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); //left slider
+	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider)); //right slider
+	    }
+	   noLoop();
+	}
+	
 	
 	public void setPoints(){
 		points = new PVector[this.controller.getNumPulses()];
@@ -85,24 +116,7 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	
 	
 	
-	//TO DO - Needs further debugging and integrating with data model.  Render circle commented out therefore
-	public void draw(){	
-		setPoints();
-		background(128);
-	    smooth();
-	    fill(0);
 
-	    
-	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){
-	    	
-	    	int leftSlider = this.arcViewerParent.getleftSlider();
-	    	int rightSlider = this.arcViewerParent.getRightSlider();
-	    	
-	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); //left slider
-	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider)); //right slider
-	    }
-	   noLoop();
-	}
 	
 	
 	public void renderCircle(int xTranslate, int yTranslate, Integer[] onsets){

@@ -48,7 +48,14 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 		this.colour = 0;
 	}
 	
-	
+	/*-----------------------------------------------------------------------------------------
+	 * Processing setup and draw methods
+	 *----------------------------------------------------------------------------------------*/	
+	 /**
+	  * Processing setup method run immediately after constructor.
+	  * Initialises key screen elements such as size and background.
+	  * Run once
+	  */
 	public void setup() {
 		size(screenWidth, screenHeight);
 		f = createFont("Georgia",fontSize,true);
@@ -57,7 +64,9 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 	    colorMode(HSB);	
 	    setColourMap();
 	}
-	
+	/**
+     * Processing draw method runs in a loop immediately after setup() by default.
+	 */
 	public void draw(){
 		background(128);
 		smooth();
@@ -74,11 +83,7 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 		char[] charArray = this.controller.getModelString().substring(left, right).toCharArray();
 		
 		int currentChar = 20;//; + left;
-		for(int i = 0; i < charArray.length; i ++){	
-			
-			//underline region
-			//if(i>= left && i <= right) line(currentChar, currentline + 5, currentChar +10, currentline + 5);
-			
+		for(int i = 0; i < charArray.length; i ++){		
 			if(colourMap.get(i + left) != null){
 				pushStyle();
 				fill(colourMap.get(i + left),255,255);

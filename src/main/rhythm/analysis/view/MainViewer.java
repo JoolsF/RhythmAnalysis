@@ -60,9 +60,14 @@ public class MainViewer extends PApplet implements Observer{
 
 	}	
 	
-	/**
-	 * setup() called immediately after constructor
-	 */
+	/*-----------------------------------------------------------------------------------------
+	 * Processing setup and draw methods
+	 *----------------------------------------------------------------------------------------*/	
+	 /**
+	  * Processing setup method run immediately after constructor.
+	  * Initialises key screen elements such as size and background.
+	  * Run once
+	  */
 	public void setup() {  
 		size(280,610);	  
 		frame.setTitle("Rhythmic Data Analyser");
@@ -153,9 +158,10 @@ public class MainViewer extends PApplet implements Observer{
 		myTextarea.setText("Enter number of pulses to start (between 2 and 32)");
 	}
 		
-
+	 /**
+	   * Processing draw method runs in a loop immediately after setup()
+	   */
 	public void draw() {
-		
 		background(0);
 		textSize(17);
 		text("Rhythmic Data Analyser",45,40);	

@@ -7,46 +7,89 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+/**
+ * Node interface.  Every subclass of Node in the suffix tree implements this interface
+ * Contains two default methods used for converting the suffix tree to a map or list representation
+ * @author Julian Fenner
+ */
 public interface Node {
 	
-	
-	/*-----------------------------------------------------------------------------------------
-	 * Abstract
-	 *----------------------------------------------------------------------------------------*/
-	public boolean addString(String str, int index); //returns true if string added successfully
-	
-	public String getString();
-//	public int getStringIndex();
-	public void setString(String str);
-		
-//	public void setSubString(int start); 
-//	public void setStringIndex(int index);
-	
-	public void addChild(InnerNode child);
-	public void addChildren(List<InnerNode> children);
-	public List<InnerNode> getChildren();
-	public void removeChild(InnerNode child);
-	
-	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
-	public void printTree();
+
+	/**
+	 * Adds a substring to the node
+	 * @param the substring to be added 
+	 * @param the index position of the substring
+	 * @return true if string successfully added to the node else returns false
+	 */
+	public boolean addSubstring(String str, int index);
 	
 	/**
-	 * 
-	 * @param str - the string value of the node
-	 * @return the combined childIndices
+	 * Gets the substring value of the node
+	 * @return the node's substring value 
 	 */
-	public List<Integer> processTree(String str); //start with empty string
+	public String getSubstring();
+	
+	/**
+	 * Sets the substring value of the node
+	 * @param the node's substring value 
+	 */
+	public void setSubstring(String str);
+	
+	/**
+	 * Adds a child to Node
+	 * @param a child node
+	 */
+	public void addChild(InnerNode child);
+	
+	/**
+	 * Adds a list of children to the Node
+	 * @param a list of child nodes 
+	 */
+	public void addChildren(List<InnerNode> children);
+	
+	/**
+	 * Returns Node's children
+	 * @return a list of nodes
+	 */
+	public List<InnerNode> getChildren();
+	
+	/**
+	 * Removes a child from the node
+	 * @param a child node
+	 */
+	public void removeChild(InnerNode child);
+	
+	/**
+	 * Takes two arguments, a node to delete and a replacement node to replace it with
+	 * @param the node to delete
+	 * @param the node to replace the deleted node with
+	 */
+	public void swapNode(InnerNode nodeToDelete, InnerNode replacementNode);
+	
+	/**
+	 *  Prints the node's field
+	 */
+	public void printNode();
+	
+	/**
+	 * Appends the child node with its substring value as the prefix.  The index values of the nodes are returned
+	 * @param the string value of the node
+	 * @return this list of indices at which the substring occurs
+	 */
+	public List<Integer> processTree(String str);
 
 	
 	
 	/*-----------------------------------------------------------------------------------------
-	 * Default - Output methods
+	 * Default methods
 	 *----------------------------------------------------------------------------------------*/
-	
-	//TO DO - Add exception if there are duplicate values in list value for given key.  
-	// Indicates problem with construction of tree
-	//by passing in the Map as an argument you can determine the sort order
-	//e.g if you pass in treemap with comparator to define ordering
+	/**
+	 * Default method for converting the suffix tree to a map representation.  The map's key is a substring
+	 * and the value is the list of indices at which the substring occurs
+	 * @param an empty map of String -> List<Integer> is passed as the argument allowing the return type to be parameterised.
+	 * For example, if a TreeMap is given as the argument a specific key sort order can be defined.
+	 * @return the String -> List<Integer> map of all substrings and indices in the suffix tree.
+	 */
 	public default Map<String, List<Integer>> nodesToMap(Map<String, List<Integer>> accMap){	
 		
 		Iterator<InnerNode> itr = getChildren().iterator();
@@ -70,7 +113,10 @@ public interface Node {
 	
 	
 	
-	
+	/**
+	 * Converts the nodeToMap data into a list of strings.
+	 * @return a list of strings
+	 */
 	public default List<String> nodesToList(){
 		Map<String, List<Integer>> nodeMap = nodesToMap(new TreeMap<String, List<Integer>>());
 		List<String> nodeList = new ArrayList<String>();

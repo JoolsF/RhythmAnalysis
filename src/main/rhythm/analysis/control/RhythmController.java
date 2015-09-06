@@ -63,11 +63,11 @@ public class RhythmController {
 	}
 	
 	public List<String> getTreeAsList(){
-		return this.suffixTree.getSubStringList();
+		return this.suffixTree.getSubstringList();
 	}
 	
 	public Map<String, List<Integer>> getTreeAsMap(){
-		return this.suffixTree.getSubStringMap();
+		return this.suffixTree.getSubstringMap();
 	}
 	
 	
@@ -98,11 +98,7 @@ public class RhythmController {
 		notifyAllObservers();
 	}
 	
-	public void resetModel() {
-		suffixTree.reset();
-		notifyAllObservers();
-	}
-	
+
 	public void setArcMin(int arcMin){
 		this.arcMin = arcMin;
 	}
