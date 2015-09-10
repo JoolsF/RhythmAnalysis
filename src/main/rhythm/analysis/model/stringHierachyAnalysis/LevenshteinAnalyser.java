@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import rhythm.analysis.control.RhythmController;
 
 /**
  * 

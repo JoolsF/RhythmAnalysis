@@ -1,11 +1,14 @@
 package rhythm.suffixTreeTests;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import org.apache.commons.lang3.Range;
 
 import org.junit.*;
 
@@ -48,7 +51,7 @@ public class SuffixTreeTest {
      *  a(0)  $(1) 
      */
     @Test
-    public void addSubString_childrenLengthTest_Depth1(){
+    public void addSubString_childrenLengthTest_depth1(){
     	String testInput = "a";
     	suffixTree1.addString(testInput);
     	assertEquals(testInput.length() +1 , suffixTree1.getTree().getChildren().size());
@@ -68,7 +71,7 @@ public class SuffixTreeTest {
 	 * Root should have 2 children
      */
     @Test
-    public void addSubString_childrenLengthTest_DepthGreaterThan1(){
+    public void addSubString_childrenLengthTest_depthGreaterThan1(){
     	String testInput = "aaa";
     	suffixTree1.addString(testInput);
     	assertEquals(2 , suffixTree1.getTree().getChildren().size());
@@ -79,7 +82,7 @@ public class SuffixTreeTest {
      * A String of length n should have n - 1 nodes.
      */
     @Test
-    public void nodes_equal_characterLength(){
+    public void numberNodes_equalCharacterLength(){
     	StringBuffer sb = new StringBuffer();
     	int cumulativeLength = 0;
     	for(int i = 1; i <= 20 ; i ++){
@@ -90,16 +93,23 @@ public class SuffixTreeTest {
     	}	
     }
     
+ 
+    
+    /**
+     * An n length string's leaf node indices should be the range 0 to n - 1
+     */
     @Test
-    public void nodes_unique(){
+    public void leafNodeIndices_Unique(){
     	StringBuffer sb = new StringBuffer();
-    	int cumulativeLength = 0;
     	for(int i = 1; i <= 20 ; i ++){
     		sb.append(i);
-    		cumulativeLength += sb.length();
     		suffixTree1.addString(sb.toString());
+    		List<Integer> sortedList = getTreeIndices();
+    		Collections.sort(sortedList);
     		
-    		assertEquals(cumulativeLength, getTreeIndices().size() -1);
+    		for(int j = 0; j <= sortedList.size() -1 ; j++){
+    			assertTrue(sortedList.get(j) == j);
+    		}
     	}	
     }
    
@@ -117,6 +127,17 @@ public class SuffixTreeTest {
     	
     	for(Entry<String, List<Integer>> entry: getSubstringMap().entrySet()){	
     		lst.addAll(entry.getValue());
+    	}
+    	
+    	return lst;
+    	
+    }
+    
+    private List<String> getSubstringIndices(){
+    	List<String> lst = new ArrayList<String>();
+    	
+    	for(Entry<String, List<Integer>> entry: getSubstringMap().entrySet()){	
+    		lst.add(entry.getKey());
     	}
     	
     	return lst;
