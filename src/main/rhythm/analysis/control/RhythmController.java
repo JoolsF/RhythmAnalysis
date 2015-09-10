@@ -95,6 +95,7 @@ public class RhythmController {
 	
 	public void updateTree(String str){
 		this.suffixTree.addString(str);
+		this.suffixTree.getTree().processTree("");
 		notifyAllObservers();
 	}
 	

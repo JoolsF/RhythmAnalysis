@@ -107,7 +107,7 @@ public interface Node {
 			currentNode.nodesToMap(accMap);
 		}		
 		//removes all $ values
-		accMap.remove("$");
+		//accMap.remove("$");
 		return accMap;					
 	}
 	

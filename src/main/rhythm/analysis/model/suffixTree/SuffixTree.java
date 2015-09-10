@@ -63,8 +63,6 @@ public class SuffixTree {
 			root.addSubstring("$", i+1);
 //			debugTrace("ADDED TO TREE: $", (i+1));
 		}
-		this.root.processTree("");
-		
 	}
 	
 	/*-----------------------------------------------------------------------------------------
@@ -117,7 +115,9 @@ public class SuffixTree {
 	 * @return a map with  the key being the substring and the value being the list of indices at which the substring occurs
 	 */
 	public Map<String, List<Integer>> getSubstringMap(){
-		return this.root.nodesToMap(new TreeMap<String, List<Integer>>(getComparator()));
+		Map<String, List<Integer>> substringMap = this.root.nodesToMap(new TreeMap<String, List<Integer>>(getComparator()));
+		substringMap.remove("$");
+		return substringMap;
 	}
 	
 	/**
