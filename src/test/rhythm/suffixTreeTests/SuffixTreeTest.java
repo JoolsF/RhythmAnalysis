@@ -1,23 +1,21 @@
 package rhythm.suffixTreeTests;
 
+import rhythm.analysis.model.suffixTree.SuffixTree;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
-import org.apache.commons.lang3.Range;
 
 import org.junit.*;
 
-import rhythm.analysis.model.suffixTree.SuffixTree;
 import static org.junit.Assert.*;
 
+import org.apache.commons.lang3.RandomStringUtils;
 
-
-// TO DO - Check that no node has children starting with same character
 
 public class SuffixTreeTest {
 	SuffixTree suffixTree1;
@@ -42,81 +40,120 @@ public class SuffixTreeTest {
     
     
     /**
-     * The length of the children array should always be input + 1 because of terminating symbol
-     * 
-     * Should produce tree
-     *      R
-     *     /\     
-     *    /  \     
-     *  a(0)  $(1) 
+     * Root node of a tree representing a string with 1 unique character should have 2 children
+     * Test case aa
      */
     @Test
-    public void addSubString_childrenLengthTest_depth1(){
-    	String testInput = "a";
-    	suffixTree1.addString(testInput);
-    	assertEquals(testInput.length() +1 , suffixTree1.getTree().getChildren().size());
+    public void numberChildrenRoot_aa_2() {
+    	suffixTree1.addString("aa");
+    	int expected = 2;
+    	int output =  suffixTree1.getTree().getChildren().size();
+    	assertEquals(expected, output);
+    	
     }
     
     /**
-     * "aaa$" should produce tree
-	 * 			R					
-	 *		   / \
-	 *		  a	  $(3)
-	 *		 /\
-	 *		/  \
-  	 *	   a    $(2)
-	 *	  / \
-	 *	a(0) $(1) 
-	 * 
-	 * Root should have 2 children
+     * Root node of a tree representing a string with 1 unique character should have 2 children
+     * Test case aaaaa
      */
     @Test
-    public void addSubString_childrenLengthTest_depthGreaterThan1(){
-    	String testInput = "aaa";
-    	suffixTree1.addString(testInput);
-    	assertEquals(2 , suffixTree1.getTree().getChildren().size());
+    public void numberChildrenRoot_aaaaa() {
+    	suffixTree1.addString("aaaaa");
+    	int expected = 2;
+    	int output =  suffixTree1.getTree().getChildren().size();
+    	assertEquals(expected, output);
+    	
+    }
+    
+    /**
+     * Root node of a tree representing a string with 2 unique character should have 3 children
+     * Test case ab
+     */
+    @Test
+    public void numberChildrenRoot_ab_3() {
+    	suffixTree1.addString("ab");
+    	int expected = 3;
+    	int output =  suffixTree1.getTree().getChildren().size();
+    	assertEquals(expected, output);
+    	
+    }
+    
+    /**
+     * Root node of a tree representing a string with 2 unique character should have 3 children
+     * Test case aaaab
+     */
+    @Test
+    public void numberChildrenRoot_aaaab_4() {
+    	suffixTree1.addString("aaaab");
+    	int expected = 3;
+    	int output =  suffixTree1.getTree().getChildren().size();
+    	assertEquals(expected, output);
+    	
+    }
+    
+    /**
+     * Root node of a tree representing a string with 10 unique character should have 11 children
+     * Test case abcdefghij
+     */
+    @Test
+    public void numberChildrenRoot_abcdefghij() {
+    	suffixTree1.addString("abcdefghij");
+    	int expected = 11;
+    	int output =  suffixTree1.getTree().getChildren().size();
+    	assertEquals(expected, output);
+    	
     }
 
     /**
-     * The number of nodes in the tree minus 1 should equal the string length represented by the tree.
-     * A String of length n should have n - 1 nodes.
+     * The number of leaf nodes in the tree minus 1 should equal the string length represented by the tree.
+     * A string of length n should have n  nodes (taking in account $ terminal symbol).
+     * Random string generated from alphabet {a-z} used as input.
+     * Ensures a wider variety of test cases can be run reducing chance that only particular substrings return true
      */
     @Test
-    public void numberNodes_equalCharacterLength(){
+    public void numberLeafNodes_equalCharacterLength(){
     	StringBuffer sb = new StringBuffer();
     	int cumulativeLength = 0;
-    	for(int i = 1; i <= 20 ; i ++){
-    		sb.append(i);
+    	for(int i = 1; i <= 30 ; i ++){
+    		sb.append(randomStringGenerator(1, "abcde"));
     		cumulativeLength += sb.length();
     		suffixTree1.addString(sb.toString());
-    		assertEquals(cumulativeLength, getTreeIndices().size() -1);
+    		assertEquals("Error with string " + sb.toString(),cumulativeLength, getTreeIndices().size() -1);
     	}	
     }
-    
+   
  
     
+
     /**
-     * An n length string's leaf node indices should be the range 0 to n - 1
+     * An n length string's leaf node indices should be the range 0 to n (taking in account $ terminal symbol).
+     * Random string generated from alphabet {a-z} used as input.
+     * Ensures a wider variety of test cases can be run reducing chance that only particular substrings return true
      */
     @Test
     public void leafNodeIndices_Unique(){
     	StringBuffer sb = new StringBuffer();
-    	for(int i = 1; i <= 20 ; i ++){
-    		sb.append(i);
+    	for(int i = 1; i <= 30 ; i ++){
+    		sb.append(randomStringGenerator(1, "abcde"));
     		suffixTree1.addString(sb.toString());
     		List<Integer> sortedList = getTreeIndices();
     		Collections.sort(sortedList);
     		
     		for(int j = 0; j <= sortedList.size() -1 ; j++){
-    			assertTrue(sortedList.get(j) == j);
+    			assertTrue("Error with string " + sb.toString(), sortedList.get(j) == j);
     		}
     	}	
     }
    
    
+   
     /*----------------------------------------------------------
      * Helper methods for tests 
      * --------------------------------------------------------*/
+    
+    private String randomStringGenerator(int length, String alphabet){
+		return RandomStringUtils.random(length, alphabet.toCharArray());
+	}
     
     private Map<String, List<Integer>> getSubstringMap() {
     	return this.suffixTree1.getTree().nodesToMap(new TreeMap<String, List<Integer>>(getComparator()));

@@ -91,7 +91,6 @@ public interface Node {
 	 * @return the String -> List<Integer> map of all substrings and indices in the suffix tree.
 	 */
 	public default Map<String, List<Integer>> nodesToMap(Map<String, List<Integer>> accMap){	
-		
 		Iterator<InnerNode> itr = getChildren().iterator();
 		while(itr.hasNext()){			 	
 			InnerNode currentNode = itr.next();
@@ -106,13 +105,11 @@ public interface Node {
 		
 			currentNode.nodesToMap(accMap);
 		}		
-		//removes all $ values
-		//accMap.remove("$");
 		return accMap;					
 	}
 	
-	
-	
+
+		
 	/**
 	 * Converts the nodeToMap data into a list of strings.
 	 * @return a list of strings
@@ -126,8 +123,6 @@ public interface Node {
 		return nodeList;
 	}
 	
-	
-	
-	
+		
 	
 }
