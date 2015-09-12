@@ -85,14 +85,14 @@ public class ModelPerformanceTests {
 	 */
 	public void updateTreeRuntimeTest(){
 		System.out.println("UPDATE TREE TEST");
-		//for(int alphabetSize = 2; alphabetSize <= 10; alphabetSize += 2 ){
+		for(int alphabetSize = 2; alphabetSize <= 10; alphabetSize += 2 ){
 			System.out.println("****************************");
 			System.out.println("alphabetSize: " + 5);
 			for (Map.Entry<Integer, Long> entry :  updateTreeRuntimeTestHelper(5, 2000, 500).entrySet()){
 				System.out.println(entry.getKey() + "," + entry.getValue());
 			}
 			System.out.println();
-		//}
+		}
 
 	}
 	
@@ -103,7 +103,6 @@ public class ModelPerformanceTests {
 		for(int stringLength = 0;  stringLength <= upTo; stringLength+= increments){
 			long time = updateTree(new RhythmController(),  randomStringGenerator(stringLength, testString.substring(0, strLength)));
 			results.put(stringLength,  time);
-			//System.out.println(stringLength);
 		}
 		return results;
 	}
@@ -114,7 +113,6 @@ public class ModelPerformanceTests {
 	 */
 	public void getMatchingRuntimeTest(){
 		System.out.println("GET MATCHING STRING TEST");
-		
 			System.out.println("****************************");
 			System.out.println("alphabetSize: " + 5);
 			for (Map.Entry<Integer, Long> entry :  getMatchingRuntimeTestHelper(5, 6000, 500).entrySet()){
@@ -174,7 +172,6 @@ public class ModelPerformanceTests {
 		updateTreeRuntimeTest();
 //		getMatchingRuntimeTest();
 //		getSubStringsNaiveRunner(0, 4000, 100);
-//	System.out.println( getSubStringsNaive(randomStringGenerator(1300, "abcde")));
 	}
 	public static void main(String[] args){
 		new ModelPerformanceTests().launchTests();
