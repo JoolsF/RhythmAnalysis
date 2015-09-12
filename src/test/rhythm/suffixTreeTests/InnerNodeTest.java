@@ -15,7 +15,6 @@ import rhythm.analysis.model.suffixTree.NodeNonLeaf;
 public class InnerNodeTest {
 	private String testNode1String;
 	private NodeNonLeaf nonLeaf;
-	//private Node leafNodeNoString;
 	
 	
     /**
@@ -26,7 +25,6 @@ public class InnerNodeTest {
     public void setUp() {
     	testNode1String = "ab11";
     	nonLeaf = new NodeNonLeaf(testNode1String, 0, null, new ArrayList<InnerNode>());
-    	//leafNodeNoString = new NodeImpl("$",1);
     }
 
     /**
@@ -65,8 +63,6 @@ public class InnerNodeTest {
     	assertFalse(nonLeaf.nodeIsAPrefixOf(testNode1String.substring(0, testNode1String.length()-2)));
     }
     
-    
-    //thisHasAPrefixOf tests
     @Test
     public void thishasAPrefixOf_testPrefixArgLessThanField(){
     	assertTrue(nonLeaf.nodeHasAPrefixOf(testNode1String.substring(0, testNode1String.length() -2)));

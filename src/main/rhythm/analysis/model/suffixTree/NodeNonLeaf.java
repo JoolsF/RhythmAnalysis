@@ -3,6 +3,7 @@ package rhythm.analysis.model.suffixTree;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 /**
  * NodeNonLeaf class extends InnerNodeAbstract.  Represents all non-leaf nodes in the suffix tree apart from the root
  * @author Julian Fenner

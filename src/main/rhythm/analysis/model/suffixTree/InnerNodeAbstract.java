@@ -4,10 +4,9 @@ import java.util.List;
 
 /**
  * Abstract class implementing InnerNode interface which in turn extends Node interface.
- * Since many implementations are common to both non-leaf and lead innerNodes they are
+ * Since many method implementations are common to both non-leaf and leaf innerNodes they are
  * given here to avoid code-duplication.
- * InnerNode classes should extend this class rather than implement InnerNode 
- * 
+ * InnerNode classes should extend this class rather than implement InnerNode. 
  * @author Julian Fenner
  */
 public abstract class InnerNodeAbstract implements InnerNode {
@@ -64,8 +63,8 @@ public abstract class InnerNodeAbstract implements InnerNode {
 
 	/**
 	 * Takes a string argument and returns a substring of it.  The starting substring index value is
-	 * this node's substring lengt
-	 * i.e if this node's substring field is a and the string argument is abab then bab is returned
+	 * this node's substring length i.e if this node's substring field is a and the string argument 
+	 * is abab then bab is returned
 	 * @param string to be modified
 	 * @return the modified string
 	 */
@@ -76,21 +75,19 @@ public abstract class InnerNodeAbstract implements InnerNode {
 	
 	/**
 	 * Returns a substring of this node's substring field. The starting substring index value is the
-	 * length of string argument
-	 * i.e if this node's substring field is abab and the string argument is a then bab is returned
+	 * length of the string argument i.e if this node's substring field is abab and the string argument 
+	 * is a then bab is returned
 	 * @param the string to remove from the node's substring field
 	 * @return the modified substring
 	 */
 	public String removeArgFromNode(String string){
 		return this.getSubstring().substring(string.length());
 	}
-	
-	
-	
+		
 	/**
-	 * Compares the string argument with node's substring checks which is longer
-	 * If the node's substring is longer it returns the node's substring up the length of the string arg
-	 * If the string arg is longer it returns this up to the length of the node's substring
+	 * Compares the string argument with the node's substring value and checks which is longer
+	 * If the node's substring is longer it returns the node's substring up to the length of the string argument
+	 * If the string argument is longer it returns this up to the length of the node's substring
 	 * @param the string to compare against the node's substring field
 	 * @return the modified substring
 	 */
@@ -104,12 +101,11 @@ public abstract class InnerNodeAbstract implements InnerNode {
 	
 	/**
 	 * Shortens this node's substring value by the length of the string argument and
-	 * moves this removed substring prefix to the parent node
+	 * moves this removed substring's prefix up to the parent node
 	 * @param string to be moved
 	 */
 	public void movePrefixUp(String string){	
-		//TO DO - Fix this as have to cast currently
-		//class cast exception causing bug here
+		//TO DO - Fix this as have to cast currently. Class cast exception causing bug here
 		InnerNode parent = (InnerNode) this.getParent();
 		parent.setSubstring(parent.getSubstring() + this.getCommonPrefix(string));
 		this.setSubstringByIndex(string.length());	
@@ -121,9 +117,9 @@ public abstract class InnerNodeAbstract implements InnerNode {
 	 *----------------------------------------------------------------------------------------*/
 	
 	/**
-	 * Checks if this node has a child with a substring value with the same first letter as string argument
+	 * Checks if this node has a child with a substring value with the same first letter as the string argument
 	 * @param the string to be checked
-	 * @return true if the string to be checked shares a first letter with any child node's substring fields else false
+	 * @return true if the string to be checked shares a first letter with any child node's substring field else false
 	 */
 	public boolean hasChildWithSameFirstLetter(String string){
 		char charToCheck[] = string.toCharArray();
@@ -168,7 +164,7 @@ public abstract class InnerNodeAbstract implements InnerNode {
 		return this.getParent().getChildren().get(this.getParent().getChildren().size()-1).getSubstring();
 	}
 	/**
-	 * Gets the substring value of the this node's last sibling in the parent's list 
+	 * Gets the substring value of this node's last sibling in the parent's list 
 	 * @return the substring value of the last sibling in the parent's list
 	 */
 	public InnerNode getLastSibling(){
@@ -183,8 +179,6 @@ public abstract class InnerNodeAbstract implements InnerNode {
 		return this.getParent().getChildren();
 	}
 	
-	
-
 	/**
 	 * Removes any % children from parent (if parent not root)
 	 */
@@ -193,7 +187,6 @@ public abstract class InnerNodeAbstract implements InnerNode {
 			this.getParent().removeChild(getLastSibling());
 			}
 		}
-	
 	
 	
 	/*-----------------------------------------------------------------------------------------

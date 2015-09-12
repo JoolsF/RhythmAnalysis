@@ -12,7 +12,7 @@ import rhythm.analysis.control.RhythmController;
 /**
  * SuffixTree class
  * Container class for the suffix tree.  Contains the root Node and a RhythmController field to connect the suffix tree to the model
- * Also controls the process of adding string to the suffix tree but iterating through the substrings and adding them to the root node
+ * Also controls the process of adding strings to the suffix tree
  * 
  * @author Julian Fenner 
  */

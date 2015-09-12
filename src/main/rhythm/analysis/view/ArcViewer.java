@@ -37,30 +37,30 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 *----------------------------------------------------------------------------------------*/
 	private RhythmController controller;
 		
-	//Screen size variables - Immutable
+	/*Screen size variables - Immutable*/
 	public final int screenWidth, screenHeight, screenBorder, screenMidY, screenMidX;
 	public final float lineLength;
 	
-	//Pixel value of arc view x-axis subdivisions 
+	/*Pixel value of arc view x-axis subdivisions*/ 
 	private float lineSubDivision;
 	
-	//Processing fields
+	/*Processing fields*/
 	private ControlP5 cp5;
 	private PFont f;	
 	private Textarea myTextarea;
 	
-	//Arc sliders
+	/*Arc sliders*/
 	private ArcSlider leftSlider;
 	private ArcSlider rightSlider;
 	
 	//Boolean value controlling whether arc colour applied
 	private boolean applyColour;
 	
-	//Node data from model. Stored locally to avoid continual polling.
+	/*Node data from model. Stored locally to avoid continual polling.*/
 	private List<List<Integer>> nodePairsExact;
 	private List<List<Integer>> nodePairsSimilar;
 	
-	//Child view windows
+	/*Child view windows*/
 	private PopupWindow textViewWindow, cycleViewWindow;
 	private TextViewer textViewer;
 	private CycleViewer cycleViewer;
@@ -72,32 +72,32 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 *----------------------------------------------------------------------------------------*/
 			
 	public ArcViewer(RhythmController controller){		
-		//Initialise controller
+		/*Initialise controller*/
 		this.controller = controller;
-		//Initialise windows
+		/*Initialise windows*/
 		this.controller.attach(this);
 		
-		//Initialise screen dimensions
+		/*Initialise screen dimensions*/
 		this.screenWidth = 1000;
 		this.screenBorder = 125;
 		this.screenHeight = 800;
-		//TO DO - - 20 offset being used to correct centering.  Find cause and remove.
+		//TO DO - 20 offset being used to correct centering issue.  Find cause and remove.
 		this.screenMidY = (screenHeight / 2) - 20; 
 		this.screenMidX = screenWidth / 2;
 		this.lineLength = screenWidth - (screenBorder * 2);
 		setLineSubDivision();
 				
-		//Initialise sliders
+		/*Initialise sliders */
 		this.leftSlider  = new ArcSlider(this, 15, screenBorder, screenMidX, screenBorder);
 		this.rightSlider = new ArcSlider(this, 15, screenMidX, screenWidth - screenBorder, screenWidth - screenBorder);
 		
-		//Get data from model
+		/* Get data from model */
 		this.nodePairsExact = controller.getMatchingStrings();
 		this.nodePairsSimilar = controller.getSimilarStrings();
 	
 		this.applyColour = true;
 		
-		//Intialise child views
+		/*Intialise child views */
 		this.textViewer = new TextViewer(this, controller);
 		controller.attach(textViewer);
 		this.textViewWindow = new PopupWindow(this, textViewer); 
@@ -127,7 +127,8 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	    textFont(f);
 	    fill(0);
 	    textAlign(CENTER);
-	    //Text area
+	    
+	    /*Text area */
 	    pushStyle();
 	    myTextarea = cp5.addTextarea("txt")
 	    	    .setPosition(20,25)
@@ -144,10 +145,10 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	   * Processing draw method runs in a loop immediately after setup()
 	   */
 	 public void draw()  {
-		super.draw();   // Should be the first line of draw().
-		background(200, 255, 200); // Should be second line of draw(). 
+		super.draw();   /* Should be the first line of draw().*/
+		background(200, 255, 200); /*Should be second line of draw().*/ 
 		setLineSubDivision();
-		//The five draw methods below should be called in this order to ensure layers overlap correctly
+		/*The five draw methods below should be called in this order to ensure layers overlap correctly */
 		drawArcDiagram(nodePairsExact, -PI, 0);
 		drawArcDiagram(nodePairsSimilar, 0, PI);
 		drawArcXaxis();
@@ -156,49 +157,59 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 }
 	 
 	  
-	 
-
 		/*-----------------------------------------------------------------------------------------
 		 * Getters and setters
 		 *----------------------------------------------------------------------------------------*/
-		
-		public String getData(){
-			return this.controller.getModelString();
-		}	
-		
-		public char[] getStringAsArray(){
-			return this.getData().toCharArray();
-		}
-		
-		public String getString(){
-			return this.getData();
-		}
-		
+		/**
+		 * Gets left slider's position
+		 * @return the left slider's position
+		 */
 		public int getleftSlider(){
 			 return this.leftSlider.getSlider();
 		 }
-			
+		
+		/**
+		 * Gets right slider's position
+		 * @return the right slider's position
+		 */
 		public int getRightSlider(){
 			return this.rightSlider.getSlider();
 		}
 		
+		/**
+		 * Gets node pair data
+		 * @return the node pair data
+		 */
 		public List<List<Integer>> getNodePairs(){
 			return this.nodePairsExact;
 		}
 		
+		/**
+		 * Updates the text viewer
+		 */
 		public void updateTextViewer(){
 			this.textViewer.update();
 		}
 		
+		/**
+		 * Sets whether arc colour should be applied
+		 * @param boolean value set to true is arc colour should be applied else false
+		 */
 		public void setArcColour(boolean flag){
 			this.applyColour = flag;
 		}
-		
-		
 		/**
-		 *  Given that first character of string will be rendered at start of line the line should be 
-		 *  divided into (line width / s.length()-1 ) sections.  In this case (s.length - 1) = 8
-		 *	therefore 700 / 8 = 87.5 meaning that characters should be placed along line every 87.5 characters
+		 * Gets the line subdivision value of the arc viewer x-axis
+		 * @return the line subdivision value of the arc viewer x-axis
+		 */
+		public float getLineSubdivision(){
+			return this.lineSubDivision;
+		}
+		
+		
+		/*
+		 *  Given that the first character of the string will be rendered at the start of line, the line should be 
+		 *  divided into (line width / s.length()-1 ) sections. 
 		 */
 		private void setLineSubDivision(){
 			// TO DO - handle case better where model data is empty string
@@ -209,23 +220,18 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			}
 		}
 		
-		public float getLineSubdivision(){
-			return this.lineSubDivision;
-		}
+		private String getData(){
+			return this.controller.getModelString();
+		}	
 		
-		
-		
-	 
-	 
-	 
-	 
+			 
 	 
 	 /*-----------------------------------------------------------------------------------------
 	  * Arc diagram draw methods
 	  *----------------------------------------------------------------------------------------*/	
-	 /**
-	  * Draw arc diagram on the screen
-	  * Render arcs https://processing.org/reference/arc_.html
+	 /*
+	  * Draws arc diagram on the screen
+	  * Reference - https://processing.org/reference/arc_.html
 	  * Arcs connect repetition regions in a string.  
  	  * The width of the arc is the width of one of the repetition regions (they are the same)
  	  * Each arc has four args (int regionAstart, int regionAend, int regionBstart, int regionBend)   
@@ -235,11 +241,11 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
       * arc(x, y, width, height, start, stop);
 	  *	x represents the middle of the 'ellipse' which will be nodeTo - ((nodeTo position - nodeFrom position) / 2)
 	  * As we need to take into account the width of the arc using strokeWeight(), we will need to calculate the
-	  *	nodeFrom and nodeTo position as being midway between regionAstart -> regionAend and regionBstart -> regionBstend respectively
+	  *	nodeFrom and nodeTo position as being midway between regionAstart  to regionAend and regionBstart to regionBstend 
+	  * respectively
 	  * The width will simply be nodeTo position - nodeFrom position
-      *	The strokeWeight will be the distance regionAstart -> regionAend 
-      *Height can be any value for now 
-	 * @param nodePairsExact2 
+      *	The strokeWeight will be the distance regionAstart to regionAend 
+      * Height can be any value for now  
 	  */
 	 private void drawArcDiagram(List<List<Integer>> nodePairs, float start, float stop){ 
 		 for(List<Integer> next: nodePairs){	 
@@ -251,26 +257,21 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			 float regionBstart = next.get(2) * lineSubDivision + screenBorder;
 			 float regionBend= next.get(3) * lineSubDivision + screenBorder;
 			 float nodeLength = regionAend - regionAstart;
-			 float nodeGap = regionBstart - regionAend;
 			 float nodeFrom = getMidPoint(regionAstart, regionAend);
 			 float nodeTo = getMidPoint(regionBstart, regionBend);		 
 			 float arcMiddle = nodeTo - ((nodeTo - nodeFrom) /2);
 			 float arcWidth = nodeTo - nodeFrom; 	
 			 float arcHeight = arcWidth;
-			 float arcSpan =  regionBend - regionAstart;
 			 
-			 //Checks if the phase of the two arc are the same.
+			 /*Checks if the phase of the two arc are the same.*/
 			 int arc1Phase = next.get(0) % this.controller.getNumPulses() -1;
 			 int arc2Phase = next.get(2) % this.controller.getNumPulses() -1;
 			 boolean phaseEqual = (arc1Phase == arc2Phase);
-			 
-			 
-			 //Deals with single character matches.
+	
+			 /*Deals with single character matches.*/
 			 //TO DO  - Improve logic and build into algorithm above.
 			 if(nodeDistance == 0)  nodeLength = 10;
-			 //TO DO - Fix line below so that arcs above a 
-			// if(arcSpan / lineLength > 0.9 && nodeGap > 150) arcHeight -= 150; 
-			 
+	 
 			 pushStyle(); 
 			 noFill();
 			 if(phaseEqual && this.applyColour){
@@ -280,19 +281,18 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 					 stroke(0, 168, 204, 90);
 				 }
 			 } else{
-			     stroke(100,90); // 2nd arg is alpha value	 
+			     stroke(100,90); /* 2nd arg is alpha value */	 
 			 }
 			 
 			 strokeWeight(nodeLength);
-			 strokeCap(SQUARE); // Makes ends of arc square	
-			 //arc(a, b, c, d, start, stop) 
+			 strokeCap(SQUARE); /* Makes ends of arc square */	 
 			 arc(arcMiddle, screenMidY, arcWidth,arcHeight, start, stop);
 			 popStyle(); 		 
 			}
 		 }	 
 		 
 	 }
-	 //Helper method for drawArcDiagram
+	 /*Helper method for drawArcDiagram */
 	 private float getMidPoint(float x, float y){
 		 return (x + y) / 2;
 	 }
@@ -334,7 +334,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 			    	pushMatrix();
 			    	rotate(-HALF_PI);
 			    	//TO DO - make second variable b in text(a,b,c,d) below proportional to string length so that very large strings don't overlap x axis
-			    	text(i + 1,-20, 0); // i + 1 so that axis start from 1 not 0
+			    	text(i + 1,-20, 0); /* i + 1 so that axis start from 1 not 0 */
 			    	ellipse(0,-0,3,3);
 			    	popMatrix();
 			    }
@@ -343,7 +343,7 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 		 }
 	 }
 	 
-	 /**
+	 /*
 	  * Helper method for draw() that draws sliders and checks if mouse is over any sliders
 	  */
 	 private void drawSliders(){
@@ -367,13 +367,13 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 *----------------------------------------------------------------------------------------*/
 	
 	 
-	 private void updateCycleViewer() {
+	private void updateCycleViewer() {
 		this.cycleViewer.redraw();
 	}
 
 
 	private void drawTopLeftText(){
-		// 1 added to left and right slider value so that it displays from 1 not 0
+		/* 1 added to left and right slider value so that it displays from 1 not 0 */
 		 this.myTextarea.setText("Left slider: " +  (this.leftSlider.getSlider() + 1) +
 					"\n" +
                  "Right slider: " + (this.rightSlider.getSlider() + 1) + 
@@ -413,10 +413,11 @@ public class ArcViewer extends EmbeddedSketch implements Observer  {
 	 
 	}
 
-
+	 /**
+	  * Implements the update method from Observer interface.
+	  */
 	@Override
 	public void update() {
-		//on called on model calling update method as very expensive process.
 		this.nodePairsExact = this.controller.getMatchingStrings();	
 		this.nodePairsSimilar = this.controller.getSimilarStrings();	
 	}	 

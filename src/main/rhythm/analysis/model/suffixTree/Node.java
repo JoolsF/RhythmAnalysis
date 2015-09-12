@@ -10,6 +10,7 @@ import java.util.TreeMap;
 /**
  * Node interface.  Every subclass of Node in the suffix tree implements this interface
  * Contains two default methods used for converting the suffix tree to a map or list representation
+ * since this is the same for all subclasses.
  * @author Julian Fenner
  */
 public interface Node {
@@ -74,7 +75,7 @@ public interface Node {
 	/**
 	 * Appends the child node with its substring value as the prefix.  The index values of the nodes are returned
 	 * @param the string value of the node
-	 * @return this list of indices at which the substring occurs
+	 * @return the list of indices at which the substring occurs
 	 */
 	public List<Integer> processTree(String str);
 
@@ -84,11 +85,12 @@ public interface Node {
 	 * Default methods
 	 *----------------------------------------------------------------------------------------*/
 	/**
-	 * Default method for converting the suffix tree to a map representation.  The map's key is a substring
+	 * Default method for converting the suffix tree to a map.  The map's key is a substring
 	 * and the value is the list of indices at which the substring occurs
-	 * @param an empty map of String -> List<Integer> is passed as the argument allowing the return type to be parameterised.
-	 * For example, if a TreeMap is given as the argument a specific key sort order can be defined.
-	 * @return the String -> List<Integer> map of all substrings and indices in the suffix tree.
+	 * @param an empty map of String -> Integer List.  This allows the returned tree return type 
+	 * to be modified.  For example, if a TreeMap is given as the argument a specific key sort order 
+	 * can be defined.
+	 * @return the String to Integer List map of all substrings and indices in the suffix tree.
 	 */
 	public default Map<String, List<Integer>> nodesToMap(Map<String, List<Integer>> accMap){	
 		Iterator<InnerNode> itr = getChildren().iterator();
@@ -97,7 +99,6 @@ public interface Node {
 			String key = currentNode.getfullString();
 			List<Integer> value = currentNode.getIndices();
 		
-			//If substring not already present in map then create new key val pair
 			if(accMap.get(key) == null){ 
 				accMap.put(key, new ArrayList<Integer>());		
 			}
@@ -121,8 +122,5 @@ public interface Node {
     		nodeList.add((value.getKey() + ": " + value.getValue() +"\n"));
     	}
 		return nodeList;
-	}
-	
-		
-	
+	}	
 }

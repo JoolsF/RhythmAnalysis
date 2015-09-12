@@ -1,6 +1,11 @@
 package rhythm.analysis.model.suffixTree;
 
-
+/**
+ * Node leaf class.
+ * Represents leaf nodes in the suffix tree
+ * 
+ * @author Julian Fenner
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +13,7 @@ public class NodeLeaf extends InnerNodeAbstract {
 
 	private String string;
 	private int stringIndex;
-	
 	private String parentPrefix;
-	
 	
 	private Node parent;
 	
@@ -33,7 +36,7 @@ public class NodeLeaf extends InnerNodeAbstract {
 	@Override
 	public boolean addSubstring(String string, int index) {
 		if (this.nodeHasAPrefixOf(string)){
-			//BASE CASE - two sub cases 
+			/*BASE CASE - two sub cases*/ 
 //			debugTrace("Node has a prefix, child has a prefix", string, index);
 			if(this.needToSplitNode()){
 //				debugTrace("Splitting Node ", string, index);	
@@ -46,23 +49,22 @@ public class NodeLeaf extends InnerNodeAbstract {
 			}
 		} else if (this.nodeIsAPrefixOf(string)){
 //			debugTrace("Node is a prefix ", string, index);
-			//BASE CASE			
+			/*BASE CASE*/			
 			this.string += this.removeNodeFromArg(string);
 			this.stringIndex = index;
 			return true;
 		}  else if(this.string.equals("$")){
 //			debugTrace("This string = $", string, index);
-			//BASE CASE 
-			//i.e. This is a leaf node without any value then you are at correct place and just need to update the field
-			//children will be sorted so that "$" for any given list of children will always be at the end.
+			/*BASE CASE 
+			I.e this is a leaf node without any value then you are at correct place and just need to update the field.
+			Children will be sorted so that "$" for any given list of children will always be at the end. */
 			this.string = string;
 			this.stringIndex = index;
 			return true;
 		} else if (this.string.equals(string)){
 //			debugTrace("this string = sting arg.  **DOING NOTHING CURRENTLY**", string, index);			
-			// DOES THIS CASE OCCUR??
 		} 
-		//if it gets to this point no string has been added and the method return false to confirm
+		/*if it gets to this point no string has been added and the method return false to confirm */
 //		debugTrace("No matches and node returning false", string, index);
 		return false;
 	}
@@ -103,8 +105,7 @@ public class NodeLeaf extends InnerNodeAbstract {
 		
 		NodeNonLeaf replacementNode = new NodeNonLeaf(prefix, -1, this.parent, children);		
 		InnerNode leaf1 = new NodeLeaf(suffix, this.stringIndex, replacementNode); 
-		InnerNode leaf2 = new NodeLeaf("$",index, replacementNode); 				
-		//important that node containing "$" added second
+		InnerNode leaf2 = new NodeLeaf("$",index, replacementNode); /*Crucial that node containing "$" added second */ 
 		children.add(leaf1);
 		children.add(leaf2);		 		
 		swapNode(this, replacementNode);	
@@ -228,6 +229,5 @@ public class NodeLeaf extends InnerNodeAbstract {
 		list.add(this.stringIndex);
 		return list;
 	}
-	
 
 }

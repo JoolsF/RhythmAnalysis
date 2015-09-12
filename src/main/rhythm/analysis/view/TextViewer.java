@@ -2,49 +2,41 @@ package rhythm.analysis.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.gicentre.utils.multisketch.EmbeddedSketch;
-import org.gicentre.utils.multisketch.PopupWindow;
 
-import controlP5.ControlP5;
-import controlP5.Textarea;
 import processing.core.PFont;
 import rhythm.analysis.control.RhythmController;
-import rhythm.analysis.model.stringHierachyAnalysis.StringPair;
 
 public class TextViewer  extends EmbeddedSketch implements Observer{
 
 	private static final long serialVersionUID = 1L;
 	private final int screenWidth = 500;
 	private final int screenHeight = 500;
-	private final int screenBorder = 50;
 	
 	private PFont f;
 	private int fontSize = 20;
 	private int lineHeight = fontSize + 5;
 	private int characterSpacing = 15;
-	//private Random rand = new Random();
 	
 	private ArcViewer arcViewerParent;
 	private RhythmController controller;
 	
 	private Map<Integer, Integer> colourMap;
-	//Map<List<Integer>, Integer> usedRegion;
 	
 	private int colour;
 	
-	
+	/*-----------------------------------------------------------------------------------------
+	 * Constructor
+	 *----------------------------------------------------------------------------------------*/
 	public TextViewer(ArcViewer arcViewerParent, RhythmController controller){
 		this.arcViewerParent = arcViewerParent;	
 		this.controller = controller;
-		this.colourMap = new HashMap<Integer, Integer>(); // Maps characters to colours.
+		this.colourMap = new HashMap<Integer, Integer>();
 		this.colour = 0;
 	}
 	
@@ -64,6 +56,7 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 	    colorMode(HSB);	
 	    setColourMap();
 	}
+	
 	/**
      * Processing draw method runs in a loop immediately after setup() by default.
 	 */
@@ -74,8 +67,8 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 		if(this.controller.getModelString().length() > 0)  drawText();
 	}
 	
-	
-	public void drawText(){
+
+	private void drawText(){
 		int currentline = lineHeight;
 		int left = arcViewerParent.getleftSlider();
 		int right = arcViewerParent.getRightSlider();
@@ -109,16 +102,14 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 		return this.colour;
 	}
 	
-	/**
+	/*
 	 * Takes a 2d array representing pairs of matching words
 	 * Each element contains an array of length 3 with {a,b,l} integers
 	 * a is position of character a
 	 * b is position of character b
 	 * l is length of words
-	 * 
 	 */
 	private void setColourMap(){ 
-		
 		colourMap.clear();
 		for(List<Integer> matchingRegion: this.controller.getMatchingStrings()){
 			List<Integer> arc1Region = getSequenceAsList(matchingRegion.get(0), matchingRegion.get(1));
@@ -149,7 +140,9 @@ public class TextViewer  extends EmbeddedSketch implements Observer{
 	}
 	
 
-	
+	/**
+	 * Implementation of Observer interface's update method
+	 */
 	@Override
 	public void update() {
 		setColourMap();

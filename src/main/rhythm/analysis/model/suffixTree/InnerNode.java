@@ -17,7 +17,7 @@ public interface InnerNode extends Node {
 	public String getfullString();
 	
 	/**
-	 * Returns a list of indices at which the substring at this node occurs
+	 * Gets a list of indices at which the substring at this node occurs
 	 * @return a list of indices
 	 */
 	public List<Integer> getIndices();

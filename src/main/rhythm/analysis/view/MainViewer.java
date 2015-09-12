@@ -9,18 +9,15 @@ http://forum.processing.org/two/discussion/1368/controlp5-buttons-controls-trigg
 */
 
 //TO DO look into performance.  I.e when new string analysed other screen should close and their objects be destroyed
-//TO DO look into slider graphics versus output when string length > 50.  Scale and ouput not matching
+//TO DO look into slider graphics versus output when string length > 50.  Scale and output not matching
 import java.io.File;
 
 import processing.core.*;
 
 import org.gicentre.utils.multisketch.*;
-
-import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textarea;
 import controlP5.Textfield;
-import controlP5.Toggle;
 import rhythm.analysis.control.RhythmController;
 
 public class MainViewer extends PApplet implements Observer{
@@ -35,25 +32,26 @@ public class MainViewer extends PApplet implements Observer{
 	private ArcViewer arcView;
 	
 	private Textfield textfield;
-	private Textfield textfield2;
 		
 	private boolean pulsesSet;
 	private boolean initialInputSet;
 	private boolean toggleSimilarity;
 	private boolean toggleArcFilter;
 	
-		
+	/*-----------------------------------------------------------------------------------------
+	 * Constructor
+	 *----------------------------------------------------------------------------------------*/		
 	public MainViewer(){
 		this.pulsesSet = false;
 		this.initialInputSet = false;
-		this.toggleSimilarity = false; // set to false by default
+		this.toggleSimilarity = false; /* Must be set to false by default */
 		this.toggleArcFilter = true;
 		
-		//MVC system started here
+		/*MVC structure started here */
 		this.controller = new RhythmController(this);
 		this.controller.attach(this);
 		
-		//Start second windows
+		/*Start second windows*/
 		this.arcView = new ArcViewer(controller);
 		this.controller.attach(arcView);
 		this.arcViewWindow = new PopupWindow(this, arcView);
@@ -71,12 +69,11 @@ public class MainViewer extends PApplet implements Observer{
 	public void setup() {  
 		size(280,610);	  
 		frame.setTitle("Rhythmic Data Analyser");
-		//Fontsetup
 		PFont font = createFont("arial",20);
 		textFont(font);
 		cp5 = new ControlP5(this);
 		
-		//Input textfield 1
+		/*Input textfield 1 */
 		textfield = cp5.addTextfield("input")
 					   .setPosition(40,70)
 		 	           .setSize(200,40)
@@ -86,16 +83,8 @@ public class MainViewer extends PApplet implements Observer{
 		textfield.setAutoClear(false);
 		
 		arcViewWindow.setVisible(true);
-		
-//		//Button
-//		cp5.addButton("clear_data")
-//		.setBroadcast(false)	
-//		.setValue(100)
-//		.setPosition(40,125)
-//		.setSize(200,19)
-//		.setBroadcast(true);
-			
-		// Slider
+				
+		/* Arc min slider */
 		cp5.addSlider("arcMin")
 			.setBroadcast(false)
 			.setPosition(40,135)
@@ -105,39 +94,30 @@ public class MainViewer extends PApplet implements Observer{
 			.setValue(1)
 			.setBroadcast(true);
 		
-		  // create a toggle and change the default look to a (on/off) switch look
+		/* Similarity toggle */ 
 		cp5.addToggle("similarity")
 		 	.setPosition(40,185)
 		 	.setSize(50,20)
-		 	.setValue(false) // set to false by default
+		 	.setValue(false) /* set to false be default*/
 		 	.setMode(ControlP5.SWITCH)
 		     ;
-		
+		/* Arc filter toggle */ 
 		cp5.addToggle("arcFilter")
 	 	.setPosition(115,185)
 	 	.setSize(50,20)
-	 	.setValue(true) // set to false by default
+	 	.setValue(true) 
 	 	.setMode(ControlP5.SWITCH)
 	     ;
 		
+		/* Arc colour toggle */ 
 		cp5.addToggle("arcColour")
 	 	.setPosition(185,185)
 	 	.setSize(50,20)
-	 	.setValue(true) // set to false by default
+	 	.setValue(true)
 	 	.setMode(ControlP5.SWITCH)
 	     ;
-		
-//		cp5.addSlider("pulses")
-//		.setBroadcast(false)
-//		.setPosition(40,275)
-//		.setSize(200,20)
-//		.setRange(3,32)
-//		.setNumberOfTickMarks(10)
-//		.setValue(8)
-//		.setBroadcast(true);
-		
 
-		
+		/*Load file button*/
 		cp5.addButton("loadFile")
 		.setBroadcast(false)	
 		.setValue(100)
@@ -146,7 +126,7 @@ public class MainViewer extends PApplet implements Observer{
 		.setBroadcast(true);	
 		  
 		  
-		//Text area
+		/*Text area */
 		myTextarea = cp5.addTextarea("txt")
 	    .setPosition(40,285)
 	    .setSize(200,290)
@@ -168,37 +148,31 @@ public class MainViewer extends PApplet implements Observer{
 		fill(255);	 
 	}
 	
-	//ControlP5 code starts here
-	
-	/**
-	 * clear()
-	 * @see processing.core.PApplet#clear()
-	 */
-	public void clear() {
-	  cp5.get(Textfield.class,"textValue").clear();
+	/*-----------------------------------------------------------------------------------------
+	 * Getters and setters
+	 *----------------------------------------------------------------------------------------*/
+	public boolean getArcFilterToggleValue(){
+		return this.toggleArcFilter;
 	}
-		
-	/**
-	 * 
-	 * @param theEvent
-	 */
-//	public void controlEvent(ControlEvent theEvent) {
-//		if(theEvent.isAssignableFrom(Textfield.class)) {
-//
-//			}
-//		}
-
-	/**
+	
+	public boolean getSimilarityToggleValue(){
+		return this.toggleSimilarity;
+	}
+	
+	
+	/*-----------------------------------------------------------------------------------------
+	 * Data input and validation
+	 *----------------------------------------------------------------------------------------*/
+	
+	
+	/*
 	 * Automatically receives results from controller input
-	 * @param theText
 	 */
-	public void input(String theText) {
-		
+	private void input(String theText) {
 		if(! pulsesSet) {
 			pulsesSetCheck(theText);
 			return;
-		}
-				
+		}		
 		if(inputValid(theText) && pulsesSet){
 			this.controller.updateTree(theText);
 			this.myTextarea.setText(controller.getTreeAsList().toString());
@@ -206,10 +180,9 @@ public class MainViewer extends PApplet implements Observer{
 			arcView.redraw();
 		} 
 	}
-	/**
-	 * 
-	 * @param theText
-	 * @return
+	
+	/*
+	 * Validates string input
 	 */
 	private boolean inputValid(String theText){	
 		if(! this.initialInputSet){
@@ -225,7 +198,10 @@ public class MainViewer extends PApplet implements Observer{
 		return true;	
 	}
 	
-	public boolean pulsesSetCheck(String theText){
+	/*
+	 * Checks if number of pulses set
+	 */
+	private boolean pulsesSetCheck(String theText){
 		if(! pulsesSet){
 			if(isInteger(theText)){
 				Integer x = Integer.valueOf(theText);
@@ -251,15 +227,9 @@ public class MainViewer extends PApplet implements Observer{
 		return false;
 	}
 	
-	
-
-	
-	/**
+	/*
 	 * Ref http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
-	 * @param str
-	 * @return
 	 */
-	
 	private static boolean isInteger(String str) {
 		if (str == null) {
 			return false;
@@ -284,13 +254,10 @@ public class MainViewer extends PApplet implements Observer{
 		return true;
 	}
 	
-	//BUTTONS
-//	public void clear_data(){
-////TO DO needs debugging - ensure model reset correctly
-//		this.myTextarea.setText("Data cleared");
-//		this.controller.resetModel();
-//	}
-	
+
+	/*-----------------------------------------------------------------------------------------
+	 * Buttons
+	 *----------------------------------------------------------------------------------------*/
 	public void loadFile() {
 		if(pulsesSet){
 			selectInput("Select a file to process:", "fileSelected");
@@ -303,17 +270,13 @@ public class MainViewer extends PApplet implements Observer{
 	  if (selection == null) {
 	    println("Window was closed or the user hit cancel.");
 	  } else {
-		  //println("User selected " + selection.getAbsolutePath());
 		  this.initialInputSet = true;
 		  String lines[] = loadStrings(selection.getAbsolutePath());
 		  StringBuffer sb = new StringBuffer();
-		 
-		  // println("there are " + lines.length + " lines");
 		  for (int i = 0 ; i < lines.length; i++) {
 		    sb.append(lines[i]);
 		  }
-		  //removes all white space
-		  String s = sb.toString().replaceAll("\\s+","");
+		  String s = sb.toString().replaceAll("\\s+",""); /*Removes all whitespace from input*/
 
 		  //TO DO - Remove this limit once program memory footprint and speed has been improved
 		  if(s.length() <= 4000){
@@ -325,8 +288,6 @@ public class MainViewer extends PApplet implements Observer{
 		  
 	  }
 	}
-	
-	
 		
 	public void arcMin(int arcMinimum) {
 			this.controller.setArcMin(arcMinimum);
@@ -347,24 +308,10 @@ public class MainViewer extends PApplet implements Observer{
 	public void arcColour(boolean theFlag) {
 		this.arcView.setArcColour(theFlag);
 	}
-	
-	public boolean getArcFilterToggleValue(){
-		return this.toggleArcFilter;
-	}
-	
-	public boolean getSimilarityToggleValue(){
-		return this.toggleSimilarity;
-	}
-	
-	
-//	//Slider inactive currently as causing ArrayIndexOutOfBoundsException when moved rapidly
-//	//Need to improve synchronisation with model.
-//	public void pulses(int numPulses) {
-//		//this.controller.setNumPulses(numPulses);
-//	}
-	
-	
-	
+		
+	/**
+	 * Implementation of Observer interface's update methods
+	 */
 	@Override
 	public void update() {
 		this.redraw();

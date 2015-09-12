@@ -14,18 +14,13 @@ import rhythm.analysis.control.RhythmController;
 
 
 /**
- * 
- * @author Julian Fenner
- * Shows two cycle (periods) in the data and compares their geoshape.
- *
- */
-/*
- * REFERENCES
+ * CycleViewer class
+ * Responsible for rendering the cycle viewer visualisation which shows two cycle (periods) as a polygon
  * http://www.openprocessing.org/sketch/27952 for connecting points in a circle
- *
+ * @author Julian Fenner
+ * 
  */
 
-//TO DO - Need to rotate circle -90 so that 0 is at 0 degrees.
 public class CycleViewer extends EmbeddedSketch implements Observer  {
 	private static final long serialVersionUID = 1L;
 	private PVector[] points;
@@ -35,7 +30,9 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	private ArcViewer arcViewerParent;
 	private RhythmController controller;
 	
-	
+	/*-----------------------------------------------------------------------------------------
+	 * Constructor
+	 *----------------------------------------------------------------------------------------*/
 	public CycleViewer(ArcViewer arcViewerParent,RhythmController controller ){
 		this.arcViewerParent = arcViewerParent;
 		this.controller = controller;
@@ -68,14 +65,13 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	        float x = cos( angle * i ) * (radius + 20);
 	        float y = sin( angle * i ) * (radius + 20);
 	        charPoints[i] = new PVector( x, y );
-	   } 
-	   
+	   }  
 	}
 
 	
 	/**
-     * Processing draw method runs in a loop immediately after setup() by default.
-     * Loop deactivated with noLoop() at end of method
+     * Processing draw method runs in a loop immediately after setup() by default
+     * Loop deactivated with noLoop() at end of method to avoid continual redrawing
 	 */
 	public void draw(){	
 		setPoints();
@@ -83,20 +79,21 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	    smooth();
 	    fill(0);
 
-	    
 	    if(this.controller.getModelString().length() >= this.controller.getNumPulses()){
 	    	
 	    	int leftSlider = this.arcViewerParent.getleftSlider();
 	    	int rightSlider = this.arcViewerParent.getRightSlider();
 	    	
-	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); //left slider
-	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider)); //right slider
+	    	renderCircle(width/4, height /2, getOnsets(leftSlider)); 
+	    	renderCircle((width/4) * 3, height /2,  getOnsets(rightSlider));
 	    }
 	   noLoop();
 	}
 	
-	
-	public void setPoints(){
+	/*
+	 *Sets the circle points 
+	 */
+	private void setPoints(){
 		points = new PVector[this.controller.getNumPulses()];
 		charPoints = new PVector[this.controller.getNumPulses()];
 		 float angle = TWO_PI / this.controller.getNumPulses();
@@ -114,17 +111,13 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 		
 	}
 	
-	
-	
 
-	
-	
-	public void renderCircle(int xTranslate, int yTranslate, Integer[] onsets){
+	private void renderCircle(int xTranslate, int yTranslate, Integer[] onsets){
 		pushStyle();
 		pushMatrix();
 		fill(255);
 		translate(xTranslate, yTranslate);
-	    ellipse(0,0, radius * 2, radius * 2); //draws circle
+	    ellipse(0,0, radius * 2, radius * 2);
 	    popStyle();
 	    
 	    //TO DO - refactor so less nested and more readable
@@ -132,12 +125,12 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	        for (int j = 0; j < this.controller.getNumPulses(); j++) {  	
 	        	pushStyle();
 	        	//noFill();
-	        	ellipse(points[i].x, points[i].y, 5, 5); //draws a circle at each point
+	        	ellipse(points[i].x, points[i].y, 5, 5); /*draws a circle at each point*/
 	        	popStyle();
 	        	text(i, charPoints[i].x -5, charPoints[i].y +5); 
 	        	if ( j != i ) {
 	        		for(int[] onset: createLineCoordinates(onsets)){
-	                	if(onset[0] == i && onset[1] == j){ // if we are at point in circle matching an onset
+	                	if(onset[0] == i && onset[1] == j){ /* if we are at point in circle matching an onset*/
 	                		line( points[i].x, points[i].y, points[j].x, points[j].y );
 	                	}
 	                }	
@@ -145,18 +138,15 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	         }
 	      }
 	    popMatrix();
-	    //noLoop();	
 	}
 
-	/**
+	/*
 	 * Takes an array of numbers representing beat onsets in a sequence.
 	 *
-     * Based on single array of points to connect [1,3,6] which is returned by model
-     * This class will need a method that takes this and assign the from / to nodes for each line
-     * E.g. 1 -> 3, 3 -> 6, 6 -> 1  NOTE. the number 6 must point to the first element in the array
-     * as its circular
-     * 
-     * 
+     * Based on single array of points in a cycle to connect e.g take [1,3,6] as the argument. 
+     * This class will need a method that takes this and assign the from -> to nodes for each line drawn.
+     * E.g. 1 -> 3, 3 -> 6, 6 -> 1  
+     * NOTE. the number 6 must point to the first element in the array as its circular
      */
 	private int[][] createLineCoordinates(Integer[] nodes){
 		int[][] lineCoords = new int[nodes.length][2];
@@ -171,15 +161,12 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 		return lineCoords;
 	}
 	
-	/***
-	 * Take string index as argument and returns the index of the 'onsets' within the period
-	 * For example if period is 4 and string is "10011101" and arg is 5 then it will return
+	/*
+	 * Takes string index as argument and returns the index of the 'onsets' within the period
+	 * For example if period is 4 and string is 10011101 and argument value is 5 then it will return
 	 * the position of the onsets at 1101 which are 4 5 and 7
-	 * 
-	 * @param index
-	 * @return
 	 */
-	private Integer[] getOnsets(int sliderIndex){ //slider index
+	private Integer[] getOnsets(int sliderIndex){ 
 		//TO DO - add exception handling here to deal with case when index is at end of string and period isn't "complete"
 		List<Integer> result = new ArrayList<Integer>();
 		int periodStart = sliderIndex - (sliderIndex %  controller.getNumPulses());
@@ -187,18 +174,16 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 		char[] charArray = this.controller.getModelString().toCharArray();
 		
 		/*
-		length of character array must >= periodEnd, if not there will be an ArrayIndexOutOfBoundsError
-		If this test is failed period start and period end must be moved back to to nearest
-		multiple of pulses number
-		 i.e if array length is 10, period start is 8 and period end is 15 
-		 then period start should be
+		 * Length of character array must be >= periodEnd, if not there will be an ArrayIndexOutOfBoundsError.
+		 * If this test is failed period start and period end must be moved back to nearest
+		 * cycle start point
 		 */
 		if(periodEnd >= charArray.length){
 			periodEnd = periodStart -1;
 			periodStart = periodStart - this.controller.getNumPulses();
 		}
 		for(int i = periodStart; i < periodStart + controller.getNumPulses(); i++){	
-			//modulo num pulses because pulse must always be 0 to numpulses
+			/*modulo num pulses because pulse must always be 0 to numpulses */
 			if(charArray[i] == '1') result.add(i % this.controller.getNumPulses()); 			
 		}	
 		
@@ -206,7 +191,9 @@ public class CycleViewer extends EmbeddedSketch implements Observer  {
 	}
 	
 
-
+	/**
+	 * Implements Observer interface's update method
+	 */
 	@Override
 	public void update() {
 		this.redraw();
